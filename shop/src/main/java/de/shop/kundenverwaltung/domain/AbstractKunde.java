@@ -1,5 +1,5 @@
 package de.shop.kundenverwaltung.domain;
 
-public class Kunde {
+public class AbstractKunde {
 
 }
