@@ -20,6 +20,17 @@ public class Mock {
 	
 	return artikel;
 	}
+	public static Artikel createArtikel(Artikel artikel){
+		
+		final String bezeichnung = artikel.getBezeichnung();
+		@SuppressWarnings("unused")
+		final double preis = artikel.getPreis();
+		artikel.setId(bezeichnung.hashCode());
+		
+		return artikel;
+		
+		
+	}
 	
 	private Mock(){/**/}
 }

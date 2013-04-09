@@ -1,6 +1,7 @@
 package de.shop.artikelverwaltung.domain;
 
 import java.net.URI;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class Artikel {
@@ -44,6 +45,7 @@ public class Artikel {
 	{
 		this.artikelUri = artikelUri;
 	}
+
 		
 	
 }
