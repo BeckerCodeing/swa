@@ -8,7 +8,7 @@ import com.sun.xml.internal.rngom.util.Uri;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 
-public abstract class AbstractKunde {
+public class Kunde {
 
 	private Long id;
 	private String vorname;
@@ -18,6 +18,7 @@ public abstract class AbstractKunde {
 	@JsonIgnore
 	private List<Bestellung> bestellungen;
 	private Uri bestellungenUri;
+	
 	
 	public Long getId() {
 		return id;
@@ -77,7 +78,7 @@ public abstract class AbstractKunde {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractKunde other = (AbstractKunde) obj;
+		Kunde other = (Kunde) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
