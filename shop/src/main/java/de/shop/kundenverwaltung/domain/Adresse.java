@@ -18,6 +18,8 @@ public class Adresse {
 		this.ort = ort;
 	}
 	
+	
+	// Overrides
 	@Override
 	public int hashCode() {
 		final int prime = 31;
