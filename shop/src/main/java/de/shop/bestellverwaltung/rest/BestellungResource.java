@@ -1,9 +1,6 @@
 package de.shop.bestellverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-
-import java.net.URI;
 import java.util.Collection;
 import java.util.Locale;
 
