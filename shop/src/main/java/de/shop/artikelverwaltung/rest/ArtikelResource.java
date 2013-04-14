@@ -4,6 +4,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,6 +24,7 @@ import de.shop.util.NotFoundException;
 @Path("/artikel")
 @Produces(APPLICATION_JSON)
 @Consumes
+@RequestScoped
 public class ArtikelResource {
 
 	@Context
@@ -33,10 +35,10 @@ public class ArtikelResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	
-	public Artikel findArtikelById(@PathParam("id") int id){
+	public Artikel findArtikelById(@PathParam("id") Long id) {
 		final Artikel artikel = Mock.findArtikelById(id);
-		if(artikel ==null){
-			throw new NotFoundException("Kein Artikel mit der ID "+id+" gefunden");
+		if (artikel == null) {
+			throw new NotFoundException("Kein Artikel mit der ID " + id + " gefunden");
 		}
 		return artikel;
 		
@@ -44,8 +46,15 @@ public class ArtikelResource {
 	@POST
 	@Consumes(APPLICATION_JSON)
 	@Produces
-	public Response createArtikel(Artikel artikel){
+	public Response createArtikel(Artikel artikel) {
+		
+		
+		
 		artikel = Mock.createArtikel(artikel);
+		
+		if (artikel == null)
+			throw new NotFoundException("Test test " + artikel);
+				
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(artikelUri).build();
 	}
