@@ -96,7 +96,6 @@ public final class Mock {
 
 
 		//Bestellung nach ID suchen
-
 		public static Bestellung findBestellungById(Long id) {
 			if (id > MAX_ID) {
 				return null;
