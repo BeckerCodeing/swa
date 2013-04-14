@@ -23,7 +23,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
-@Path("/kunde")
+@Path("/kunden")
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
@@ -60,7 +60,7 @@ public class KundeResource {
 	}
 	
 	@GET
-	public Collection<Kunde> findKundeByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
+	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
 		
 		Collection<Kunde> kunden = null;
 		if ("".equals(nachname)) {
@@ -76,7 +76,7 @@ public class KundeResource {
 			}
 		}
 		
-		for (Kunde kunde:kunden) {
+		for (Kunde kunde : kunden) {
 			uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		}
 		
