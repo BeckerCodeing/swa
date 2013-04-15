@@ -23,6 +23,8 @@ import de.shop.kundenverwaltung.domain.Ort;
 public final class Mock {
 
 	private static final int MAX_ID = 99;
+	
+	private static final int MAX_KUNDEN = 8;
 
 	private static final int MAX_Zufall = 250;
 
@@ -80,6 +82,8 @@ public final class Mock {
 		return artikel;
 		
 	}
+	
+		//Bestellung nach ID suchen
 		public static Bestellung findBestellungById(Long id) {
 			if (id > MAX_ID) {
 				return null;
@@ -94,7 +98,7 @@ public final class Mock {
 			
 			return bestellung;
 		}
-		
+		//Bestellung nach KundenID suchen
 		public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
 			final Kunde kunde = findKundeById(kundeId);
 			
@@ -110,6 +114,17 @@ public final class Mock {
 			
 			return bestellungen;
 		}
+		//Alle Bestellungen suchen
+		public static Collection<Kunde> findAllKunden() {
+			final int anzahl = MAX_KUNDEN;
+			final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+			for (int i = 1; i <= anzahl; i++) {
+				final Kunde kunde = findKundeById(Long.valueOf(i));
+				kunden.add(kunde);			
+			}
+			return kunden;
+		}
+
 		
 		//Kunden nach der ID Suchen
 		public static Kunde findKundeById(Long id) {
@@ -128,8 +143,8 @@ public final class Mock {
 			final Ort ort = new Ort();
 			ort.setPlz(12345);
 			ort.setBezeichnung("Testort");
-			ort.setStrasse("Musterstrasse");
-			ort.setHausnummer(123);
+			adresse.setStrasse("Musterstrasse");
+			adresse.setHausnummer(123);
 			adresse.setOrt(ort);
 			kunde.setAdresse(adresse);
 			
