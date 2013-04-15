@@ -48,13 +48,8 @@ public class ArtikelResource {
 	@Produces
 	public Response createArtikel(Artikel artikel) {
 		
-		
-		
 		artikel = Mock.createArtikel(artikel);
 		
-		if (artikel == null)
-			throw new NotFoundException("Test test " + artikel);
-				
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(artikelUri).build();
 	}
