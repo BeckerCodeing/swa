@@ -93,7 +93,7 @@ public class Kunde {
 	}
 	@Override
 	public String toString() {
-		return "AbstractKunde [id=" + id + ", vorname=" + vorname
+		return "Kunde [id=" + id + ", vorname=" + vorname
 				+ ", nachname=" + nachname + ", adresse=" + adresse
 				+ ", email=" + email + "]";
 	}
