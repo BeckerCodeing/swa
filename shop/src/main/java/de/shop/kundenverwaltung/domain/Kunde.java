@@ -1,10 +1,9 @@
 package de.shop.kundenverwaltung.domain;
 
+import java.net.URI;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-
-import com.sun.xml.internal.rngom.util.Uri;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 
@@ -17,7 +16,7 @@ public class Kunde {
 	private String email;
 	@JsonIgnore
 	private List<Bestellung> bestellungen;
-	private Uri bestellungenUri;
+	private URI bestellungenUri;
 	
 	
 	public Long getId() {
@@ -56,10 +55,10 @@ public class Kunde {
 	public void setBestellungen(List<Bestellung> bestellungen) {
 		this.bestellungen = bestellungen;
 	}
-	public Uri getBestellungenUri() {
+	public URI getBestellungenUri() {
 		return bestellungenUri;
 	}
-	public void setBestellungenUri(Uri bestellungenUri) {
+	public void setBestellungenUri(URI bestellungenUri) {
 		this.bestellungenUri = bestellungenUri;
 	}
 	@Override

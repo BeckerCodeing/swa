@@ -111,6 +111,7 @@ public final class Mock {
 			return bestellungen;
 		}
 		
+		//Kunden nach der ID Suchen
 		public static Kunde findKundeById(Long id) {
 			if (id > MAX_ID) {
 				return null;
@@ -123,7 +124,7 @@ public final class Mock {
 			kunde.setEmail("" + id + "@hska.de");
 			
 			final Adresse adresse = new Adresse();
-			adresse.setId(id + 1);        // andere ID fuer die Adresse
+			adresse.setId(id + 4);
 			final Ort ort = new Ort();
 			ort.setPlz(12345);
 			ort.setBezeichnung("Testort");
