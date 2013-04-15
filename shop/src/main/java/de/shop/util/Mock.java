@@ -143,8 +143,8 @@ public final class Mock {
 			final Ort ort = new Ort();
 			ort.setPlz(12345);
 			ort.setBezeichnung("Testort");
-			ort.setStrasse("Musterstrasse");
-			ort.setHausnummer(123);
+			adresse.setStrasse("Musterstrasse");
+			adresse.setHausnummer(123);
 			adresse.setOrt(ort);
 			kunde.setAdresse(adresse);
 			
