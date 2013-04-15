@@ -25,6 +25,8 @@ import de.shop.kundenverwaltung.domain.Ort;
 public final class Mock {
 
 	private static final int MAX_ID = 99;
+	
+	private static final int MAX_ARTIKEL = 100;
 
 	private static final int MAX_Zufall = 250;
 
@@ -79,6 +81,16 @@ public final class Mock {
 		System.out.println("Neuer Artikel: " + artikel);
 		return artikel;
 		
+	}
+	///Alle Artikel ausgeben
+	public static Collection<Artikel> findAllArtikel(){
+		final int anzahl = MAX_ARTIKEL;
+		final Collection<Artikel> alleArtikel = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++){
+			final Artikel artikel = findArtikelById(Long.valueOf(i));
+			alleArtikel.add(artikel);
+		}
+		return alleArtikel;
 	}
 		public static Bestellung findBestellungById(Long id) {
 			if (id > MAX_ID) {
