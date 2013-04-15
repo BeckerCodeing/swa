@@ -51,7 +51,6 @@ public class KundeResource {
 		if(kunde == null){
 			throw new NotFoundException("Kein Kunde mit der ID " + id + "gefunden.");
 		}
-		uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		
 		return kunde;
 	}
