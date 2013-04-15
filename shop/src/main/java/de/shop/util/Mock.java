@@ -4,17 +4,15 @@ package de.shop.util;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-import de.shop.artikelverwaltung.domain.Artikel;
 
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.domain.KategorieType;
-
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
@@ -29,6 +27,8 @@ public final class Mock {
 	private static final int MAX_Zufall = 250;
 
 	private static final int MAX_BESTELLUNGEN = 4;
+	
+	private static final int MAX_KUNDEN = 99;
 
 	
 //	kleiner Zufallsgenerator für den Preis
@@ -136,10 +136,31 @@ public final class Mock {
 			return kunde;
 		}
 	
+		//TODO: findAllKunden hat noch fehler!
+	public static Collection<Kunde> findAllKunden() {
+		final int anzahl = MAX_KUNDEN;
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunden.add(kunde);
+		}
+		
+		return kunden;
+	}
 	
-
-	private Mock() { /**/ };
+	//TODO: findKundenByNachname hat noch fehler
+	public static Collection<Kunde> findKundenByNachname(String nachname) {
+		final int anzahl = nachname.length();
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunde.setNachname(nachname);
+			kunden.add(kunde);
+		}
+		return kunden;
+	};
 	
+	private Mock() { /**/ }
 }
 	
 
