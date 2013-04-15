@@ -4,17 +4,15 @@ package de.shop.util;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-import de.shop.artikelverwaltung.domain.Artikel;
 
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.domain.KategorieType;
-
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
@@ -31,6 +29,8 @@ public final class Mock {
 	private static final int MAX_Zufall = 250;
 
 	private static final int MAX_BESTELLUNGEN = 4;
+	
+	private static final int MAX_KUNDEN = 99;
 
 	
 //	kleiner Zufallsgenerator für den Preis
@@ -82,6 +82,7 @@ public final class Mock {
 		return artikel;
 		
 	}
+
 	///Alle Artikel ausgeben
 	public static Collection<Artikel> findAllArtikel(){
 		final int anzahl = MAX_ARTIKEL;
@@ -92,6 +93,10 @@ public final class Mock {
 		}
 		return alleArtikel;
 	}
+
+
+		//Bestellung nach ID suchen
+
 		public static Bestellung findBestellungById(Long id) {
 			if (id > MAX_ID) {
 				return null;
@@ -106,7 +111,7 @@ public final class Mock {
 			
 			return bestellung;
 		}
-		
+		//Bestellung nach KundenID suchen
 		public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
 			final Kunde kunde = findKundeById(kundeId);
 			
@@ -122,7 +127,7 @@ public final class Mock {
 			
 			return bestellungen;
 		}
-		
+	
 		//Kunden nach der ID Suchen
 		public static Kunde findKundeById(Long id) {
 			if (id > MAX_ID) {
@@ -140,18 +145,39 @@ public final class Mock {
 			final Ort ort = new Ort();
 			ort.setPlz(12345);
 			ort.setBezeichnung("Testort");
-			ort.setStrasse("Musterstrasse");
-			ort.setHausnummer(123);
+			adresse.setStrasse("Musterstrasse");
+			adresse.setHausnummer(123);
 			adresse.setOrt(ort);
 			kunde.setAdresse(adresse);
 			
 			return kunde;
 		}
 	
+		//TODO: findAllKunden hat noch fehler!
+	public static Collection<Kunde> findAllKunden() {
+		final int anzahl = MAX_KUNDEN;
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunden.add(kunde);
+		}
+		
+		return kunden;
+	}
 	
-
-	private Mock() { /**/ };
+	//TODO: findKundenByNachname hat noch fehler
+	public static Collection<Kunde> findKundenByNachname(String nachname) {
+		final int anzahl = nachname.length();
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunde.setNachname(nachname);
+			kunden.add(kunde);
+		}
+		return kunden;
+	};
 	
+	private Mock() { /**/ }
 }
 	
 
