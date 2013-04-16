@@ -4,7 +4,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Locale;
+
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -56,24 +56,29 @@ public class ArtikelResource {
 		return artikel;
 		
 	}
-	//TODO Methode überarbeiten...
+	//TODO TESTEN!
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung){
-		//@SuppressWarnings("unused")
+		
 		//TODO Locale Helper spackt rum, noch anpassen final Locale locale = LocaleHelper.getLocale(headers);
 		
-		Collection<Artikel> alleArtikel = null;
+		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)){
-			alleArtikel = Mock.findAllArtikel();
-			if (alleArtikel.isEmpty()){
+			gesuchteArtikel = Mock.findAllArtikel();
+			if (gesuchteArtikel.isEmpty()){
 				throw new NotFoundException("Keine Artikel vorhanden.");
 			}
 			
 		}
 		else {
-			//TODO Mock.findKundenByBezeichnung
+			gesuchteArtikel = Mock.findArtikelByBezeichnung(bezeichnung);
+			if (gesuchteArtikel.isEmpty()) {
+				throw new NotFoundException("Kein Artikel mit Bezeichnung " + bezeichnung + " gefunden.");
+			}
 		}
-	return alleArtikel;
+		
+		
+	return gesuchteArtikel;
 	}
 	
 	
@@ -83,7 +88,7 @@ public class ArtikelResource {
 	public Response createArtikel(Artikel artikel) {
 		
 		artikel = Mock.createArtikel(artikel);
-		
+	
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(artikelUri).build();
 	}

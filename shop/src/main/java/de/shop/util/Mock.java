@@ -63,7 +63,18 @@ public final class Mock {
 		
 		return artikel;
 	}
+	///Artikel nach Name suchen
 	///Artikel erstellen
+	public static Collection<Artikel> findArtikelByBezeichnung(String bezeichnung){
+		final int anzahl = bezeichnung.length();
+		final Collection<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Artikel artikel = findArtikelById(Long.valueOf(i));
+			artikel.setBezeichnung(bezeichnung);
+			gesuchteArtikel.add(artikel);
+		}
+		return gesuchteArtikel;
+	}
 	public static Artikel createArtikel(Artikel artikel) {
 		
 		final String bezeichnung = artikel.getBezeichnung();

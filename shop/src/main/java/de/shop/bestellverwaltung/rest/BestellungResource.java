@@ -1,6 +1,7 @@
 package de.shop.bestellverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 import java.util.Collection;
 import java.util.Locale;
 
@@ -14,9 +15,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.jayway.restassured.response.Response;
+
+
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.kundenverwaltung.rest.UriHelperKunde;
@@ -98,4 +101,5 @@ public class BestellungResource {
 		}
 		return null;
 	}
+	
 }
