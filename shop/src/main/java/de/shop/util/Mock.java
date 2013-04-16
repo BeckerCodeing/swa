@@ -166,11 +166,12 @@ public final class Mock {
 			kunde.setVorname("Vorname" + id);
 			kunde.setEmail("" + id + "@hska.de");
 			
-			final Adresse adresse = new Adresse();
-			adresse.setId(ADDRESSID);
 			final Ort ort = new Ort();
 			ort.setPlz(POSTLEITZAHL);
 			ort.setBezeichnung("Testort");
+			
+			final Adresse adresse = new Adresse();
+			adresse.setId(ADDRESSID);
 			adresse.setStrasse("Musterstrasse");
 			adresse.setHausnummer(HAUSNUMMER);
 			adresse.setOrt(ort);
@@ -200,6 +201,20 @@ public final class Mock {
 				kunden.add(kunde);			
 			}
 			return kunden;
+		}
+		
+		public static Kunde createKunde(Kunde kunde) {
+			// Neue IDs fuer Kunde und zugehoerige Adresse
+			// Ein neuer Kunde hat auch keine Bestellungen
+			final String nachname = kunde.getNachname();
+			final String vorname = kunde.getVorname();
+			kunde.setId(Long.valueOf(nachname.length()));
+			final Adresse adresse = kunde.getAdresse();
+			adresse.setId((Long.valueOf(nachname.length())) + 1);
+			kunde.setBestellungen(null);
+			
+			System.out.println("Neuer Kunde: " + kunde);
+			return kunde;
 		}
 	
 	private Mock() { /**/ }
