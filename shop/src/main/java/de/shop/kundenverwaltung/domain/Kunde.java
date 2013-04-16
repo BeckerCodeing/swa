@@ -77,16 +77,18 @@ public class Kunde {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Kunde other = (Kunde) obj;
+		final Kunde other = (Kunde) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
-		} else if (!email.equals(other.email))
+		} 
+		else if (!email.equals(other.email))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} 
+		else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

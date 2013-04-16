@@ -34,11 +34,12 @@ public class Ort {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Ort other = (Ort) obj;
+		final Ort other = (Ort) obj;
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichnung.equals(other.bezeichnung))
+		} 
+		else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (plz != other.plz)
 			return false;

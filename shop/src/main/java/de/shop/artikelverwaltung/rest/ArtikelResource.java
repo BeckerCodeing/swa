@@ -56,16 +56,15 @@ public class ArtikelResource {
 		return artikel;
 		
 	}
-	//TODO TESTEN!
+	
 	@GET
-	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung){
-		
+	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung) {		
 		//TODO Locale Helper spackt rum, noch anpassen final Locale locale = LocaleHelper.getLocale(headers);
 		
 		Collection<Artikel> gesuchteArtikel = null;
-		if ("".equals(bezeichnung)){
+		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = Mock.findAllArtikel();
-			if (gesuchteArtikel.isEmpty()){
+			if (gesuchteArtikel.isEmpty()) {
 				throw new NotFoundException("Keine Artikel vorhanden.");
 			}
 			

@@ -90,7 +90,7 @@ public class BestellungResource {
 	public Response createBestellung(Bestellung bestellung) {
 		// Schluessel des Kunden extrahieren
 		final String kundeUriStr = bestellung.getKundeUri().toString();
-		int startPos = kundeUriStr.lastIndexOf('/') + 1;
+		final int startPos = kundeUriStr.lastIndexOf('/') + 1;
 		final String kundeIdStr = kundeUriStr.substring(startPos);
 		Long kundeId = null;
 		try {

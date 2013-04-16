@@ -26,18 +26,28 @@ public final class Mock {
 	
 	private static final int MAX_ARTIKEL = 100;
 
-	private static final int MAX_Zufall = 250;
+	private static final int MAX_ZUFALL = 250;
 
 	private static final int MAX_BESTELLUNGEN = 4;
 	
 	private static final int MAX_KUNDEN = 99;
+	
+	private static final double PREIS = 0.5;
+	
+	private static final long ADDRESSID = 5;
+	
+	private static final int POSTLEITZAHL = 12345;
+	
+	private static final int HAUSNUMMER = 123;
+	
+	
 
 	
 //	kleiner Zufallsgenerator für den Preis
-	private static int Zufallsgenerator() {
+	private static double getRandomPreis() {
 		final Random zufall = new Random();
 		
-		return zufall.nextInt(MAX_Zufall);
+		return zufall.nextInt(MAX_ZUFALL) + PREIS;
 	
 	}
 	///Artikel nach ID suchen
@@ -48,7 +58,7 @@ public final class Mock {
 		final Artikel artikel = new Artikel();
 		artikel.setId(id);
 		artikel.setBezeichnung("Bezeichnung" + id);
-		artikel.setPreis(Mock.Zufallsgenerator() + 0.5);
+		artikel.setPreis(Mock.getRandomPreis());
 		
 		///Kategorie immer "BAD" und ID = 1
 		final Kategorie kategorie = new Kategorie();
@@ -65,7 +75,7 @@ public final class Mock {
 	}
 	///Artikel nach Name suchen
 	///Artikel erstellen
-	public static Collection<Artikel> findArtikelByBezeichnung(String bezeichnung){
+	public static Collection<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		final int anzahl = bezeichnung.length();
 		final Collection<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
@@ -79,7 +89,7 @@ public final class Mock {
 		
 		final String bezeichnung = artikel.getBezeichnung();
 		artikel.setId(Long.valueOf(bezeichnung.length()));
-		artikel.setPreis(23.4);
+		artikel.setPreis(getRandomPreis());
 		
 		final Kategorie kategorie = artikel.getKategorie();
 		kategorie.setId(1);
@@ -95,10 +105,10 @@ public final class Mock {
 	}
 
 	///Alle Artikel ausgeben
-	public static Collection<Artikel> findAllArtikel(){
+	public static Collection<Artikel> findAllArtikel() {
 		final int anzahl = MAX_ARTIKEL;
 		final Collection<Artikel> alleArtikel = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++){
+		for (int i = 1; i <= anzahl; i++) {
 			final Artikel artikel = findArtikelById(Long.valueOf(i));
 			alleArtikel.add(artikel);
 		}
@@ -152,12 +162,12 @@ public final class Mock {
 			kunde.setEmail("" + id + "@hska.de");
 			
 			final Adresse adresse = new Adresse();
-			adresse.setId(id + 4);
+			adresse.setId(ADDRESSID);
 			final Ort ort = new Ort();
-			ort.setPlz(12345);
+			ort.setPlz(POSTLEITZAHL);
 			ort.setBezeichnung("Testort");
 			adresse.setStrasse("Musterstrasse");
-			adresse.setHausnummer(123);
+			adresse.setHausnummer(HAUSNUMMER);
 			adresse.setOrt(ort);
 			kunde.setAdresse(adresse);
 			

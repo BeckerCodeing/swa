@@ -53,21 +53,24 @@ public class Rechnung {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Rechnung other = (Rechnung) obj;
+		final Rechnung other = (Rechnung) obj;
 		if (bestellung == null) {
 			if (other.bestellung != null)
 				return false;
-		} else if (!bestellung.equals(other.bestellung))
+		} 
+		else if (!bestellung.equals(other.bestellung))
 			return false;
 		if (bestellungUri == null) {
 			if (other.bestellungUri != null)
 				return false;
-		} else if (!bestellungUri.equals(other.bestellungUri))
+		} 
+		else if (!bestellungUri.equals(other.bestellungUri))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} 
+		else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

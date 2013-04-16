@@ -50,9 +50,9 @@ public class KundeResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Kunde findKundeById(@PathParam("id")Long id){
+	public Kunde findKundeById(@PathParam("id")Long id) {
 		final Kunde kunde = Mock.findKundeById(id);
-		if(kunde == null){
+		if (kunde == null) {
 			throw new NotFoundException("Kein Kunde mit der ID " + id + "gefunden.");
 		}
 		
