@@ -6,12 +6,14 @@ import java.net.URI;
 import java.util.Collection;
 
 
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -46,9 +48,9 @@ public class ArtikelResource {
 	private LocaleHelper localeHelper;
 	
 	@GET
-	@Path("{id:[1-9][0-9]*}")
-	
+	@Path("{id:[1-9][0-9]*}")	
 	public Artikel findArtikelById(@PathParam("id") Long id) {
+		//TODO Anwendungskern statt Mock, Locale
 		final Artikel artikel = Mock.findArtikelById(id);
 		if (artikel == null) {
 			throw new NotFoundException("Kein Artikel mit der ID " + id + " gefunden");
@@ -59,8 +61,8 @@ public class ArtikelResource {
 	
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung) {		
-		//TODO Locale Helper spackt rum, noch anpassen final Locale locale = LocaleHelper.getLocale(headers);
 		
+		//TODO Anwendungskern statt Mock, Locale
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = Mock.findAllArtikel();
@@ -85,11 +87,21 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createArtikel(Artikel artikel) {
-		
+		//TODO Anwendungskern statt Mock, Locale
 		artikel = Mock.createArtikel(artikel);
 	
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(artikelUri).build();
+	}
+	
+	@PUT
+	@Consumes(APPLICATION_JSON)
+	@Produces
+	public Response updateArtikel(Artikel artikel) {
+		//TODO Anwendungskern statt Mock, Locale
+		Mock.updateArtikel(artikel);
+		return Response.noContent().build();
+		
 	}
 	
 	

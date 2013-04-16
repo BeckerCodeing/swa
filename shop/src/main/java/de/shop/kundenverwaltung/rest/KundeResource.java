@@ -76,7 +76,7 @@ public class KundeResource {
 			}
 		}
 		
-		for (Kunde kunde:kunden) {
+		for (Kunde kunde : kunden) {
 			uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		}
 		

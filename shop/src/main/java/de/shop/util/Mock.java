@@ -73,8 +73,8 @@ public final class Mock {
 		
 		return artikel;
 	}
+	
 	///Artikel nach Name suchen
-	///Artikel erstellen
 	public static Collection<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		final int anzahl = bezeichnung.length();
 		final Collection<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
@@ -85,6 +85,8 @@ public final class Mock {
 		}
 		return gesuchteArtikel;
 	}
+	
+	///Artikel erstellen
 	public static Artikel createArtikel(Artikel artikel) {
 		
 		final String bezeichnung = artikel.getBezeichnung();
@@ -113,6 +115,10 @@ public final class Mock {
 			alleArtikel.add(artikel);
 		}
 		return alleArtikel;
+	}
+	//Artikel ändern
+	public static void updateArtikel(Artikel artikel) {
+		System.out.println("Aktualisierter Artikel: " + artikel);
 	}
 
 
