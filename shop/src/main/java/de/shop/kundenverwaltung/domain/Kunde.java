@@ -1,5 +1,6 @@
 package de.shop.kundenverwaltung.domain;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
@@ -7,8 +8,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 
-public class Kunde {
+public class Kunde  implements Serializable {
 
+	private static final long serialVersionUID = -7933833610685286194L;
 	private Long id;
 	private String vorname;
 	private String nachname;

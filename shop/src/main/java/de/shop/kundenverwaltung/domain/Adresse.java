@@ -1,7 +1,10 @@
 package de.shop.kundenverwaltung.domain;
 
-public class Adresse {
+import java.io.Serializable;
+
+public class Adresse implements Serializable{
 	
+	private static final long serialVersionUID = -4812303860223131704L;
 	private Long id;
 	private Ort ort;
 	private String strasse;
