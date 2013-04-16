@@ -60,8 +60,7 @@ public class ArtikelResource {
 	}
 	
 	@GET
-	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung) {		
-		
+	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung) {
 		//TODO Anwendungskern statt Mock, Locale
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
