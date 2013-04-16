@@ -35,11 +35,11 @@ public class Warenkorb {
 	}
 	
 	public double calcPreis() {
-		double gesamtpreis = 0;
+		double ergebnis = 0;
 		for (Position position : positionen) {
-			gesamtpreis += position.calcPreis();
+			ergebnis += position.calcPreis();
 		}
-		return gesamtpreis;
+		return ergebnis;
 	}
 
 }

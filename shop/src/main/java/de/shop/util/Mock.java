@@ -12,6 +12,8 @@ import java.util.List;
 
 
 
+
+
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.domain.KategorieType;
@@ -45,6 +47,8 @@ public final class Mock {
 	private static final int POSTLEITZAHL = 12345;
 	
 	private static final int HAUSNUMMER = 123;
+	
+	private static final int FUCKCHECKSTYLE = 6;
 	
 	
 
@@ -236,8 +240,8 @@ public final class Mock {
 		final Warenkorb warenkorb = new Warenkorb();
 		warenkorb.setKunde(kunde);
 		final List<Position> positionen = new ArrayList<>(MAX_POSITIONEN);
-		for (int i = 1 ; i <= (MAX_POSITIONEN + id) % 6 ; i++) {
-			positionen.add(createPosition(findArtikelById(Long.valueOf(i)),Long.valueOf(i)));
+		for (int i = 1; i <= (MAX_POSITIONEN + id) % FUCKCHECKSTYLE; i++) {
+			positionen.add(createPosition(findArtikelById(Long.valueOf(i)), Long.valueOf(i)));
 		}
 		warenkorb.setPositionen(positionen);
 		warenkorb.setGesamtpreis(warenkorb.calcPreis());		
@@ -246,15 +250,40 @@ public final class Mock {
 	}
 	//Position erstellen
 	public static Position createPosition(Artikel artikel, Long id) {
-		Position position = new Position();
+		final Position position = new Position();
 		position.setArtikel(artikel);
 		position.setId(id);
-		position.setMenge(artikel.hashCode() % 5);
+		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE);
 		position.setGesamtpreis(position.calcPreis());
 		
 		return position;
 	}
 	
+	
+	public static void updateWarenkorbPosition(Position position) {
+		System.out.println("Anzahl der Artikel in Position " + position.getId() 
+							+ " geändert auf " + position.getMenge() + " Stück.");
+		
+	}
+	
+	//nur zum Vereinfachten Testen der REST-Methoden Warenkorb
+	public static Position findPositionById(Long id) {
+		final Artikel artikel = findArtikelById(id);
+		final Position position = createPosition(artikel, id);
+			
+		return position;
+	}
+	//Warenkorb des Kunden anhand KundenID leeren, entspricht später "Refresh",
+	//also alle Positionen entfernen und Warenkorb neu anlegen
+	public static void resetWarenkorb(Long kundeId) {
+		System.out.println("Warenkorb von Kunde " + kundeId + " erfolgreich geleert!");
+		
+	}
+	public static void deleteWarenkorbPosition(Kunde kunde, Position position) {
+		System.out.println("Position " + position.getId() + " aus Warenkorb von Kunde " 
+				+ kunde.getId() + " " + kunde.getVorname() + " " + kunde.getNachname() + " gelöscht!");
+		
+	}
 	private Mock() { /**/ }
 	
 }
