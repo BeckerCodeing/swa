@@ -2,7 +2,7 @@ package de.shop.kundenverwaltung.domain;
 
 import java.io.Serializable;
 
-public class Ort implements Serializable{
+public class Ort implements Serializable {
 	
 	private static final long serialVersionUID = 6131379693351641182L;
 	private int plz;
