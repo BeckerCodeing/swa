@@ -10,10 +10,14 @@ import java.util.List;
 
 
 
+
+
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.domain.KategorieType;
 import de.shop.bestellverwaltung.domain.Bestellung;
+import de.shop.bestellverwaltung.domain.Position;
+import de.shop.bestellverwaltung.domain.Warenkorb;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Ort;
@@ -29,6 +33,8 @@ public final class Mock {
 	private static final int MAX_ZUFALL = 250;
 
 	private static final int MAX_BESTELLUNGEN = 20;
+	
+	private static final int MAX_POSITIONEN = 5;
 	
 	private static final int MAX_KUNDEN = 99;
 	
@@ -221,7 +227,36 @@ public final class Mock {
 		System.out.println("Aktualisierter Kunde: " + kunde);
 	}
 	
+	//Warenkorb anhand KundenID ausgeben
+	public static Warenkorb getWarenKorbById(Long id) {
+		if (id > MAX_ID) {
+			return null;
+		}
+		final Kunde kunde = findKundeById(id + 1); // andere ID für den Kunden
+		final Warenkorb warenkorb = new Warenkorb();
+		warenkorb.setKunde(kunde);
+		final List<Position> positionen = new ArrayList<>(MAX_POSITIONEN);
+		for (int i = 1 ; i <= (MAX_POSITIONEN + id) % 6 ; i++) {
+			positionen.add(createPosition(findArtikelById(Long.valueOf(i)),Long.valueOf(i)));
+		}
+		warenkorb.setPositionen(positionen);
+		warenkorb.setGesamtpreis(warenkorb.calcPreis());		
+		
+		return warenkorb;
+	}
+	//Position erstellen
+	public static Position createPosition(Artikel artikel, Long id) {
+		Position position = new Position();
+		position.setArtikel(artikel);
+		position.setId(id);
+		position.setMenge(artikel.hashCode() % 5);
+		position.setGesamtpreis(position.calcPreis());
+		
+		return position;
+	}
+	
 	private Mock() { /**/ }
+	
 }
 	
 

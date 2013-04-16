@@ -2,13 +2,18 @@ package de.shop.bestellverwaltung.domain;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import de.shop.kundenverwaltung.domain.Kunde;
 
 public class Warenkorb {
 
+	@JsonIgnore
 	private Kunde kunde;
 	private List<Position> positionen;
+
 	private double gesamtpreis;
+	
 	
 	public double getGesamtpreis() {
 		return gesamtpreis;
@@ -28,4 +33,13 @@ public class Warenkorb {
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
+	
+	public double calcPreis() {
+		double gesamtpreis = 0;
+		for (Position position : positionen) {
+			gesamtpreis += position.calcPreis();
+		}
+		return gesamtpreis;
+	}
+
 }

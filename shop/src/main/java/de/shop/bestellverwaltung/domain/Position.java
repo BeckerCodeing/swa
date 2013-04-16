@@ -91,6 +91,10 @@ public class Position implements Serializable {
 		return "Position [id=" + id + ", menge=" + menge + ", gesamtpreis="
 				+ gesamtpreis + ", artikel=" + artikel + "]";
 	}
+	//TODO Preis für eine Position berechnen, zum Testen --> später anpassen
+	public double calcPreis() {
+		return artikel.getPreis() * this.getMenge();
+	}
 	
 	
 	
