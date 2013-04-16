@@ -122,100 +122,104 @@ public final class Mock {
 	}
 
 
-		//Bestellung nach ID suchen
-		public static Bestellung findBestellungById(Long id) {
-			if (id > MAX_ID) {
-				return null;
-			}
+	//Bestellung nach ID suchen
+	public static Bestellung findBestellungById(Long id) {
+		if (id > MAX_ID) {
+			return null;
+		}
 
-			final Kunde kunde = findKundeById(id + 1);  // andere ID fuer den Kunden
+		final Kunde kunde = findKundeById(id + 1);  // andere ID fuer den Kunden
 
-			final Bestellung bestellung = new Bestellung();
-			bestellung.setId(id);
-			bestellung.setAusgeliefert(false);
+		final Bestellung bestellung = new Bestellung();
+		bestellung.setId(id);
+		bestellung.setAusgeliefert(false);
+		bestellung.setKunde(kunde);
+			
+		return bestellung;
+	}
+	
+	//Bestellung nach KundenID suchen
+	public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
+		final Kunde kunde = findKundeById(kundeId);
+			
+		// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
+		final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
+		final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Bestellung bestellung = findBestellungById(Long.valueOf(i));
 			bestellung.setKunde(kunde);
-			
-			return bestellung;
+			bestellungen.add(bestellung);			
 		}
-		//Bestellung nach KundenID suchen
-		public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
-			final Kunde kunde = findKundeById(kundeId);
+		kunde.setBestellungen(bestellungen);
 			
-			// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
-			final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
-			final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
-			for (int i = 1; i <= anzahl; i++) {
-				final Bestellung bestellung = findBestellungById(Long.valueOf(i));
-				bestellung.setKunde(kunde);
-				bestellungen.add(bestellung);			
-			}
-			kunde.setBestellungen(bestellungen);
-			
-			return bestellungen;
-		}
+		return bestellungen;
+	}
 	
-		//Kunden nach der ID Suchen
-		public static Kunde findKundeById(Long id) {
-			if (id > MAX_ID) {
-				return null;
-			}
-			
-			final Kunde kunde = new Kunde();
-			kunde.setId(id);
-			kunde.setNachname("Nachname" + id);
-			kunde.setVorname("Vorname" + id);
-			kunde.setEmail("" + id + "@hska.de");
-			
-			final Ort ort = new Ort();
-			ort.setPlz(POSTLEITZAHL);
-			ort.setBezeichnung("Testort");
-			
-			final Adresse adresse = new Adresse();
-			adresse.setId(ADDRESSID);
-			adresse.setStrasse("Musterstrasse");
-			adresse.setHausnummer(HAUSNUMMER);
-			adresse.setOrt(ort);
-			kunde.setAdresse(adresse);
-			
-			return kunde;
+	//Kunden nach der ID Suchen
+	public static Kunde findKundeById(Long id) {
+		if (id > MAX_ID) {
+			return null;
 		}
+			
+		final Kunde kunde = new Kunde();
+		kunde.setId(id);
+		kunde.setNachname("Nachname" + id);
+		kunde.setVorname("Vorname" + id);
+		kunde.setEmail("" + id + "@hska.de");
+			
+		final Ort ort = new Ort();
+		ort.setPlz(POSTLEITZAHL);
+		ort.setBezeichnung("Testort");
+			
+		final Adresse adresse = new Adresse();
+		adresse.setId(ADDRESSID);
+		adresse.setStrasse("Musterstrasse");
+		adresse.setHausnummer(HAUSNUMMER);
+		adresse.setOrt(ort);
+		kunde.setAdresse(adresse);
+			
+		return kunde;
+	}
 	
-	//TODO: findAllKunden hat noch fehler!
-		public static Collection<Kunde> findAllKunden() {
-			final int anzahl = MAX_KUNDEN;
-			final Collection<Kunde> kunden = new ArrayList<>(anzahl);
-			for (int i = 1; i <= anzahl; i++) {
-				final Kunde kunde = findKundeById(Long.valueOf(i));
-				kunden.add(kunde);			
-			}
-			return kunden;
+	//alle Kunden finden
+	public static Collection<Kunde> findAllKunden() {
+		final int anzahl = MAX_KUNDEN;
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunden.add(kunde);			
 		}
+		return kunden;
+	}
 	
-	//TODO: findKundenByNachname hat noch fehler
-		public static Collection<Kunde> findKundenByNachname(String nachname) {
-			final int anzahl = nachname.length();
-			final Collection<Kunde> kunden = new ArrayList<>(anzahl);
-			for (int i = 1; i <= anzahl; i++) {
-				final Kunde kunde = findKundeById(Long.valueOf(i));
-				kunde.setNachname(nachname);
-				kunden.add(kunde);			
-			}
-			return kunden;
+	//Kunden nach Nachnamen finden
+	public static Collection<Kunde> findKundenByNachname(String nachname) {
+		final int anzahl = nachname.length();
+		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			final Kunde kunde = findKundeById(Long.valueOf(i));
+			kunde.setNachname(nachname);
+			kunden.add(kunde);			
 		}
+		return kunden;
+	}
 		
-		public static Kunde createKunde(Kunde kunde) {
-			// Neue IDs fuer Kunde und zugehoerige Adresse
-			// Ein neuer Kunde hat auch keine Bestellungen
-			final String nachname = kunde.getNachname();
-			final String vorname = kunde.getVorname();
-			kunde.setId(Long.valueOf(nachname.length()));
-			final Adresse adresse = kunde.getAdresse();
-			adresse.setId((Long.valueOf(nachname.length())) + 1);
-			kunde.setBestellungen(null);
+	//Kunde anlegen
+	public static Kunde createKunde(Kunde kunde) {
+		final String nachname = kunde.getNachname();
+		kunde.setId(Long.valueOf(nachname.length()));
+		final Adresse adresse = kunde.getAdresse();
+		adresse.setId((Long.valueOf(nachname.length())) + 1);
+		kunde.setBestellungen(null);
 			
-			System.out.println("Neuer Kunde: " + kunde);
-			return kunde;
-		}
+		System.out.println("Neuer Kunde: " + kunde);
+		return kunde;
+	}
+	
+	//Kundendaten ändern
+	public static void updateKunde(Kunde kunde) {
+		System.out.println("Aktualisierter Kunde: " + kunde);
+	}
 	
 	private Mock() { /**/ }
 }

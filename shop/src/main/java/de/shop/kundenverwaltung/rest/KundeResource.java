@@ -13,6 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -134,4 +135,17 @@ public class KundeResource {
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
 		return Response.created(kundeUri).build();
 	}
+	
+	@PUT
+	@Consumes(APPLICATION_JSON)
+	@Produces
+	public Response updateKunde(Kunde kunde) {
+		@SuppressWarnings("unused")
+		final Locale locale = localeHelper.getLocale(headers);
+		
+		// TODO Anwendungskern statt Mock, Verwendung von Locale
+		Mock.updateKunde(kunde);
+		return Response.noContent().build();
+	}
+	
 }
