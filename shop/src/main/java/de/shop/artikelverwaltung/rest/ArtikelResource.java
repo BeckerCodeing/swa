@@ -7,6 +7,8 @@ import java.util.Collection;
 
 
 
+
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -19,12 +21,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.artikelverwaltung.domain.Artikel;
-import de.shop.util.LocaleHelper;
+
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
@@ -38,19 +40,17 @@ public class ArtikelResource {
 	@Context
 	private UriInfo uriInfo;
 	
-	@Context
-	private HttpHeaders headers;
+
 	
 	@Inject
 	private UriHelperArtikel uriHelperArtikel;
 	
-	@Inject
-	private LocaleHelper localeHelper;
+
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")	
 	public Artikel findArtikelById(@PathParam("id") Long id) {
-		//TODO Anwendungskern statt Mock, Locale
+		//TODO Anwendungskern statt Mock
 		final Artikel artikel = Mock.findArtikelById(id);
 		if (artikel == null) {
 			throw new NotFoundException("Kein Artikel mit der ID " + id + " gefunden");
@@ -62,7 +62,7 @@ public class ArtikelResource {
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung") @DefaultValue("") String bezeichnung) {		
 		
-		//TODO Anwendungskern statt Mock, Locale
+		//TODO Anwendungskern statt Mock
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = Mock.findAllArtikel();
@@ -88,8 +88,7 @@ public class ArtikelResource {
 	@Produces
 	public Response createArtikel(Artikel artikel) {
 		//TODO Anwendungskern statt Mock, Locale
-		artikel = Mock.createArtikel(artikel);
-	
+		artikel = Mock.createArtikel(artikel);		
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		return Response.created(artikelUri).build();
 	}
@@ -98,7 +97,7 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateArtikel(Artikel artikel) {
-		//TODO Anwendungskern statt Mock, Locale
+		//TODO Anwendungskern statt Mock
 		Mock.updateArtikel(artikel);
 		return Response.noContent().build();
 		

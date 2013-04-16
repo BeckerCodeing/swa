@@ -84,6 +84,7 @@ public class BestellungResource {
 		return bestellungen;
 	}
 	
+	//TODO Methode überarbeiten
 	@POST
 	@Consumes(APPLICATION_JSON)
 	@Produces
