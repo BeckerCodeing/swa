@@ -11,7 +11,6 @@ import de.shop.kundenverwaltung.domain.Kunde;
 
 @ApplicationScoped
 public class UriHelperKunde {
-
 	public URI getUriKunde(Kunde kunde, UriInfo uriInfo) {
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
 		                             .path(KundeResource.class)
@@ -19,7 +18,7 @@ public class UriHelperKunde {
 		final URI kundeUri = ub.build(kunde.getId());
 		return kundeUri;
 	}
-
+	
 	public void updateUriKunde(Kunde kunde, UriInfo uriInfo) {
 		// URL fuer Bestellungen setzen
 		final UriBuilder ub = uriInfo.getBaseUriBuilder()
@@ -28,5 +27,4 @@ public class UriHelperKunde {
 		final URI bestellungenUri = ub.build(kunde.getId());
 		kunde.setBestellungenUri(bestellungenUri);
 	}
-
 }

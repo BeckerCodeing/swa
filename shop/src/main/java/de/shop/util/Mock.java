@@ -28,7 +28,7 @@ public final class Mock {
 
 	private static final int MAX_ZUFALL = 250;
 
-	private static final int MAX_BESTELLUNGEN = 4;
+	private static final int MAX_BESTELLUNGEN = 20;
 	
 	private static final int MAX_KUNDEN = 99;
 	
@@ -180,28 +180,27 @@ public final class Mock {
 		}
 	
 	//TODO: findAllKunden hat noch fehler!
-	public static Collection<Kunde> findAllKunden() {
-		final int anzahl = MAX_KUNDEN;
-		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
-			final Kunde kunde = findKundeById(Long.valueOf(i));
-			kunden.add(kunde);
+		public static Collection<Kunde> findAllKunden() {
+			final int anzahl = MAX_KUNDEN;
+			final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+			for (int i = 1; i <= anzahl; i++) {
+				final Kunde kunde = findKundeById(Long.valueOf(i));
+				kunden.add(kunde);			
+			}
+			return kunden;
 		}
-		
-		return kunden;
-	}
 	
 	//TODO: findKundenByNachname hat noch fehler
-	public static Collection<Kunde> findKundenByNachname(String nachname) {
-		final int anzahl = nachname.length();
-		final Collection<Kunde> kunden = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
-			final Kunde kunde = findKundeById(Long.valueOf(i));
-			kunde.setNachname(nachname);
-			kunden.add(kunde);
+		public static Collection<Kunde> findKundenByNachname(String nachname) {
+			final int anzahl = nachname.length();
+			final Collection<Kunde> kunden = new ArrayList<>(anzahl);
+			for (int i = 1; i <= anzahl; i++) {
+				final Kunde kunde = findKundeById(Long.valueOf(i));
+				kunde.setNachname(nachname);
+				kunden.add(kunde);			
+			}
+			return kunden;
 		}
-		return kunden;
-	};
 	
 	private Mock() { /**/ }
 }

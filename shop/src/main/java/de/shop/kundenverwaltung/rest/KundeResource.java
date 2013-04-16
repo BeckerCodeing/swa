@@ -3,7 +3,9 @@ package de.shop.kundenverwaltung.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
+import java.net.URI;
 import java.util.Collection;
+import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -18,8 +20,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriInfo;
 
+import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.rest.UriHelperBestellung;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
@@ -41,6 +45,9 @@ public class KundeResource {
 	@Inject
 	private UriHelperBestellung uriHelperBestellung;
 	
+	@Inject
+	private LocaleHelper localeHelper;
+	
 	@GET
 	@Produces(TEXT_PLAIN)
 	@Path("version")
@@ -50,26 +57,36 @@ public class KundeResource {
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
-	public Kunde findKundeById(@PathParam("id")Long id) {
+	public Kunde findKundeById(@PathParam("id") Long id) {
+		@SuppressWarnings("unused")
+		final Locale locale = localeHelper.getLocale(headers);
+		
+		// TODO Anwendungskern statt Mock, Verwendung von Locale
 		final Kunde kunde = Mock.findKundeById(id);
 		if (kunde == null) {
-			throw new NotFoundException("Kein Kunde mit der ID " + id + "gefunden.");
+			throw new NotFoundException("Kein Kunde mit der ID " + id + " gefunden.");
 		}
+		// URLs innerhalb des gefundenen Kunden anpassen
+		uriHelperKunde.updateUriKunde(kunde, uriInfo);
 		
 		return kunde;
 	}
 	
 	@GET
 	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
+		@SuppressWarnings("unused")
+		final Locale locale = localeHelper.getLocale(headers);
 		
 		Collection<Kunde> kunden = null;
 		if ("".equals(nachname)) {
+			// TODO Anwendungskern statt Mock, Verwendung von Locale
 			kunden = Mock.findAllKunden();
 			if (kunden.isEmpty()) {
 				throw new NotFoundException("Keine Kunden vorhanden.");
 			}
 		}
 		else {
+			// TODO Anwendungskern statt Mock, Verwendung von Locale
 			kunden = Mock.findKundenByNachname(nachname);
 			if (kunden.isEmpty()) {
 				throw new NotFoundException("Kein Kunde mit Nachname " + nachname + " gefunden.");
@@ -81,5 +98,25 @@ public class KundeResource {
 		}
 		
 		return kunden;
+	}
+	
+	@GET
+	@Path("{id:[1-9][0-9]*}/bestellungen")
+	public Collection<Bestellung> findBestellungenByKundeId(@PathParam("id") Long kundeId) {
+		@SuppressWarnings("unused")
+		final Locale locale = localeHelper.getLocale(headers);
+		
+		// TODO Anwendungskern statt Mock, Verwendung von Locale
+		final Collection<Bestellung> bestellungen = Mock.findBestellungenByKundeId(kundeId);
+		if (bestellungen.isEmpty()) {
+			throw new NotFoundException("Zur ID " + kundeId + " wurden keine Bestellungen gefunden");
+		}
+		
+		// URLs innerhalb der gefundenen Bestellungen anpassen
+		for (Bestellung bestellung : bestellungen) {
+			uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
+		}
+		
+		return bestellungen;
 	}
 }
