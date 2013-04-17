@@ -2,6 +2,8 @@ package de.shop.bestellverwaltung.domain;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import de.shop.artikelverwaltung.domain.Artikel;
 
 public class Position implements Serializable {
@@ -12,6 +14,8 @@ public class Position implements Serializable {
 	private Integer menge;
 	private Double gesamtpreis;
 	private Artikel artikel;
+	@JsonIgnore
+	private Bestellung bestellung;
 	
 	public Long getId() {
 		return id;
@@ -37,7 +41,12 @@ public class Position implements Serializable {
 	public void setArtikel(Artikel artikel) {
 		this.artikel = artikel;
 	}
-	
+	public Bestellung getBestellung() {
+		return bestellung;
+	}
+	public void setBestellung(Bestellung bestellung) {
+		this.bestellung = bestellung;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

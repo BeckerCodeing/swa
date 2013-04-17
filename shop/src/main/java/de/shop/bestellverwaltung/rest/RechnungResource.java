@@ -3,7 +3,7 @@ package de.shop.bestellverwaltung.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
-import java.util.Collection;
+
 
 
 import javax.inject.Inject;
@@ -15,7 +15,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -38,17 +37,12 @@ public class RechnungResource {
 			@Context
 			private UriInfo uriInfo;
 			
-			@Context
-			private HttpHeaders headers;
-			
 			@Inject
 			private UriHelperRechnung uriHelperRechnung;
 			
-						
 			@GET
 			@Path("{id:[1-9][0-9]*}")
 			public Rechnung findRechnungById(@PathParam("id") Long id) {
-								
 				//TODO Anwendungskern statt Mock, Verwendung von Locale
 				final Rechnung rechnung = Mock.findRechnungById(id);
 				if(rechnung == null) {
@@ -60,21 +54,21 @@ public class RechnungResource {
 				return rechnung;
 			}
 			
-			@GET
-			@Path("{id:[1-9][0-9]*}/bestellungen")
-			public Collection<Rechnung> findRechnungByBestellungId(@PathParam("id") Long bestellungId) {
-				final Collection<Rechnung> rechnungen = Mock.findRechnungByBestellungId(bestellungId);
-				if (rechnungen.isEmpty()) {
-					throw new NotFoundException("Zur ID " + bestellungId + " wurden keine Rechnungen gefunden");
-				}
-			
-				// URLs innerhalb der gefundenen Bestellungen anpassen
-				for (Rechnung rechnung : rechnungen) {
-					uriHelperRechnung.updateUriRechnung(rechnung, uriInfo);
-				}
-			
-			return rechnungen;
-			}
+			//TODO findRechnungByKundeId
+//			@GET
+//			@Path("{id:[1-9][0-9]*}/bestellungen")
+//			public Collection<Rechnung> findRechnungByBestellungId(@PathParam("id") Long bestellungId) {
+//				final Collection<Rechnung> rechnungen = Mock.findRechnungByBestellungId(bestellungId);
+//				if (rechnungen.isEmpty()) {
+//					throw new NotFoundException("Zur ID " + bestellungId + " wurden keine Rechnungen gefunden");
+//				}
+//			
+//				for (Rechnung rechnung : rechnungen) {
+//					uriHelperRechnung.updateUriRechnung(rechnung, uriInfo);
+//				}
+//			
+//			return rechnungen;
+//			}
 			
 			@POST
 			@Consumes(APPLICATION_JSON)
@@ -92,7 +86,6 @@ public class RechnungResource {
 			@Consumes(APPLICATION_JSON)
 			@Produces
 			public Response updateRechnung(Rechnung rechnung) {
-							
 				Mock.updateRechnung(rechnung);
 			
 			return Response.noContent().build();

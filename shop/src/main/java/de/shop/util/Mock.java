@@ -124,14 +124,15 @@ public final class Mock {
 
 
 	public static Rechnung findRechnungById(Long id) {
-		System.out.println("gefundene Rechnung" + id);
 		return null;
 	}
-	public static Collection<Rechnung> findRechnungByBestellungId(
-			Long bestellungId) {
-		System.out.println("gefundene Rechnung: " + bestellungId);
-		return null;
-	}
+	//TODO findRechnungByKundeId
+//	public static Collection<Rechnung> findRechnungByBestellungId(
+//			Long bestellungId) {
+//		System.out.println("gefundene Rechnung: " + bestellungId);
+//		return null;
+//	}
+	
 	public static Rechnung createRechnung(Rechnung rechnung) {
 		System.out.println("Rechnung wurde erstellt " + rechnung);
 		return null;
