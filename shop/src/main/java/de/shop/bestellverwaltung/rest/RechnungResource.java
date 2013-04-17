@@ -3,8 +3,6 @@ package de.shop.bestellverwaltung.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Locale;
 
 
 
@@ -17,7 +15,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -27,7 +24,6 @@ import javax.ws.rs.core.UriInfo;
 
 
 import de.shop.bestellverwaltung.domain.Rechnung;
-import de.shop.util.LocaleHelper;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
@@ -41,20 +37,12 @@ public class RechnungResource {
 			@Context
 			private UriInfo uriInfo;
 			
-			@Context
-			private HttpHeaders headers;
-			
 			@Inject
 			private UriHelperRechnung uriHelperRechnung;
-			
-			@Inject
-			private LocaleHelper localeHelper;
 			
 			@GET
 			@Path("{id:[1-9][0-9]*}")
 			public Rechnung findRechnungById(@PathParam("id") Long id) {
-				@SuppressWarnings("unused")
-				final Locale locale = localeHelper.getLocale(headers);
 				
 				//TODO Anwendungskern statt Mock, Verwendung von Locale
 				final Rechnung rechnung = Mock.findRechnungById(id);
@@ -67,29 +55,26 @@ public class RechnungResource {
 				return rechnung;
 			}
 			
-			@GET
-			@Path("{id:[1-9][0-9]*}/bestellungen")
-			public Collection<Rechnung> findRechnungByBestellungId(@PathParam("id") Long bestellungId) {
-				final Collection<Rechnung> rechnungen = Mock.findRechnungByBestellungId(bestellungId);
-				if (rechnungen.isEmpty()) {
-					throw new NotFoundException("Zur ID " + bestellungId + " wurden keine Rechnungen gefunden");
-				}
-			
-				// URLs innerhalb der gefundenen Bestellungen anpassen
-				for (Rechnung rechnung : rechnungen) {
-					uriHelperRechnung.updateUriRechnung(rechnung, uriInfo);
-				}
-			
-			return rechnungen;
-			}
+			//TODO findRechnungByKundeId
+//			@GET
+//			@Path("{id:[1-9][0-9]*}/bestellungen")
+//			public Collection<Rechnung> findRechnungByBestellungId(@PathParam("id") Long bestellungId) {
+//				final Collection<Rechnung> rechnungen = Mock.findRechnungByBestellungId(bestellungId);
+//				if (rechnungen.isEmpty()) {
+//					throw new NotFoundException("Zur ID " + bestellungId + " wurden keine Rechnungen gefunden");
+//				}
+//			
+//				for (Rechnung rechnung : rechnungen) {
+//					uriHelperRechnung.updateUriRechnung(rechnung, uriInfo);
+//				}
+//			
+//			return rechnungen;
+//			}
 			
 			@POST
 			@Consumes(APPLICATION_JSON)
 			@Produces
 			public Response createRechnung(Rechnung rechnung) {
-							
-				@SuppressWarnings ("unused")
-				final Locale locale = localeHelper.getLocale(headers);
 				
 				rechnung = Mock.createRechnung(rechnung);
 				final URI rechnungUri = uriHelperRechnung.getUriRechnung(rechnung, uriInfo);
@@ -101,8 +86,7 @@ public class RechnungResource {
 			@Consumes(APPLICATION_JSON)
 			@Produces
 			public Response updateRechnung(Rechnung rechnung) {
-				@SuppressWarnings ("unused")
-				final Locale locale = localeHelper.getLocale(headers);
+
 			
 				Mock.updateRechnung(rechnung);
 			
