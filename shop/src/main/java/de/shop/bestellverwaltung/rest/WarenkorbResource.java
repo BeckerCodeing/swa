@@ -2,7 +2,6 @@ package de.shop.bestellverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -12,9 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.bestellverwaltung.domain.Warenkorb;
@@ -25,11 +22,6 @@ import de.shop.util.NotFoundException;
 @Produces(APPLICATION_JSON)
 @Consumes
 public class WarenkorbResource {
-	@Context
-	private UriInfo uriInfo;
-	
-	@Inject
-	private UriHelperWarenkorb uriHelperWarenkorb;
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")

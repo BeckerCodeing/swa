@@ -2,6 +2,7 @@ package de.shop.bestellverwaltung.domain;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -15,6 +16,7 @@ public class Bestellung implements Serializable {
 	@JsonIgnore
 	private Kunde kunde;
 	private URI kundeUri;
+	private List<Position> positionen;
 	
 	public Long getId() {
 		return id;
@@ -40,6 +42,12 @@ public class Bestellung implements Serializable {
 	}
 	public void setKundeUri(URI kundeUri) {
 		this.kundeUri = kundeUri;
+	}
+	public List<Position> getPositionen() {
+		return positionen;
+	}
+	public void setPositionen(List<Position> positionen) {
+		this.positionen = positionen;
 	}
 	@Override
 	public int hashCode() {

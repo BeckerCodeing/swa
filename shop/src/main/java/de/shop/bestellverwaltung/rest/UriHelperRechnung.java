@@ -9,7 +9,6 @@ import javax.ws.rs.core.UriInfo;
 
 import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.bestellverwaltung.domain.Bestellung;
-import de.shop.bestellverwaltung.rest.UriHelperBestellung;
 
 	@ApplicationScoped
 	public class UriHelperRechnung {

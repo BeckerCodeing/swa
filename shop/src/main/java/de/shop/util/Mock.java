@@ -122,7 +122,7 @@ public final class Mock {
 		
 	}
 
-
+	//TODO Machen!
 	public static Rechnung findRechnungById(Long id) {
 		return null;
 	}
@@ -165,11 +165,12 @@ public final class Mock {
 		}
 
 		final Kunde kunde = findKundeById(id + 1);  // andere ID fuer den Kunden
-
+		final Warenkorb warenkorb = getWarenKorbById(id + FUCKCHECKSTYLE);
 		final Bestellung bestellung = new Bestellung();
 		bestellung.setId(id);
 		bestellung.setAusgeliefert(false);
 		bestellung.setKunde(kunde);
+		bestellung.setPositionen(warenkorb.getPositionen());
 			
 		return bestellung;
 	}
@@ -180,11 +181,13 @@ public final class Mock {
 			
 		// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
 		final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
+		final Warenkorb warenkorb = getWarenKorbById(kundeId);
 		final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
 			final Bestellung bestellung = findBestellungById(Long.valueOf(i));
 			bestellung.setKunde(kunde);
-			bestellungen.add(bestellung);			
+			bestellungen.add(bestellung);
+			bestellung.setPositionen(warenkorb.getPositionen());
 		}
 		kunde.setBestellungen(bestellungen);
 			
@@ -310,9 +313,19 @@ public final class Mock {
 				+ kunde.getId() + " " + kunde.getVorname() + " " + kunde.getNachname() + " gelöscht!");
 		
 	}
-	private Mock() { /**/ }
-
+	//CreateBestellung
+	public static Bestellung createBestellung(Bestellung bestellung) {
+		bestellung.setId(Long.valueOf(FUCKCHECKSTYLE));
+		final Kunde kunde = findKundeById(bestellung.getId() + FUCKCHECKSTYLE);
+		bestellung.setKunde(kunde);
+		final Warenkorb warenkorb = getWarenKorbById(bestellung.getKunde().getId());
+		bestellung.setPositionen(warenkorb.getPositionen());
+		
+		System.out.println("Neue Bestellung mit der Id: " + bestellung.getId() + " erstellt.");
+		return bestellung;
+	}
 	
+	private Mock() { /**/ }
 }
 	
 

@@ -45,7 +45,7 @@ public class RechnungResource {
 			public Rechnung findRechnungById(@PathParam("id") Long id) {
 				//TODO Anwendungskern statt Mock, Verwendung von Locale
 				final Rechnung rechnung = Mock.findRechnungById(id);
-				if(rechnung == null) {
+				if (rechnung == null) {
 					throw new NotFoundException("Keine Rechnung mit der ID " + id + " gefunden.");
 				}
 				
