@@ -4,18 +4,18 @@ package de.shop.util;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-import de.shop.artikelverwaltung.domain.Artikel;
 
+
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.artikelverwaltung.domain.KategorieType;
-
 import de.shop.bestellverwaltung.domain.Bestellung;
+import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Ort;
@@ -153,7 +153,24 @@ public final class Mock {
 	
 	
 
-	private Mock() { /**/ };
+	private Mock() { /**/ }
+	public static Rechnung findRechnungById(Long id) {
+		System.out.println("gefundene Rechnung" + id);
+		return null;
+	}
+	public static Collection<Rechnung> findRechnungByBestellungId(
+			Long bestellungId) {
+		System.out.println("gefundene Rechnung: " + bestellungId);
+		return null;
+	}
+	public static Rechnung createRechnung(Rechnung rechnung) {
+		System.out.println("Rechnung wurde erstellt " + rechnung);
+		return null;
+	}
+	public static void updateRechnung(Rechnung rechnung) {
+		System.out.println("Rechnung aktualisiert: " + rechnung);
+		
+	};
 	
 }
 	
