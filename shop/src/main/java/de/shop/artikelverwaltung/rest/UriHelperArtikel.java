@@ -18,4 +18,6 @@ public class UriHelperArtikel {
 		final URI artikelUri = ub.build(artikel.getId());
 		return artikelUri;
 	}
+	
+	
 }

@@ -9,7 +9,6 @@ import javax.ws.rs.core.UriInfo;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.rest.KundeResource;
 import de.shop.kundenverwaltung.rest.UriHelperKunde;
 
 @ApplicationScoped
@@ -36,12 +35,4 @@ public class UriHelperBestellung {
 		return uri;
 	}
 	
-	public void updateUriKunde(Kunde kunde, UriInfo uriInfo) {
-		// URL fuer Bestellungen setzen
-		final UriBuilder ub = uriInfo.getBaseUriBuilder()
-                                     .path(KundeResource.class)
-                                     .path(KundeResource.class, "findBestellungenByKundeId");
-		final URI bestellungenUri = ub.build(kunde.getId());
-		kunde.setBestellungenUri(bestellungenUri);
-	}
 }

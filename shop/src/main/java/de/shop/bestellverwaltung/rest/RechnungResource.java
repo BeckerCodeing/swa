@@ -6,7 +6,8 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.enterprise.inject.Produces;
+
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,13 +15,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.jayway.restassured.response.Response;
 
-import de.shop.bestellverwaltung.domain.Bestellung;
+
+
+
+
 import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Mock;
@@ -28,10 +33,10 @@ import de.shop.util.NotFoundException;
 
 
 	
-	@Path("/rechnung")
-	@Produces(APPLICATION_JSON)
-	@Consumes
-	public class RechnungResource {
+@Path("/rechnung")
+@Produces(APPLICATION_JSON)
+@Consumes
+public class RechnungResource {
 
 			@Context
 			private UriInfo uriInfo;
@@ -54,7 +59,7 @@ import de.shop.util.NotFoundException;
 				//TODO Anwendungskern statt Mock, Verwendung von Locale
 				final Rechnung rechnung = Mock.findRechnungById(id);
 				if(rechnung == null) {
-					throw new Exception("Keine Rechnung mit der ID " + id + " gefunden.");
+					throw new NotFoundException("Keine Rechnung mit der ID " + id + " gefunden.");
 				}
 				
 				//URLs innerhalb der gefundenen Rechnung anpassen
@@ -104,6 +109,6 @@ import de.shop.util.NotFoundException;
 			return Response.noContent().build();
 			}
 		
-	}
+}
 
-	}
+	
