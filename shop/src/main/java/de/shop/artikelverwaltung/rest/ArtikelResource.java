@@ -2,6 +2,12 @@ package de.shop.artikelverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+
+
+
+
+
+import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
 
@@ -9,6 +15,15 @@ import java.util.Collection;
 
 
 
+
+
+
+
+
+
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -21,12 +36,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import de.shop.artikelverwaltung.domain.Artikel;
+import org.jboss.logging.Logger;
 
+import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.util.Log;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
@@ -35,13 +51,23 @@ import de.shop.util.NotFoundException;
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Log
 public class ArtikelResource {
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Context
 	private UriInfo uriInfo;
 	
-
+	@PostConstruct
+	private void postConstruct() {
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+	}
 	
+	@PreDestroy
+	private void preDestroy() {
+		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
+	}
+
 	@Inject
 	private UriHelperArtikel uriHelperArtikel;
 	
