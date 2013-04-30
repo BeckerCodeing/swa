@@ -28,7 +28,6 @@ import de.shop.bestellverwaltung.domain.Warenkorb;
 
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.domain.Ort;
 
 
 //Emulation des Anwendungskerns
@@ -206,15 +205,12 @@ public final class Mock {
 		kunde.setVorname("Vorname" + id);
 		kunde.setEmail("" + id + "@hska.de");
 			
-		final Ort ort = new Ort();
-		ort.setPlz(POSTLEITZAHL);
-		ort.setBezeichnung("Testort");
-			
 		final Adresse adresse = new Adresse();
 		adresse.setId(ADDRESSID);
 		adresse.setStrasse("Musterstrasse");
 		adresse.setHausnummer(HAUSNUMMER);
-		adresse.setOrt(ort);
+		adresse.setPlz(POSTLEITZAHL);
+		adresse.setBezeichnung("Testort");
 		kunde.setAdresse(adresse);
 			
 		return kunde;
