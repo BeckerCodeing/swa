@@ -71,7 +71,7 @@ public class ArtikelService implements Serializable {
 	public List<Artikel> findArtikelByBezeichnung(String bezeichnung, Locale locale) {
 		validateBezeichnug(bezeichnung, locale);
 		//TODO Datenbankzugriffsschicht statt Mock
-		List<Artikel> artikel = Mock.findArtikelByBezeichnung(bezeichnung);
+		final List<Artikel> artikel = Mock.findArtikelByBezeichnung(bezeichnung);
 		return artikel;
 	}
 
@@ -81,7 +81,7 @@ public class ArtikelService implements Serializable {
 																					 "bezeichnung",
 																					 bezeichnung,
 																					 Default.class);
-		if(!violations.isEmpty())
+		if (!violations.isEmpty())
 			throw new InvalidBezeichnungException(bezeichnung, violations);
 		
 	}
