@@ -1,15 +1,32 @@
 package de.shop.artikelverwaltung.domain;
 
+import static de.shop.util.Constants.MIN_ID;
+
 import java.io.Serializable;
 import java.net.URI;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+
 import org.codehaus.jackson.annotate.JsonIgnore;
+
+import de.shop.util.IdGroup;
+
+
 
 public class Artikel implements Serializable {
 
 	private static final long serialVersionUID = 5787206691085007571L;
+	@Min(value = MIN_ID, message = "{artikelverwaltung.artikel.id.min}", groups = IdGroup.class)
 	private Long id;
+	
+	@NotNull(message = "{artikelverwaltung.artikel.bezeichnung.notNull}")
+	@Pattern(regexp = "[A-ZÄÖU][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
 	private String bezeichnung;
+	
+	@Min(1)
 	private Double preis;
 	private Kategorie kategorie;
 	

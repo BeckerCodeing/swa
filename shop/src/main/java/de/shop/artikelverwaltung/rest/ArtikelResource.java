@@ -2,28 +2,11 @@ package de.shop.artikelverwaltung.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-
-
-
-
-
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
 
+import java.util.Locale;
 
-
-
-
-
-
-
-
-
-
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -36,12 +19,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.jboss.logging.Logger;
+
 
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.artikelverwaltung.service.ArtikelService;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
@@ -53,31 +39,28 @@ import de.shop.util.NotFoundException;
 @RequestScoped
 @Log
 public class ArtikelResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
-
+	
 	@Context
 	private UriInfo uriInfo;
 	
-	@PostConstruct
-	private void postConstruct() {
-		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
-	}
-	
-	@PreDestroy
-	private void preDestroy() {
-		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
-	}
+	@Context
+	private HttpHeaders headers;
 
 	@Inject
 	private UriHelperArtikel uriHelperArtikel;
 	
+	@Inject
+	private ArtikelService as;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")	
 	public Artikel findArtikelById(@PathParam("id") Long id) {
-		//TODO Anwendungskern statt Mock
-		final Artikel artikel = Mock.findArtikelById(id);
+		final Locale locale = localeHelper.getLocale(headers);
+		final Artikel artikel = as.findArtikelById(id, locale);
 		if (artikel == null) {
 			throw new NotFoundException("Kein Artikel mit der ID " + id + " gefunden");
 		}
@@ -91,14 +74,15 @@ public class ArtikelResource {
 		//TODO Anwendungskern statt Mock, Locale
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
-			gesuchteArtikel = Mock.findAllArtikel();
+			gesuchteArtikel = as.findAllArtikel();
 			if (gesuchteArtikel.isEmpty()) {
 				throw new NotFoundException("Keine Artikel vorhanden.");
 			}
 			
 		}
 		else {
-			gesuchteArtikel = Mock.findArtikelByBezeichnung(bezeichnung);
+			final Locale locale = localeHelper.getLocale(headers);
+			gesuchteArtikel = as.findArtikelByBezeichnung(bezeichnung, locale);
 			if (gesuchteArtikel.isEmpty()) {
 				throw new NotFoundException("Kein Artikel mit Bezeichnung " + bezeichnung + " gefunden.");
 			}

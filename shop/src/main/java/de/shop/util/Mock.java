@@ -90,9 +90,9 @@ public final class Mock {
 	}
 	
 	///Artikel nach Name suchen
-	public static Collection<Artikel> findArtikelByBezeichnung(String bezeichnung) {
+	public static List<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		final int anzahl = bezeichnung.length();
-		final Collection<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
+		final List<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
 			final Artikel artikel = findArtikelById(Long.valueOf(i));
 			artikel.setBezeichnung(bezeichnung);
@@ -142,9 +142,9 @@ public final class Mock {
 	};
 
 	///Alle Artikel ausgeben
-	public static Collection<Artikel> findAllArtikel() {
+	public static List<Artikel> findAllArtikel() {
 		final int anzahl = MAX_ARTIKEL;
-		final Collection<Artikel> alleArtikel = new ArrayList<>(anzahl);
+		final List<Artikel> alleArtikel = new ArrayList<>(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
 			final Artikel artikel = findArtikelById(Long.valueOf(i));
 			alleArtikel.add(artikel);
