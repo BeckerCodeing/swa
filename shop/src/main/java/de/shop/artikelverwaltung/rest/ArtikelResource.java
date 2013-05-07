@@ -71,7 +71,6 @@ public class ArtikelResource {
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung")
 	@DefaultValue("") String bezeichnung) {		
-		//TODO Anwendungskern statt Mock, Locale
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = as.findAllArtikel();
@@ -97,9 +96,10 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createArtikel(Artikel artikel) {
-		//TODO Anwendungskern statt Mock, Locale
-		artikel = Mock.createArtikel(artikel);		
+		final Locale locale = localeHelper.getLocale(headers);
+		artikel = as.createArtikel(artikel, locale);		
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
+		
 		return Response.created(artikelUri).build();
 	}
 	

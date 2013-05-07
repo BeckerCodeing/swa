@@ -1,13 +1,39 @@
 package de.shop.artikelverwaltung.domain;
 
 import java.io.Serializable;
-import java.util.Set;
 
-public class Kategorie implements Serializable {
+import javax.validation.constraints.Min;
+
+
+
+
+import de.shop.artikelverwaltung.service.CheckKategorie;
+import static de.shop.util.Constants.MIN_ID;
+
+
+
+
+
+	public class Kategorie implements Serializable {
 
 	private static final long serialVersionUID = -1065751720590017636L;
+	
+	@CheckKategorie({ "WOHNZIMMER", "SCHLAFZIMMER", "KÜCHE", "GARTENMÖBEL", "BAD"})
+	private String bezeichnung;
+	
+	@Min(value = MIN_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}")
 	private int id;
-	private Set<KategorieType> bezeichnung;
+
+	
+	public String getBezeichnung() {
+		return bezeichnung.toUpperCase();
+	}
+	
+	
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -15,13 +41,8 @@ public class Kategorie implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public Set<KategorieType> getBezeichnung() {
-		return bezeichnung;
-	}
-	public void setBezeichnung(Set<KategorieType> bezeichnung) {
-		this.bezeichnung = bezeichnung;
-	}
+	
+	
 	
 	@Override
 	public int hashCode() {

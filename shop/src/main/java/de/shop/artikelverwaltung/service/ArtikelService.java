@@ -17,6 +17,7 @@ import javax.validation.groups.Default;
 
 
 
+
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
@@ -83,6 +84,34 @@ public class ArtikelService implements Serializable {
 																					 Default.class);
 		if (!violations.isEmpty())
 			throw new InvalidBezeichnungException(bezeichnung, violations);
+		
+	}
+
+	public Artikel createArtikel(Artikel artikel, Locale locale) {
+		// TODO Datenbankzugriffsschicht statt Mock
+		if (artikel == null) {
+			return artikel;
+		}
+		
+		validateArtikel(artikel, locale, Default.class);
+		
+		// evtl. prüfen ob Bezeichnung schon existiert...
+		
+		artikel = Mock.createArtikel(artikel);
+		
+		return artikel;
+	}
+
+	private void validateArtikel(Artikel artikel, Locale locale,
+			Class<?>... groups) {
+		//Werden alle Constrainst beim Einfügen gewahrt?
+		final Validator validator = validatorProvider.getValidator(locale);
+		
+		final Set<ConstraintViolation<Artikel>> violations = validator.validate(artikel, groups);
+		if (!violations.isEmpty()) {
+			throw new InvalidArtikelException(artikel, violations);
+		}
+		// TODO Auto-generated method stub
 		
 	}
 

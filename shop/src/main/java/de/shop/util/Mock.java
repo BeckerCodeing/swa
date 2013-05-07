@@ -80,8 +80,7 @@ public final class Mock {
 		kategorie.setId(1);
 		
 		///Enum auf Typ: BAD setzen und anschlieﬂend Kategorie Artikel zuweisen
-		final Set<KategorieType> bezeichnung = new HashSet<>();
-		bezeichnung.add(KategorieType.BAD);
+		final String bezeichnung = "BAD";
 		kategorie.setBezeichnung(bezeichnung);
 		
 		artikel.setKategorie(kategorie);
