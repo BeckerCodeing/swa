@@ -49,7 +49,7 @@ public final class Mock {
 	
 	private static final long ADDRESSID = 5;
 	
-	private static final int POSTLEITZAHL = 12345;
+	private static final String POSTLEITZAHL = "12345";
 	
 	private static final int HAUSNUMMER = 123;
 	
