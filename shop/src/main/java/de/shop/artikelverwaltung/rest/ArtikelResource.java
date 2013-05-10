@@ -29,7 +29,6 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
-import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
 
@@ -107,8 +106,9 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateArtikel(Artikel artikel) {
-		//TODO Anwendungskern statt Mock
-		Mock.updateArtikel(artikel);
+		final Locale locale = localeHelper.getLocale(headers);
+		as.updateArtikel(artikel, locale);
+		
 		return Response.noContent().build();
 		
 	}

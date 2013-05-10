@@ -2,39 +2,41 @@ package de.shop.artikelverwaltung.domain;
 
 import java.io.Serializable;
 
+
+
+
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 
 
 
-import de.shop.artikelverwaltung.service.CheckKategorie;
-import static de.shop.util.Constants.MIN_ID;
 
 
+import static de.shop.util.Constants.MAX_KATEGORIE_ID;
+import static de.shop.util.Constants.MIN_KATEGORIE_ID;
 
 
-
-	public class Kategorie implements Serializable {
+public class Kategorie implements Serializable {
 
 	private static final long serialVersionUID = -1065751720590017636L;
 	
-	@CheckKategorie({ "WOHNZIMMER", "SCHLAFZIMMER", "KÜCHE", "GARTENMÖBEL", "BAD"})
+	//Benötigt keine Validierung, da Bezeichnung durch ID vergeben wird
+	//Bezeichnung = enum.ordinal()
 	private String bezeichnung;
 	
-	@Min(value = MIN_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}")
+	@Min(value = MIN_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}")
+	@Max(value = MAX_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.max}")
 	private int id;
 
 	
 	public String getBezeichnung() {
-		return bezeichnung.toUpperCase();
+		return bezeichnung;
 	}
-	
 	
 	public void setBezeichnung(String bezeichnung) {
 		this.bezeichnung = bezeichnung;
 	}
-	
-	
 	public int getId() {
 		return id;
 	}

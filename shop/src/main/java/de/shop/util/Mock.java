@@ -1,9 +1,7 @@
 package de.shop.util;
 
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +53,8 @@ public final class Mock {
 	
 	private static final int FUCKCHECKSTYLE = 6;
 	
+	private static final int KATEGORIE_ID = 1;
+	
 	
 
 	
@@ -77,11 +77,12 @@ public final class Mock {
 		
 		///Kategorie immer "BAD" und ID = 1
 		final Kategorie kategorie = new Kategorie();
-		kategorie.setId(1);
+		kategorie.setId(KATEGORIE_ID);
 		
-		///Enum auf Typ: BAD setzen und anschließend Kategorie Artikel zuweisen
-		final String bezeichnung = "BAD";
-		kategorie.setBezeichnung(bezeichnung);
+		///String ausgeben anhand Kategorie ID ==> ordinal von KategorieType
+		final int ordinal = kategorie.getId();
+		kategorie.setBezeichnung(KategorieType.values()[ordinal].toString());
+			
 		
 		artikel.setKategorie(kategorie);
 		
@@ -110,8 +111,13 @@ public final class Mock {
 		final Kategorie kategorie = artikel.getKategorie();
 		kategorie.setId(1);
 		
-		final Set<KategorieType> katBezeichnung = new HashSet<>();
-		katBezeichnung.add(KategorieType.BAD);
+		final int ordinal = kategorie.getId();
+		
+		
+		kategorie.setBezeichnung(KategorieType.values()[ordinal].toString());
+		
+		
+		
 		
 		artikel.setKategorie(kategorie);
 				

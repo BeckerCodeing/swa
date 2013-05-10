@@ -8,6 +8,7 @@ import java.net.URI;
 
 
 
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 
 
@@ -44,7 +46,7 @@ public class Artikel implements Serializable {
 	@Min(value = MIN_PREIS, message = "{artikelverwaltung.artikel.preis.min}")
 	private Double preis;
 	
-	@NotNull(message = "{artikelverwaltung.artikel.kategorie.notNull}")
+	@NotNull
 	@Valid
 	private Kategorie kategorie;
 	

@@ -104,6 +104,8 @@ public class ArtikelService implements Serializable {
 
 	private void validateArtikel(Artikel artikel, Locale locale,
 			Class<?>... groups) {
+		
+		
 		//Werden alle Constrainst beim Einfügen gewahrt?
 		final Validator validator = validatorProvider.getValidator(locale);
 		
@@ -111,8 +113,15 @@ public class ArtikelService implements Serializable {
 		if (!violations.isEmpty()) {
 			throw new InvalidArtikelException(artikel, violations);
 		}
-		// TODO Auto-generated method stub
 		
+		
+	}
+
+	public void updateArtikel(Artikel artikel, Locale locale) {
+		validateArtikel(artikel, locale, Default.class);
+		//TODO Datenbankzugriffsschicht statt Mock
+		Mock.updateArtikel(artikel);
+				
 	}
 
 
