@@ -1,15 +1,49 @@
 package de.shop.kundenverwaltung.domain;
 
+import static de.shop.util.Constants.MIN_ID;
+
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import de.shop.util.IdGroup;
+
 public class Adresse implements Serializable {
-	
 	private static final long serialVersionUID = -4812303860223131704L;
+	
+	public static final int PLZ_LENGTH_MAX = 5;
+	public static final int ORT_BEZEICHNUNG_LENGTH_MIN = 2;
+	public static final int ORT_BEZEICHNUNG_LENGTH_MAX = 32;
+	public static final int STRASSE_LENGTH_MIN = 2;
+	public static final int STRASSE_LENGTH_MAX = 32;
+	public static final int HAUSNUMMER_MIN = 1;
+	
+	@Min(value = MIN_ID, message = "{kundenverwaltung.adresse.id.min}", groups = IdGroup.class)
 	private Long id;
-	private int plz;
+	
+	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
+	@Pattern(regexp = "\\d{5}", message = "{kundenverwaltung.adresse.plz}")
+	private String plz;
+	
+	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
+	@Size(min = ORT_BEZEICHNUNG_LENGTH_MIN, max = ORT_BEZEICHNUNG_LENGTH_MAX, message = "{kundenverwaltung.adresse.ort.length}")
 	private String bezeichnung;
+	
+	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNUll}")
+	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX,message = "{kundenverwaltung.adresse.strasse.length}")
 	private String strasse;
+	
+	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min")
 	private int hausnummer;
+	
+	@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
+	@JsonIgnore
+	private Kunde kunde;
 	
 	public Long getId() {
 		return id;
@@ -17,10 +51,10 @@ public class Adresse implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public int getPlz() {
+	public String getPlz() {
 		return plz;
 	}
-	public void setPlz(int plz) {
+	public void setPlz(String plz) {
 		this.plz = plz;
 	}
 	public String getBezeichnung() {
@@ -45,12 +79,9 @@ public class Adresse implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((bezeichnung == null) ? 0 : bezeichnung.hashCode());
-		result = prime * result + hausnummer;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + plz;
-		result = prime * result + ((strasse == null) ? 0 : strasse.hashCode());
+		result = prime * result + ((kunde == null) ? 0 : kunde.hashCode());
+		result = prime * result + ((plz == null) ? 0 : plz.hashCode());
 		return result;
 	}
 	@Override
@@ -62,24 +93,20 @@ public class Adresse implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Adresse other = (Adresse) obj;
-		if (bezeichnung == null) {
-			if (other.bezeichnung != null)
-				return false;
-		} else if (!bezeichnung.equals(other.bezeichnung))
-			return false;
-		if (hausnummer != other.hausnummer)
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (plz != other.plz)
-			return false;
-		if (strasse == null) {
-			if (other.strasse != null)
+		if (kunde == null) {
+			if (other.kunde != null)
 				return false;
-		} else if (!strasse.equals(other.strasse))
+		} else if (!kunde.equals(other.kunde))
+			return false;
+		if (plz == null) {
+			if (other.plz != null)
+				return false;
+		} else if (!plz.equals(other.plz))
 			return false;
 		return true;
 	}
@@ -87,6 +114,7 @@ public class Adresse implements Serializable {
 	public String toString() {
 		return "Adresse [id=" + id + ", plz=" + plz + ", bezeichnung="
 				+ bezeichnung + ", strasse=" + strasse + ", hausnummer="
-				+ hausnummer + "]";
+				+ hausnummer + ", kunde=" + kunde + "]";
 	}
+
 }
