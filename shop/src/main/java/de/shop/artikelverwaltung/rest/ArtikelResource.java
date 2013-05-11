@@ -4,7 +4,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 import java.util.Collection;
-
 import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
@@ -22,6 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
 
 
 
@@ -70,19 +70,20 @@ public class ArtikelResource {
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung")
 	@DefaultValue("") String bezeichnung) {		
+		
+		
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = as.findAllArtikel();
 			if (gesuchteArtikel.isEmpty()) {
-				throw new NotFoundException("Keine Artikel vorhanden.");
+				throw new NotFoundException("Kein Artikel vorhanden.");
 			}
-			
 		}
 		else {
 			final Locale locale = localeHelper.getLocale(headers);
 			gesuchteArtikel = as.findArtikelByBezeichnung(bezeichnung, locale);
 			if (gesuchteArtikel.isEmpty()) {
-				throw new NotFoundException("Kein Artikel mit Bezeichnung " + bezeichnung + " gefunden.");
+				throw new NotFoundException("Kein Artikel mit Bezeichnung: " + bezeichnung + " vorhanden.");
 			}
 		}
 		

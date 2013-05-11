@@ -4,9 +4,6 @@ import static de.shop.util.Constants.MIN_ID;
 import static de.shop.util.Constants.MIN_PREIS;
 
 import java.io.Serializable;
-import java.net.URI;
-
-
 
 
 import javax.validation.Valid;
@@ -16,9 +13,6 @@ import javax.validation.constraints.Pattern;
 
 
 import javax.validation.constraints.Size;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 
 
 
@@ -38,7 +32,7 @@ public class Artikel implements Serializable {
 	
 	///Bezeichnung darf nicht null sein, Großbuchstabe gefolgt von min. 2 Kleinbuchstaben. Länge = max. 20 Zeichen 
 	@NotNull(message = "{artikelverwaltung.artikel.bezeichnung.notNull}")
-	@Pattern(regexp = "[A-ZÄÖU][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
+	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
 	@Size(min = BEZEICHNUNG_LENGTH_MIN, max = BEZEICHNUNG_LENGTH_MAX, 
 		  message = "{artikelverwaltung.artikel.bezeichnung.length}")
 	private String bezeichnung;
@@ -50,9 +44,6 @@ public class Artikel implements Serializable {
 	@Valid
 	private Kategorie kategorie;
 	
-	@JsonIgnore
-	private URI artikelUri;
-
 	public Long getId() {
 		return id;
 	}
@@ -85,15 +76,7 @@ public class Artikel implements Serializable {
 	public void setKategorie(Kategorie kategorie) {
 		this.kategorie = kategorie;
 	}
-
-	public URI getArtikelUri() {
-		return artikelUri;
-	}
 	
-	public void setArtikelUri(URI artikelUri) {
-		this.artikelUri = artikelUri;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

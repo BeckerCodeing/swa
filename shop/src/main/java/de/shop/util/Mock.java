@@ -1,35 +1,27 @@
 package de.shop.util;
 
 
+import java.lang.invoke.MethodHandles;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-
-
-
-
-
-
+import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
-import de.shop.artikelverwaltung.domain.KategorieType;
 import de.shop.bestellverwaltung.domain.Bestellung;
-
 import de.shop.bestellverwaltung.domain.Rechnung;
-
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.bestellverwaltung.domain.Warenkorb;
-
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 
 
 //Emulation des Anwendungskerns
 public final class Mock {
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final int MAX_ID = 99;
 	
@@ -72,7 +64,7 @@ public final class Mock {
 		
 		final Artikel artikel = new Artikel();
 		artikel.setId(id);
-		artikel.setBezeichnung("Bezeichnung" + id);
+		artikel.setBezeichnung("Bezeichnung");
 		artikel.setPreis(Mock.getRandomPreis());
 		
 		///Kategorie immer "BAD" und ID = 1
@@ -80,8 +72,7 @@ public final class Mock {
 		kategorie.setId(KATEGORIE_ID);
 		
 		///String ausgeben anhand Kategorie ID ==> ordinal von KategorieType
-		final int ordinal = kategorie.getId();
-		kategorie.setBezeichnung(KategorieType.values()[ordinal].toString());
+		kategorie.setBezeichnung(kategorie.getId());
 			
 		
 		artikel.setKategorie(kategorie);
@@ -89,16 +80,23 @@ public final class Mock {
 		return artikel;
 	}
 	
-	///Artikel nach Name suchen
+	///Alle Artikel nach Bezeichnung suchen
 	public static List<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		final int anzahl = bezeichnung.length();
 		final List<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
+		for (int i = 1; i <= anzahl; ++i) {
 			final Artikel artikel = findArtikelById(Long.valueOf(i));
 			artikel.setBezeichnung(bezeichnung);
 			gesuchteArtikel.add(artikel);
 		}
 		return gesuchteArtikel;
+	}
+	public static Artikel findArtikelByBez(String bezeichnung) {
+				
+		final Artikel artikel = Mock.findArtikelById(ADDRESSID);
+		return artikel;
+
+		
 	}
 	
 	///Artikel erstellen
@@ -111,17 +109,11 @@ public final class Mock {
 		final Kategorie kategorie = artikel.getKategorie();
 		kategorie.setId(1);
 		
-		final int ordinal = kategorie.getId();
-		
-		
-		kategorie.setBezeichnung(KategorieType.values()[ordinal].toString());
-		
-		
-		
+		kategorie.setBezeichnung(kategorie.getId());
 		
 		artikel.setKategorie(kategorie);
 				
-		System.out.println("Neuer Artikel: " + artikel);
+		LOGGER.infof("Neuer Artikel: %s", artikel);
 		return artikel;
 		
 	}
@@ -158,7 +150,12 @@ public final class Mock {
 	}
 	//Artikel ändern
 	public static void updateArtikel(Artikel artikel) {
-		System.out.println("Aktualisierter Artikel: " + artikel);
+		
+		//Erstmal nur zum Testen ob anhand der Kategorie-ID auch der passende Enum in der Bezeichnung gespeichert wird
+		final Kategorie kategorie = artikel.getKategorie();
+		kategorie.setBezeichnung(kategorie.getId());
+		artikel.setKategorie(kategorie);
+		LOGGER.infof("Aktualisierter Artikel: %s", artikel);
 	}
 
 
@@ -286,6 +283,7 @@ public final class Mock {
 		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE);
 		position.setGesamtpreis(position.calcPreis());
 		
+		LOGGER.infof("Neue Position: %s", position);
 		return position;
 	}
 	

@@ -2,18 +2,35 @@ package de.shop.bestellverwaltung.domain;
 
 import java.io.Serializable;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.util.IdGroup;
+import static de.shop.util.Constants.MIN_ID;
+import static de.shop.util.Constants.MIN_POSITION_MENGE;
 
 public class Position implements Serializable {
 
 	private static final long serialVersionUID = 2212950377169631920L;
 	
+	@Min(value = MIN_ID, message = "{bestellverwaltung.position.id.min}", groups = IdGroup.class)
 	private Long id;
+	
+	@Min(value = MIN_POSITION_MENGE, message = "{bestellverwaltung.position.menge.min}")
 	private Integer menge;
+	
+	//TODO Braucht normalerweise keine Prüfung, ist doch eh ein errechnetes Feld
 	private Double gesamtpreis;
+	
+	@NotNull(message = "{bestellverwaltung.position.artikel.notNull}")
+	@Valid
 	private Artikel artikel;
+	
+	//TODO Macht es hier Sinn mit @Valid nochmal Bestellung prüfen zu lassen?
 	@JsonIgnore
 	private Bestellung bestellung;
 	

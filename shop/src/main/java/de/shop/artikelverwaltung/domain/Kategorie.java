@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 
 
+
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -13,6 +15,9 @@ import javax.validation.constraints.Min;
 
 
 
+
+
+import de.shop.util.IdGroup;
 import static de.shop.util.Constants.MAX_KATEGORIE_ID;
 import static de.shop.util.Constants.MIN_KATEGORIE_ID;
 
@@ -21,22 +26,15 @@ public class Kategorie implements Serializable {
 
 	private static final long serialVersionUID = -1065751720590017636L;
 	
+	@Min(value = MIN_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}", groups = IdGroup.class)
+	@Max(value = MAX_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.max}", groups = IdGroup.class)
+	private int id;
+
 	//Benötigt keine Validierung, da Bezeichnung durch ID vergeben wird
 	//Bezeichnung = enum.ordinal()
 	private String bezeichnung;
 	
-	@Min(value = MIN_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}")
-	@Max(value = MAX_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.max}")
-	private int id;
 
-	
-	public String getBezeichnung() {
-		return bezeichnung;
-	}
-	
-	public void setBezeichnung(String bezeichnung) {
-		this.bezeichnung = bezeichnung;
-	}
 	public int getId() {
 		return id;
 	}
@@ -44,7 +42,13 @@ public class Kategorie implements Serializable {
 		this.id = id;
 	}
 	
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
 	
+	public void setBezeichnung(int id) {
+		this.bezeichnung = KategorieType.values()[id].toString();
+	}
 	
 	@Override
 	public int hashCode() {
