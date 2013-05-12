@@ -5,6 +5,7 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -64,7 +65,8 @@ public class KundeResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	public Kunde findKundeById(@PathParam("id") Long id) {
-		final Kunde kunde = Mock.findKundeById(id);
+		final Locale locale = localeHelper.getLocale(headers);
+		final Kunde kunde = ks.findKundeById(id, locale);
 		if (kunde == null) {
 			throw new NotFoundException("Kein Kunde mit der ID " + id + " gefunden.");
 		}
@@ -76,18 +78,17 @@ public class KundeResource {
 	
 	@GET
 	public Collection<Kunde> findKundenByNachname(@QueryParam("nachname") @DefaultValue("") String nachname) {
-		
 		Collection<Kunde> kunden = null;
 		if ("".equals(nachname)) {
 			// TODO Anwendungskern statt Mock, Verwendung von Locale
-			kunden = Mock.findAllKunden();
+			kunden = ks.findAllKunden();
 			if (kunden.isEmpty()) {
 				throw new NotFoundException("Keine Kunden vorhanden.");
 			}
 		}
 		else {
-			// TODO Anwendungskern statt Mock, Verwendung von Locale
-			kunden = Mock.findKundenByNachname(nachname);
+			final Locale locale = localeHelper.getLocale(headers);
+			kunden = ks.findKundenByNachname(nachname, locale);
 			if (kunden.isEmpty()) {
 				throw new NotFoundException("Kein Kunde mit Nachname " + nachname + " gefunden.");
 			}
@@ -122,10 +123,13 @@ public class KundeResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createKunde(Kunde kunde) {
+		// Rueckwaertsverweis von Adresse zu Kunde setzen
+		kunde.getAdresse().setKunde(kunde);
 		
-		// TODO Anwendungskern statt Mock, Verwendung von Locale
-		kunde = Mock.createKunde(kunde);
+		final Locale locale = localeHelper.getLocale(headers);
+		kunde = ks.createKunde(kunde, locale);
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
+		
 		return Response.created(kundeUri).build();
 	}
 	
@@ -133,9 +137,10 @@ public class KundeResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateKunde(Kunde kunde) {
+		final Locale locale = localeHelper.getLocale(headers);
+
+		ks.updateKunde(kunde, locale);
 		
-		// TODO Anwendungskern statt Mock, Verwendung von Locale
-		Mock.updateKunde(kunde);
 		return Response.noContent().build();
 	}
 	

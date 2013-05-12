@@ -31,11 +31,12 @@ public class Adresse implements Serializable {
 	private String plz;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
-	@Size(min = ORT_BEZEICHNUNG_LENGTH_MIN, max = ORT_BEZEICHNUNG_LENGTH_MAX, message = "{kundenverwaltung.adresse.ort.length}")
+	@Size(min = ORT_BEZEICHNUNG_LENGTH_MIN, max = ORT_BEZEICHNUNG_LENGTH_MAX, 
+	message = "{kundenverwaltung.adresse.ort.length}")
 	private String bezeichnung;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
-	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX,message = "{kundenverwaltung.adresse.strasse.length}")
+	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX, message = "{kundenverwaltung.adresse.strasse.length}")
 	private String strasse;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
@@ -76,6 +77,15 @@ public class Adresse implements Serializable {
 	public void setHausnummer(int hausnummer) {
 		this.hausnummer = hausnummer;
 	}
+	
+	public Kunde getKunde() {
+		return kunde;
+	}
+	
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,21 +103,24 @@ public class Adresse implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adresse other = (Adresse) obj;
+		final Adresse other = (Adresse) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} 
+		else if (!id.equals(other.id))
 			return false;
 		if (kunde == null) {
 			if (other.kunde != null)
 				return false;
-		} else if (!kunde.equals(other.kunde))
+		} 
+		else if (!kunde.equals(other.kunde))
 			return false;
 		if (plz == null) {
 			if (other.plz != null)
 				return false;
-		} else if (!plz.equals(other.plz))
+		} 
+		else if (!plz.equals(other.plz))
 			return false;
 		return true;
 	}
@@ -115,7 +128,6 @@ public class Adresse implements Serializable {
 	public String toString() {
 		return "Adresse [id=" + id + ", plz=" + plz + ", bezeichnung="
 				+ bezeichnung + ", strasse=" + strasse + ", hausnummer="
-				+ hausnummer + ", kunde=" + kunde + "]";
+				+ hausnummer +  "]";
 	}
-
 }

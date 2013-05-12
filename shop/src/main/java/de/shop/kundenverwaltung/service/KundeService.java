@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 
 import org.jboss.logging.Logger;
 
@@ -60,6 +61,73 @@ public class KundeService implements Serializable {
 		final Collection<Kunde> kunden = Mock.findAllKunden();
 		return kunden;
 	}
+
+	public Collection<Kunde> findKundenByNachname(String nachname, Locale locale) {
+		validateNachname(nachname, locale);
+		
+		// TODO Datenbanzugriffsschicht statt Mock
+		final Collection<Kunde> kunden = Mock.findKundenByNachname(nachname);
+		return kunden;
+	}
 	
+	private void validateNachname(String nachname, Locale locale) {
+		final Validator validator = validatorProvider.getValidator(locale);
+		final Set<ConstraintViolation<Kunde>> violations = validator.validateValue(Kunde.class,
+				                                                                           "nachname",
+				                                                                           nachname,
+				                                                                           Default.class);
+		if (!violations.isEmpty())
+			throw new InvalidNachnameException(nachname, violations);
+	}
 	
+	public Kunde createKunde(Kunde kunde, Locale locale) {
+		if (kunde == null) {
+			return kunde;
+		}
+		
+
+		// Werden alle Constraints beim Einfuegen gewahrt?
+		validateKunde(kunde, locale, Default.class);
+
+		// Pruefung, ob die Email-Adresse schon existiert
+		// TODO Datenbankzugriffsschicht statt Mock
+		if (Mock.findKundeByEmail(kunde.getEmail()) != null) {
+			throw new EmailExistsException(kunde.getEmail());
+		}
+
+		kunde = Mock.createKunde(kunde);
+
+		return kunde;
+	}
+
+	private void validateKunde(Kunde kunde, Locale locale, Class<?>... groups) {
+		final Validator validator = validatorProvider.getValidator(locale);
+		
+		final Set<ConstraintViolation<Kunde>> violations = validator.validate(kunde, groups);
+		if (!violations.isEmpty()) {
+			throw new InvalidKundeException(kunde, violations);
+		}
+	}
+	
+	public Kunde updateKunde(Kunde kunde, Locale locale) {
+		if (kunde == null) {
+			return null;
+		}
+
+		// Werden alle Constraints beim Modifizieren gewahrt?
+		validateKunde(kunde, locale, Default.class, IdGroup.class);
+
+		// Pruefung, ob die Email-Adresse schon existiert
+		final Kunde vorhandenerKunde = Mock.findKundeByEmail(kunde.getEmail());
+
+		// Gibt es die Email-Adresse bei einem anderen, bereits vorhandenen Kunden?
+		if (vorhandenerKunde.getId().longValue() != kunde.getId().longValue()) {
+			throw new EmailExistsException(kunde.getEmail());
+		}
+		
+		// TODO Datenbanzugriffsschicht statt Mock
+		Mock.updateKunde(kunde);
+		
+		return kunde;
+	}
 }

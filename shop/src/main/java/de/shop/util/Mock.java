@@ -1,4 +1,4 @@
-package de.shop.util;
+ package de.shop.util;
 
 
 import java.lang.invoke.MethodHandles;
@@ -48,7 +48,6 @@ public final class Mock {
 	private static final int FUCKCHECKSTYLE = 6;
 	
 	private static final int KATEGORIE_ID = 1;
-	
 	
 
 	
@@ -122,7 +121,7 @@ public final class Mock {
 	
 	//Rechnung nach ID suchen
 		public static Rechnung findRechnungById(Long id) {
-			if(id > MAX_ID)
+			if (id > MAX_ID)
 			return null;
 			
 			final Bestellung bestellung = findBestellungById(id + 1);
@@ -240,6 +239,28 @@ public final class Mock {
 		return kunde;
 	}
 	
+	public static Kunde findKundeByEmail(String email) {
+		if (email.startsWith("x")) {
+			return null;
+		}
+		final Long id = Long.valueOf(email.length());
+		final Kunde kunde = new Kunde();
+		kunde.setId(id);
+		kunde.setNachname("Nachname" + id);
+		kunde.setVorname("Vorname" + id);
+		kunde.setEmail(email);
+			
+		final Adresse adresse = new Adresse();
+		adresse.setId(ADDRESSID);
+		adresse.setStrasse("Musterstrasse");
+		adresse.setHausnummer(HAUSNUMMER);
+		adresse.setPlz(POSTLEITZAHL);
+		adresse.setBezeichnung("Testort");
+		kunde.setAdresse(adresse);
+		
+		return kunde;
+	}
+	
 	//alle Kunden finden
 	public static Collection<Kunde> findAllKunden() {
 		final int anzahl = MAX_KUNDEN;
@@ -271,13 +292,13 @@ public final class Mock {
 		adresse.setId((Long.valueOf(nachname.length())) + 1);
 		kunde.setBestellungen(null);
 			
-		System.out.println("Neuer Kunde: " + kunde);
+		LOGGER.infof("Neuer Kunde: %s", kunde);
 		return kunde;
 	}
 	
 	//Kundendaten ändern
 	public static void updateKunde(Kunde kunde) {
-		System.out.println("Aktualisierter Kunde: " + kunde);
+		LOGGER.infof("Aktualisierter Kunde: %s", kunde);
 	}
 	
 	//Warenkorb anhand KundenID ausgeben

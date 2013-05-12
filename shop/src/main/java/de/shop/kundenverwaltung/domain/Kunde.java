@@ -4,13 +4,13 @@ import static de.shop.util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+//import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -52,9 +52,9 @@ public class Kunde  implements Serializable {
 	@Size(max = EMAIL_LENGTH_MAX, message = "{kundenverwaltung.kunde.email.length}")
 	private String email;
 	
-	//Aus seinem Beispiel
-	@Past(message = "{kundenverwaltung.kunde.seit.past}")
-	private Date seit;
+//	//Aus seinem Beispiel
+//	@Past(message = "{kundenverwaltung.kunde.seit.past}")
+//	private Date seit;
 	
 	@JsonIgnore
 	private List<Bestellung> bestellungen;

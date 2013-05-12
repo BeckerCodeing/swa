@@ -134,20 +134,16 @@ public class LogInterceptor implements Serializable {
 	private static String arrayToString(Object obj) {
 		final Class<?> componentClass = obj.getClass().getComponentType();
 		if (!componentClass.isPrimitive()) {
-			// Array von Objekten
 			final Object[] arr = (Object[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
-				if (arr[i] == null) {
+				if (arr[i] == null) 
 					sbEnd.append("null");
-				}
-				else {
+				else 
 					sbEnd.append(arr[i]);
-				}
 				sbEnd.append(", ");
 			}
 			if (anzahl > 0) {
@@ -157,13 +153,10 @@ public class LogInterceptor implements Serializable {
 			sbEnd.append(']');
 			return sbEnd.toString();
 		}
-		// Array von primitiven Werten: byte, short, int, long, ..., float, double, boolean, char
 		if ("short".equals(componentClass.getName())) {
 			final short[] arr = (short[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
-
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -179,9 +172,8 @@ public class LogInterceptor implements Serializable {
 		}
 		if ("int".equals(componentClass.getName())) {
 			final int[] arr = (int[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -195,12 +187,10 @@ public class LogInterceptor implements Serializable {
 			}
 			return sbEnd.toString();
 		}
-		
 		if ("long".equals(componentClass.getName())) {
 			final long[] arr = (long[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -219,9 +209,8 @@ public class LogInterceptor implements Serializable {
 		}
 		if ("float".equals(componentClass.getName())) {
 			final float[] arr = (float[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -237,9 +226,8 @@ public class LogInterceptor implements Serializable {
 		}
 		if ("double".equals(componentClass.getName())) {
 			final double[] arr = (double[]) obj;
-			if (arr.length > MAX_ELEM) {
+			if (arr.length > MAX_ELEM) 
 				return COUNT + arr.length;
-			}
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -258,7 +246,6 @@ public class LogInterceptor implements Serializable {
 			if (arr.length > MAX_ELEM) {
 				return COUNT + arr.length;
 			}
-
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -272,13 +259,11 @@ public class LogInterceptor implements Serializable {
 			sbEnd.append(']');
 			return sbEnd.toString();
 		}
-
 		if ("boolean".equals(componentClass.getName())) {
 			final boolean[] arr = (boolean[]) obj;
 			if (arr.length > MAX_ELEM) {
 				return COUNT + arr.length;
 			}
-
 			final StringBuilder sbEnd = new StringBuilder("[");
 			final int anzahl = arr.length;
 			for (int i = 0; i < anzahl; i++) {
@@ -292,7 +277,6 @@ public class LogInterceptor implements Serializable {
 			sbEnd.append(']');
 			return sbEnd.toString();
 		}
-
 		return "<<UNKNOWN ARRAY>>";
 	}
 }

@@ -6,11 +6,13 @@ import javax.validation.ConstraintViolation;
 
 import de.shop.kundenverwaltung.domain.Kunde;
 
-public abstract class KundeValidationException extends KundeServiceException {
+//Bekomme den Checkstyle fehler leider nicht weg!
+// TODO Checkstyle fehler versuchen los zu werden.
+public abstract class AbstractKundeValidationException extends AbstractKundeServiceException {
 	private static final long serialVersionUID = -6924234959157503601L;
 	private final Collection<ConstraintViolation<Kunde>> violations;
 	
-	public KundeValidationException(Collection<ConstraintViolation<Kunde>> violations) {
+	public AbstractKundeValidationException(Collection<ConstraintViolation<Kunde>> violations) {
 		super("Violations: " + violations);
 		this.violations = violations;
 	}
