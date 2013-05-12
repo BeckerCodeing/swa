@@ -1,9 +1,19 @@
 package de.shop.artikelverwaltung.domain;
 
 public enum KategorieType {
-	WOHNZIMMER,
+	
+	BAD,
+	GARTEN,
+	KÜCHE,
 	SCHLAFZIMMER,
-	KÜCHEN,
-	GARTENMÖBEL,
-	BAD
+	WOHNZIMMER,
+	
+	
+	
+	
+
+	
+	
+	
+	
 }

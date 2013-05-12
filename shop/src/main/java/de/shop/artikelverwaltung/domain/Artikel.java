@@ -1,16 +1,20 @@
 package de.shop.artikelverwaltung.domain;
 
 import static de.shop.util.Constants.MIN_ID;
+import static de.shop.util.Constants.MIN_PREIS;
 
 import java.io.Serializable;
-import java.net.URI;
 
+
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import javax.validation.constraints.Size;
+
+
 
 import de.shop.util.IdGroup;
 
@@ -19,20 +23,27 @@ import de.shop.util.IdGroup;
 public class Artikel implements Serializable {
 
 	private static final long serialVersionUID = 5787206691085007571L;
+	private static final int BEZEICHNUNG_LENGTH_MIN = 3;
+	private static final int BEZEICHNUNG_LENGTH_MAX = 32;
+	
+	
 	@Min(value = MIN_ID, message = "{artikelverwaltung.artikel.id.min}", groups = IdGroup.class)
 	private Long id;
 	
+	///Bezeichnung darf nicht null sein, Großbuchstabe gefolgt von min. 2 Kleinbuchstaben. Länge = max. 20 Zeichen 
 	@NotNull(message = "{artikelverwaltung.artikel.bezeichnung.notNull}")
-	@Pattern(regexp = "[A-ZÄÖU][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
+	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
+	@Size(min = BEZEICHNUNG_LENGTH_MIN, max = BEZEICHNUNG_LENGTH_MAX, 
+		  message = "{artikelverwaltung.artikel.bezeichnung.length}")
 	private String bezeichnung;
 	
-	@Min(1)
+	@Min(value = MIN_PREIS, message = "{artikelverwaltung.artikel.preis.min}")
 	private Double preis;
+	
+	@NotNull
+	@Valid
 	private Kategorie kategorie;
 	
-	@JsonIgnore
-	private URI artikelUri;
-
 	public Long getId() {
 		return id;
 	}
@@ -57,6 +68,7 @@ public class Artikel implements Serializable {
 		this.preis = preis;
 	}
 	
+	
 	public Kategorie getKategorie() {
 		return kategorie;
 	}
@@ -64,15 +76,7 @@ public class Artikel implements Serializable {
 	public void setKategorie(Kategorie kategorie) {
 		this.kategorie = kategorie;
 	}
-
-	public URI getArtikelUri() {
-		return artikelUri;
-	}
 	
-	public void setArtikelUri(URI artikelUri) {
-		this.artikelUri = artikelUri;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

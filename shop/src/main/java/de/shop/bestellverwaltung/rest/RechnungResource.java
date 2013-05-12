@@ -54,13 +54,13 @@ public class RechnungResource {
 				return rechnung;
 			}
 			
-			//TODO findRechnungByKundeId
+//			FindRechnungByKundeId			
 //			@GET
-//			@Path("{id:[1-9][0-9]*}/bestellungen")
-//			public Collection<Rechnung> findRechnungByBestellungId(@PathParam("id") Long bestellungId) {
-//				final Collection<Rechnung> rechnungen = Mock.findRechnungByBestellungId(bestellungId);
-//				if (rechnungen.isEmpty()) {
-//					throw new NotFoundException("Zur ID " + bestellungId + " wurden keine Rechnungen gefunden");
+//			@Path("{id:[1-9][0-9]*}/kunden")
+//			public Collection<Rechnung> findRechnungByKundeId(@PathParam("id") Long kundeId) {
+////				final Collection<Rechnung> rechnungen = Mock.findRechnungByKundeId(kundeId);
+////				if (rechnungen.isEmpty()) {
+//					throw new NotFoundException("Zum Kunden " + kundeId + " wurden keine Rechnungen gefunden");
 //				}
 //			
 //				for (Rechnung rechnung : rechnungen) {
@@ -76,7 +76,7 @@ public class RechnungResource {
 			public Response createRechnung(Rechnung rechnung) {
 				
 								
-				rechnung = Mock.createRechnung(rechnung);
+//				rechnung = Mock.createRechnung(rechnung);
 				final URI rechnungUri = uriHelperRechnung.getUriRechnung(rechnung, uriInfo);
 			
 				return Response.created(rechnungUri).build();
@@ -89,7 +89,7 @@ public class RechnungResource {
 				Mock.updateRechnung(rechnung);
 			
 			return Response.noContent().build();
-			}
+			}	
 		
 }
 

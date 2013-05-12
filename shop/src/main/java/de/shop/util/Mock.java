@@ -1,37 +1,27 @@
 package de.shop.util;
 
 
-import java.util.HashSet;
+import java.lang.invoke.MethodHandles;
 import java.util.Random;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-
-
-
-
-
-
+import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.domain.Kategorie;
-import de.shop.artikelverwaltung.domain.KategorieType;
 import de.shop.bestellverwaltung.domain.Bestellung;
-
 import de.shop.bestellverwaltung.domain.Rechnung;
-
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.bestellverwaltung.domain.Warenkorb;
-
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 
 
 //Emulation des Anwendungskerns
 public final class Mock {
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final int MAX_ID = 99;
 	
@@ -40,6 +30,8 @@ public final class Mock {
 	private static final int MAX_ZUFALL = 250;
 
 	private static final int MAX_BESTELLUNGEN = 20;
+	
+//	private static final int MAX_RECHNUNGEN = 20;
 	
 	private static final int MAX_POSITIONEN = 5;
 	
@@ -54,6 +46,8 @@ public final class Mock {
 	private static final int HAUSNUMMER = 123;
 	
 	private static final int FUCKCHECKSTYLE = 6;
+	
+	private static final int KATEGORIE_ID = 1;
 	
 	
 
@@ -72,33 +66,39 @@ public final class Mock {
 		
 		final Artikel artikel = new Artikel();
 		artikel.setId(id);
-		artikel.setBezeichnung("Bezeichnung" + id);
+		artikel.setBezeichnung("Bezeichnung");
 		artikel.setPreis(Mock.getRandomPreis());
 		
 		///Kategorie immer "BAD" und ID = 1
 		final Kategorie kategorie = new Kategorie();
-		kategorie.setId(1);
+		kategorie.setId(KATEGORIE_ID);
 		
-		///Enum auf Typ: BAD setzen und anschlieﬂend Kategorie Artikel zuweisen
-		final Set<KategorieType> bezeichnung = new HashSet<>();
-		bezeichnung.add(KategorieType.BAD);
-		kategorie.setBezeichnung(bezeichnung);
+		///String ausgeben anhand Kategorie ID ==> ordinal von KategorieType
+		kategorie.setBezeichnung(kategorie.getId());
+			
 		
 		artikel.setKategorie(kategorie);
 		
 		return artikel;
 	}
 	
-	///Artikel nach Name suchen
+	///Alle Artikel nach Bezeichnung suchen
 	public static List<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		final int anzahl = bezeichnung.length();
 		final List<Artikel> gesuchteArtikel = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
+		for (int i = 1; i <= anzahl; ++i) {
 			final Artikel artikel = findArtikelById(Long.valueOf(i));
 			artikel.setBezeichnung(bezeichnung);
 			gesuchteArtikel.add(artikel);
 		}
 		return gesuchteArtikel;
+	}
+	public static Artikel findArtikelByBez(String bezeichnung) {
+				
+		final Artikel artikel = Mock.findArtikelById(ADDRESSID);
+		return artikel;
+
+		
 	}
 	
 	///Artikel erstellen
@@ -111,35 +111,54 @@ public final class Mock {
 		final Kategorie kategorie = artikel.getKategorie();
 		kategorie.setId(1);
 		
-		final Set<KategorieType> katBezeichnung = new HashSet<>();
-		katBezeichnung.add(KategorieType.BAD);
+		kategorie.setBezeichnung(kategorie.getId());
 		
 		artikel.setKategorie(kategorie);
 				
-		System.out.println("Neuer Artikel: " + artikel);
+		LOGGER.infof("Neuer Artikel: %s", artikel);
 		return artikel;
 		
 	}
-
-	//TODO Machen!
-	public static Rechnung findRechnungById(Long id) {
-		return null;
-	}
-	//TODO findRechnungByKundeId
-//	public static Collection<Rechnung> findRechnungByBestellungId(
-//			Long bestellungId) {
-//		System.out.println("gefundene Rechnung: " + bestellungId);
-//		return null;
-//	}
 	
-	public static Rechnung createRechnung(Rechnung rechnung) {
-		System.out.println("Rechnung wurde erstellt " + rechnung);
-		return null;
-	}
-	public static void updateRechnung(Rechnung rechnung) {
-		System.out.println("Rechnung aktualisiert: " + rechnung);
+	//Rechnung nach ID suchen
+		public static Rechnung findRechnungById(Long id) {
+			if(id > MAX_ID)
+			return null;
+			
+			final Bestellung bestellung = findBestellungById(id + 1);
 		
-	};
+			final Rechnung rechnung = new Rechnung();
+			rechnung.setId(id);
+			rechnung.setBestellung(bestellung);
+		
+			return rechnung;
+		}
+	
+		//Rechung nach Kunde suchen
+//		public static Collection<Rechnung> findRechnungByKundeId(Long kundeId) {
+//			final Kunde kunde = findKundeById(kundeId);	
+//
+//			final int anzahl = kundeId.intValue() % MAX_RECHNUNGEN + 1;
+//			final List<Rechnung> rechnungen = new ArrayList<>(anzahl);
+//			for (int i = 1; i <= anzahl; i++) {
+//				final Rechnung rechnung = findRechnungById(Long.valueOf(i));
+//				rechnung.setKunde(kunde);
+//				rechnungen.add(rechnung);
+//			}
+	//	
+//			kunde.setRechnungen(rechnungen);
+//			
+//			return rechnungen;
+//		}
+		
+	public static Rechnung createRechnung(Rechnung rechnung, Kunde kunde) {
+		LOGGER.infof("Neue Rechnung: %s fuer Kunde: %s", rechnung, kunde);
+		return rechnung;
+	}
+	
+	public static void updateRechnung(Rechnung rechnung) {
+		LOGGER.infof("Aktualisierte Rechnung: %s", rechnung);	
+	}
 
 	///Alle Artikel ausgeben
 	public static List<Artikel> findAllArtikel() {
@@ -153,7 +172,12 @@ public final class Mock {
 	}
 	//Artikel ‰ndern
 	public static void updateArtikel(Artikel artikel) {
-		System.out.println("Aktualisierter Artikel: " + artikel);
+		
+		//Erstmal nur zum Testen ob anhand der Kategorie-ID auch der passende Enum in der Bezeichnung gespeichert wird
+		final Kategorie kategorie = artikel.getKategorie();
+		kategorie.setBezeichnung(kategorie.getId());
+		artikel.setKategorie(kategorie);
+		LOGGER.infof("Aktualisierter Artikel: %s", artikel);
 	}
 
 
@@ -281,6 +305,7 @@ public final class Mock {
 		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE);
 		position.setGesamtpreis(position.calcPreis());
 		
+		LOGGER.infof("Neue Position: %s", position);
 		return position;
 	}
 	

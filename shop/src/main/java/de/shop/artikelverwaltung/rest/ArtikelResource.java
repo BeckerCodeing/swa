@@ -4,7 +4,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 import java.util.Collection;
-
 import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
@@ -25,11 +24,11 @@ import javax.ws.rs.core.UriInfo;
 
 
 
+
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
-import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
 
@@ -71,20 +70,20 @@ public class ArtikelResource {
 	@GET
 	public Collection<Artikel> findArtikelByBezeichnung(@QueryParam("bezeichnung")
 	@DefaultValue("") String bezeichnung) {		
-		//TODO Anwendungskern statt Mock, Locale
+		
+		
 		Collection<Artikel> gesuchteArtikel = null;
 		if ("".equals(bezeichnung)) {
 			gesuchteArtikel = as.findAllArtikel();
 			if (gesuchteArtikel.isEmpty()) {
-				throw new NotFoundException("Keine Artikel vorhanden.");
+				throw new NotFoundException("Kein Artikel vorhanden.");
 			}
-			
 		}
 		else {
 			final Locale locale = localeHelper.getLocale(headers);
 			gesuchteArtikel = as.findArtikelByBezeichnung(bezeichnung, locale);
 			if (gesuchteArtikel.isEmpty()) {
-				throw new NotFoundException("Kein Artikel mit Bezeichnung " + bezeichnung + " gefunden.");
+				throw new NotFoundException("Kein Artikel mit Bezeichnung: " + bezeichnung + " vorhanden.");
 			}
 		}
 		
@@ -97,9 +96,10 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response createArtikel(Artikel artikel) {
-		//TODO Anwendungskern statt Mock, Locale
-		artikel = Mock.createArtikel(artikel);		
+		final Locale locale = localeHelper.getLocale(headers);
+		artikel = as.createArtikel(artikel, locale);		
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
+		
 		return Response.created(artikelUri).build();
 	}
 	
@@ -107,8 +107,9 @@ public class ArtikelResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateArtikel(Artikel artikel) {
-		//TODO Anwendungskern statt Mock
-		Mock.updateArtikel(artikel);
+		final Locale locale = localeHelper.getLocale(headers);
+		as.updateArtikel(artikel, locale);
+		
 		return Response.noContent().build();
 		
 	}
