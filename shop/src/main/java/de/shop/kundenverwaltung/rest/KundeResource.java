@@ -5,6 +5,7 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 import java.net.URI;
 import java.util.Collection;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -17,12 +18,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.rest.UriHelperBestellung;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.service.KundeService;
+import de.shop.util.LocaleHelper;
 import de.shop.util.Mock;
 import de.shop.util.NotFoundException;
 
@@ -35,11 +39,20 @@ public class KundeResource {
 	@Context
 	private UriInfo uriInfo;
 	
+	@Context
+	private HttpHeaders headers;
+	
 	@Inject
 	private UriHelperKunde uriHelperKunde;
 	
 	@Inject
 	private UriHelperBestellung uriHelperBestellung;
+	
+	@Inject
+	private KundeService ks;
+	
+	@Inject
+	private LocaleHelper localeHelper;
 		
 	@GET
 	@Produces(TEXT_PLAIN)
@@ -51,8 +64,6 @@ public class KundeResource {
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	public Kunde findKundeById(@PathParam("id") Long id) {
-		
-		// TODO Anwendungskern statt Mock, Verwendung von Locale
 		final Kunde kunde = Mock.findKundeById(id);
 		if (kunde == null) {
 			throw new NotFoundException("Kein Kunde mit der ID " + id + " gefunden.");

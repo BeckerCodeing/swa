@@ -34,10 +34,11 @@ public class Adresse implements Serializable {
 	@Size(min = ORT_BEZEICHNUNG_LENGTH_MIN, max = ORT_BEZEICHNUNG_LENGTH_MAX, message = "{kundenverwaltung.adresse.ort.length}")
 	private String bezeichnung;
 	
-	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNUll}")
+	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX,message = "{kundenverwaltung.adresse.strasse.length}")
 	private String strasse;
 	
+	@NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
 	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min")
 	private int hausnummer;
 	
