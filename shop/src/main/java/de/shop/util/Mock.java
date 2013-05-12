@@ -31,6 +31,8 @@ public final class Mock {
 
 	private static final int MAX_BESTELLUNGEN = 20;
 	
+//	private static final int MAX_RECHNUNGEN = 20;
+	
 	private static final int MAX_POSITIONEN = 5;
 	
 	private static final int MAX_KUNDEN = 99;
@@ -117,26 +119,46 @@ public final class Mock {
 		return artikel;
 		
 	}
-
-	//TODO Machen!
-	public static Rechnung findRechnungById(Long id) {
-		return null;
-	}
-	//TODO findRechnungByKundeId
-//	public static Collection<Rechnung> findRechnungByBestellungId(
-//			Long bestellungId) {
-//		System.out.println("gefundene Rechnung: " + bestellungId);
-//		return null;
-//	}
 	
-	public static Rechnung createRechnung(Rechnung rechnung) {
-		System.out.println("Rechnung wurde erstellt " + rechnung);
-		return null;
-	}
-	public static void updateRechnung(Rechnung rechnung) {
-		System.out.println("Rechnung aktualisiert: " + rechnung);
+	//Rechnung nach ID suchen
+		public static Rechnung findRechnungById(Long id) {
+			if(id > MAX_ID)
+			return null;
+			
+			final Bestellung bestellung = findBestellungById(id + 1);
 		
-	};
+			final Rechnung rechnung = new Rechnung();
+			rechnung.setId(id);
+			rechnung.setBestellung(bestellung);
+		
+			return rechnung;
+		}
+	
+		//Rechung nach Kunde suchen
+//		public static Collection<Rechnung> findRechnungByKundeId(Long kundeId) {
+//			final Kunde kunde = findKundeById(kundeId);	
+//
+//			final int anzahl = kundeId.intValue() % MAX_RECHNUNGEN + 1;
+//			final List<Rechnung> rechnungen = new ArrayList<>(anzahl);
+//			for (int i = 1; i <= anzahl; i++) {
+//				final Rechnung rechnung = findRechnungById(Long.valueOf(i));
+//				rechnung.setKunde(kunde);
+//				rechnungen.add(rechnung);
+//			}
+	//	
+//			kunde.setRechnungen(rechnungen);
+//			
+//			return rechnungen;
+//		}
+		
+	public static Rechnung createRechnung(Rechnung rechnung, Kunde kunde) {
+		LOGGER.infof("Neue Rechnung: %s fuer Kunde: %s", rechnung, kunde);
+		return rechnung;
+	}
+	
+	public static void updateRechnung(Rechnung rechnung) {
+		LOGGER.infof("Aktualisierte Rechnung: %s", rechnung);	
+	}
 
 	///Alle Artikel ausgeben
 	public static List<Artikel> findAllArtikel() {

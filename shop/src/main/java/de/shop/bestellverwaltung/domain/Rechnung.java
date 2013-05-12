@@ -2,10 +2,23 @@ package de.shop.bestellverwaltung.domain;
 
 import java.net.URI;
 
-public class Rechnung {
+//import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import de.shop.kundenverwaltung.domain.Kunde;
+
+public class Rechnung {
+	
+//	@Min(value = MIN_ID, message = "{bestellverwaltung.rechnung.id.min}", groups = IdGroup.class)
 	private Long id;
+	
+	@NotNull(message = "{bestellverwaltung.rechnung.bestellung.notNull}")
 	private Bestellung bestellung;
+	
+	@NotNull(message = "{bestellverwaltung.rechnung.kunde.notNull}")
+	private Kunde kunde;
+	
+	
 	private URI bestellungUri;
 	
 	
