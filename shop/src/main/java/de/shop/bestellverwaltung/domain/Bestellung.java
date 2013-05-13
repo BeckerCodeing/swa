@@ -6,8 +6,10 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -22,9 +24,14 @@ public class Bestellung implements Serializable {
 	private boolean ausgeliefert;
 	
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}")
+	@Valid
 	@JsonIgnore
 	private Kunde kunde;
 	private URI kundeUri;
+	
+	@NotNull(message = "{bestellverwaltung.bestellung.positionen.notNull}")
+	@Size(min = 1)
+	@Valid	
 	private List<Position> positionen;
 	
 	public Long getId() {

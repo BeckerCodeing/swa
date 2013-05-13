@@ -12,17 +12,17 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
-import de.shop.bestellverwaltung.service.BestellungValidationException;
+import de.shop.bestellverwaltung.service.AbstractBestellungValidationException;
 import de.shop.util.Log;
 
 @Provider
 @ApplicationScoped
 @Log
-public class BestellungValidationExceptionMapper implements ExceptionMapper<BestellungValidationException> {
+public class BestellungValidationExceptionMapper implements ExceptionMapper<AbstractBestellungValidationException> {
 	private static final String NEWLINE = System.getProperty("line.separator");
 
 	@Override
-	public Response toResponse(BestellungValidationException e) {
+	public Response toResponse(AbstractBestellungValidationException e) {
 		final Collection<ConstraintViolation<Bestellung>> violations = e.getViolations();
 		final StringBuilder sb = new StringBuilder();
 		for (ConstraintViolation<Bestellung> v : violations) {

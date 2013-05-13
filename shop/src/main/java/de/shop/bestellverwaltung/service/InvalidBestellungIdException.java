@@ -6,7 +6,7 @@ import javax.validation.ConstraintViolation;
 
 import de.shop.bestellverwaltung.domain.Bestellung;
 
-public class InvalidBestellungIdException extends BestellungValidationException {
+public class InvalidBestellungIdException extends AbstractBestellungValidationException {
 	private static final long serialVersionUID = -8973151010781329074L;
 	
 	private final Long bestellungId;
