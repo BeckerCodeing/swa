@@ -136,12 +136,15 @@ public class BestellungResource {
 			//Artikel-ID der aktuellen Bestellposition (s.o.)
 			final long artikelId = artikelIds.get(i++);
 			
+			long positionId = 1;
 			for (Artikel artikel : gefundeneArtikel) {
 				if (artikel.getId().longValue() == artikelId) {
 					//Artikel gefunden
+					pos.setId(positionId);
 					pos.setArtikel(artikel);
 					pos.setPreis(pos.calcPreis());
 					neuePositionen.add(pos);
+					positionId++;
 					break;
 				}
 			}
@@ -159,5 +162,8 @@ public class BestellungResource {
 		
 		return response;
 	}
+	
+	
+	
 
 }

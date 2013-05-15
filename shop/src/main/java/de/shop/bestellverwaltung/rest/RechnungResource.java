@@ -3,7 +3,6 @@ package de.shop.bestellverwaltung.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
-import java.util.Collection;
 import java.util.Locale;
 
 import javax.enterprise.context.RequestScoped;
@@ -65,21 +64,7 @@ public class RechnungResource {
 				return rechnung;
 			}
 			
-//			FindRechnungByKundeId			
-			@GET
-			@Path("{id:[1-9][0-9]*}/kunden")
-			public Collection<Rechnung> findRechnungByKundeId(@PathParam("id") Long kundeId) {
-				final Collection<Rechnung> rechnungen = rs.findRechnungByKundeId(kundeId);
-				if (rechnungen.isEmpty()) {
-					throw new NotFoundException("Zum Kunden " + kundeId + " wurden keine Rechnungen gefunden");
-				}
-			
-				for (Rechnung rechnung : rechnungen) {
-					uriHelperRechnung.updateUriRechnung(rechnung, uriInfo);
-				}
-			
-			return rechnungen;
-			}
+
 			
 			@POST
 			@Consumes(APPLICATION_JSON)

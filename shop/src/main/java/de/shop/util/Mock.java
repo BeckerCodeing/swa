@@ -31,8 +31,6 @@ public final class Mock {
 
 	private static final int MAX_BESTELLUNGEN = 20;
 	
-//	private static final int MAX_RECHNUNGEN = 20;
-	
 	private static final int MAX_POSITIONEN = 5;
 	
 	private static final int MAX_KUNDEN = 99;
@@ -132,23 +130,7 @@ public final class Mock {
 		
 			return rechnung;
 		}
-	
-		//Rechung nach Kunde suchen
-//		public static Collection<Rechnung> findRechnungByKundeId(Long kundeId) {
-//			final Kunde kunde = findKundeById(kundeId);	
-//
-//			final int anzahl = kundeId.intValue() % MAX_RECHNUNGEN + 1;
-//			final List<Rechnung> rechnungen = new ArrayList<>(anzahl);
-//			for (int i = 1; i <= anzahl; i++) {
-//				final Rechnung rechnung = findRechnungById(Long.valueOf(i));
-//				rechnung.setKunde(kunde);
-//				rechnungen.add(rechnung);
-//			}
-	//	
-//			kunde.setRechnungen(rechnungen);
-//			
-//			return rechnungen;
-//		}
+
 		
 	public static Rechnung createRechnung(Rechnung rechnung, Kunde kunde) {
 		LOGGER.infof("Neue Rechnung: %s fuer Kunde: %s", rechnung, kunde);
@@ -276,6 +258,7 @@ public final class Mock {
 		adresse.setHausnummer(HAUSNUMMER);
 		adresse.setPlz(POSTLEITZAHL);
 		adresse.setBezeichnung("Testort");
+				
 		kunde.setAdresse(adresse);
 		
 		return kunde;
@@ -352,7 +335,7 @@ public final class Mock {
 	
 	
 	public static void updateWarenkorbPosition(Position position) {
-		System.out.println("Anzahl der Artikel in Position " + position.getId() 
+		LOGGER.infof("Anzahl der Artikel in Position " + position.getId() 
 							+ " geändert auf " + position.getMenge() + " Stück.");
 		
 	}
@@ -367,11 +350,11 @@ public final class Mock {
 	//Warenkorb des Kunden anhand KundenID leeren, entspricht später "Refresh",
 	//also alle Positionen entfernen und Warenkorb neu anlegen
 	public static void resetWarenkorb(Long kundeId) {
-		System.out.println("Warenkorb von Kunde " + kundeId + " erfolgreich geleert!");
+		LOGGER.infof("Warenkorb von Kunde " + kundeId + " erfolgreich geleert!");
 		
 	}
 	public static void deleteWarenkorbPosition(Kunde kunde, Position position) {
-		System.out.println("Position " + position.getId() + " aus Warenkorb von Kunde " 
+		LOGGER.infof("Position " + position.getId() + " aus Warenkorb von Kunde " 
 				+ kunde.getId() + " " + kunde.getVorname() + " " + kunde.getNachname() + " gelöscht!");
 		
 	}
@@ -383,7 +366,10 @@ public final class Mock {
 		return bestellung;
 	}
 	
+	
+	
 	private Mock() { /**/ }
+
 }
 	
 

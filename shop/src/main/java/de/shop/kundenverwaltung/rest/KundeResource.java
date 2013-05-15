@@ -137,8 +137,9 @@ public class KundeResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateKunde(Kunde kunde) {
+				
+		
 		final Locale locale = localeHelper.getLocale(headers);
-
 		ks.updateKunde(kunde, locale);
 		
 		return Response.noContent().build();

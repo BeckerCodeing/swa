@@ -49,8 +49,9 @@ public class Kunde  implements Serializable {
 	@Size(max = EMAIL_LENGTH_MAX, message = "{kundenverwaltung.kunde.email.length}")
 	private String email;
 	
-	@Valid
+	
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
+	@Valid
 	private Adresse adresse;
 	
 
