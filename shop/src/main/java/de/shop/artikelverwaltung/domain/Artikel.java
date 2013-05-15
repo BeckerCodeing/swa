@@ -40,7 +40,7 @@ public class Artikel implements Serializable {
 	@Min(value = MIN_PREIS, message = "{artikelverwaltung.artikel.preis.min}")
 	private Double preis;
 	
-	@NotNull
+	@NotNull(message = "{artikelverwaltung.artikel.kategorie.notNull}")
 	@Valid
 	private Kategorie kategorie;
 	

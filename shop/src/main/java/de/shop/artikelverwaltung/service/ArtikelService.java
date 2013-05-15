@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -15,6 +17,8 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+
+
 
 
 
@@ -55,6 +59,7 @@ public class ArtikelService implements Serializable {
 		return artikel;
 	}
 	
+	
 	public void validateArtikelId(Long artikelId, Locale locale) {
 		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Artikel>> violations = validator.validateValue(Artikel.class,
@@ -65,6 +70,22 @@ public class ArtikelService implements Serializable {
 		if (!violations.isEmpty())
 			throw new InvalidArtikelIdException(artikelId, violations);
 																						
+	}
+	public List<Artikel> findArtikelByIds(List<Long> ids, Locale locale) {
+			
+		if (ids == null || ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final List<Artikel> gefundeneArtikel = new ArrayList<>();
+		
+		for (Long artikelId : ids) {
+			gefundeneArtikel.add(findArtikelById(artikelId, locale));
+		}
+		
+		return gefundeneArtikel;
+		
+		
+		
 	}
 	
 	public List<Artikel> findAllArtikel() {

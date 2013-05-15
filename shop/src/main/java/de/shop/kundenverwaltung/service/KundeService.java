@@ -91,9 +91,9 @@ public class KundeService implements Serializable {
 
 		// Pruefung, ob die Email-Adresse schon existiert
 		// TODO Datenbankzugriffsschicht statt Mock
-		if (Mock.findKundeByEmail(kunde.getEmail()) != null) {
-			throw new EmailExistsException(kunde.getEmail());
-		}
+//		if (Mock.findKundeByEmail(kunde.getEmail()) != null) {
+//			throw new EmailExistsException(kunde.getEmail());
+//		}
 
 		kunde = Mock.createKunde(kunde);
 
