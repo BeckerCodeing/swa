@@ -78,10 +78,11 @@ public class BestellungObserver implements Serializable {
 			message.setSubject("Neue Bestellung Nr. " + bestellung.getId());
 			
 			// Text setzen mit MIME Type "text/plain"
-			final StringBuilder sb = new StringBuilder(32);
+			final StringBuilder sb = new StringBuilder(64);
 			sb.append("Neue Bestellung Nr. " + bestellung.getId() + NEWLINE);
 			for (Position pos : bestellung.getPositionen()) {
-				sb.append(pos.getId() + "\t" + pos.getMenge() + "\t[Stk]\t" + pos.getArtikel().getBezeichnung() + "\t" + pos.calcPreis() +"\t[EUR]" + NEWLINE);
+				sb.append(pos.getId() + "\t" + pos.getMenge() + "\t[Stk]\t" + 
+						pos.getArtikel().getBezeichnung() + "\t" + pos.calcPreis() +"\t[EUR]" + NEWLINE);
 			}
 			sb.append("Gesamtpreis: " + bestellung.calcPreis() + "\t[EUR]");
 			final String text = sb.toString();

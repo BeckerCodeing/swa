@@ -34,6 +34,7 @@ public class Bestellung implements Serializable {
 	
 	private URI kundeUri;
 	
+
 	@NotNull(message = "{bestellverwaltung.bestellung.positionen.NotNull}")
 	@Size(min = 1, message = "{bestellverwaltung.bestellung.positionen.Size}")
 	@Valid

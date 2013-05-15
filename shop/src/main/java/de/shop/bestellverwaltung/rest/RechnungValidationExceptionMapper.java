@@ -11,21 +11,21 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import de.shop.bestellverwaltung.domain.Bestellung;
-import de.shop.bestellverwaltung.service.AbstractBestellungValidationException;
+import de.shop.bestellverwaltung.domain.Rechnung;
+import de.shop.bestellverwaltung.service.AbstractRechnungValidationException;
 import de.shop.util.Log;
 
 @Provider
 @ApplicationScoped
 @Log
-public class BestellungValidationExceptionMapper implements ExceptionMapper<AbstractBestellungValidationException> {
+public class RechnungValidationExceptionMapper implements ExceptionMapper<AbstractRechnungValidationException>  {
 	private static final String NEWLINE = System.getProperty("line.separator");
-
+	
 	@Override
-	public Response toResponse(AbstractBestellungValidationException e) {
-		final Collection<ConstraintViolation<Bestellung>> violations = e.getViolations();
+	public Response toResponse(AbstractRechnungValidationException e) {
+		final Collection<ConstraintViolation<Rechnung>> violations = e.getViolations();
 		final StringBuilder sb = new StringBuilder();
-		for (ConstraintViolation<Bestellung> v : violations) {
+		for (ConstraintViolation<Rechnung> v : violations) {
 			sb.append(v.getMessage());
 			sb.append(NEWLINE);
 		}
@@ -37,4 +37,5 @@ public class BestellungValidationExceptionMapper implements ExceptionMapper<Abst
 		                                  .build();
 		return response;
 	}
+	
 }

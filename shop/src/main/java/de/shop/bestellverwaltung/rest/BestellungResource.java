@@ -28,8 +28,6 @@ import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.bestellverwaltung.service.BestellungService;
-import de.shop.kundenverwaltung.rest.UriHelperKunde;
-import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
@@ -52,16 +50,10 @@ public class BestellungResource {
 	private UriHelperBestellung uriHelperBestellung;
 	
 	@Inject
-	private UriHelperKunde uriHelperKunde;
-	
-	@Inject
 	private ArtikelService as;
 	
 	@Inject
 	private BestellungService bs;
-	
-	@Inject
-	private KundeService ks;
 	
 	@Inject
 	private LocaleHelper localeHelper;

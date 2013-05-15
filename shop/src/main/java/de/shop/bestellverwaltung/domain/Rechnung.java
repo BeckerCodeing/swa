@@ -2,14 +2,16 @@ package de.shop.bestellverwaltung.domain;
 
 import java.net.URI;
 
-//import javax.validation.constraints.Min;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import static de.shop.util.Constants.MIN_ID;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.util.IdGroup;
 
 public class Rechnung {
 	
-//	@Min(value = MIN_ID, message = "{bestellverwaltung.rechnung.id.min}", groups = IdGroup.class)
+	@Min(value = MIN_ID, message = "{bestellverwaltung.rechnung.id.min}", groups = IdGroup.class)
 	private Long id;
 	
 	@NotNull(message = "{bestellverwaltung.rechnung.bestellung.notNull}")
