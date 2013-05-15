@@ -27,7 +27,7 @@ public class Adresse implements Serializable {
 	private Long id;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
-	@Pattern(regexp = "\\d{5}", message = "{kundenverwaltung.adresse.plz}")
+	@Pattern(regexp = "\\d{5}", message = "{kundenverwaltung.adresse.plz.pattern}")
 	private String plz;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
@@ -40,7 +40,7 @@ public class Adresse implements Serializable {
 	private String strasse;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
-	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min")
+	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min}")
 	private int hausnummer;
 	
 	@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")

@@ -137,11 +137,12 @@ public class KundeResource {
 	@Consumes(APPLICATION_JSON)
 	@Produces
 	public Response updateKunde(Kunde kunde) {
-//		// Rueckwaertsverweis von Adresse zu Kunde setzen
-//		kunde.getAdresse().setKunde(kunde);
+
+		//Rueckwaertsverweis von Adresse zu Kunde setzen
+		kunde.getAdresse().setKunde(kunde);
+
 		
 		final Locale locale = localeHelper.getLocale(headers);
-
 		ks.updateKunde(kunde, locale);
 		
 		return Response.noContent().build();

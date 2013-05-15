@@ -6,7 +6,7 @@ import javax.validation.ConstraintViolation;
 
 import de.shop.bestellverwaltung.domain.Rechnung;
 
-public class AbstractRechnungValidationException extends AbstractRechnungServiceException {
+public abstract class AbstractRechnungValidationException extends AbstractRechnungServiceException {
 	private static final long serialVersionUID = -6924234959157503601L;
 	private final Collection<ConstraintViolation<Rechnung>> violations;
 	

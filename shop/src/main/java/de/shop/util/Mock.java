@@ -31,8 +31,6 @@ public final class Mock {
 
 	private static final int MAX_BESTELLUNGEN = 20;
 	
-//	private static final int MAX_RECHNUNGEN = 20;
-	
 	private static final int MAX_POSITIONEN = 5;
 	
 	private static final int MAX_KUNDEN = 99;
@@ -132,23 +130,7 @@ public final class Mock {
 		
 			return rechnung;
 		}
-	
-		//Rechung nach Kunde suchen
-//		public static Collection<Rechnung> findRechnungByKundeId(Long kundeId) {
-//			final Kunde kunde = findKundeById(kundeId);	
-//
-//			final int anzahl = kundeId.intValue() % MAX_RECHNUNGEN + 1;
-//			final List<Rechnung> rechnungen = new ArrayList<>(anzahl);
-//			for (int i = 1; i <= anzahl; i++) {
-//				final Rechnung rechnung = findRechnungById(Long.valueOf(i));
-//				rechnung.setKunde(kunde);
-//				rechnungen.add(rechnung);
-//			}
-	//	
-//			kunde.setRechnungen(rechnungen);
-//			
-//			return rechnungen;
-//		}
+
 		
 	public static Rechnung createRechnung(Rechnung rechnung, Kunde kunde) {
 		LOGGER.infof("Neue Rechnung: %s fuer Kunde: %s", rechnung, kunde);
@@ -169,6 +151,7 @@ public final class Mock {
 		}
 		return alleArtikel;
 	}
+
 	//Artikel ändern
 	public static void updateArtikel(Artikel artikel) {
 		
@@ -180,19 +163,34 @@ public final class Mock {
 	}
 
 
-	//Bestellung nach ID suchen
+	//TODO Umbauen, ohne WarenkorbBestellung nach ID suchen 
 	public static Bestellung findBestellungById(Long id) {
 		if (id > MAX_ID) {
 			return null;
 		}
-
-		final Kunde kunde = findKundeById(id + 1);  // andere ID fuer den Kunden
-		final Warenkorb warenkorb = getWarenKorbById(id + FUCKCHECKSTYLE);
+		
+		
+		//Kunde suchen anhand ID
+		final Kunde kunde = findKundeById(id);
+		//Positionen ermitteln
+		final List<Position> positionen = new ArrayList<>();
+				
 		final Bestellung bestellung = new Bestellung();
 		bestellung.setId(id);
 		bestellung.setAusgeliefert(false);
 		bestellung.setKunde(kunde);
-		bestellung.setPositionen(warenkorb.getPositionen());
+		
+		//+1 um zu vermeiden, dass 0 Positionen zugefügt werden.
+		for (int i = 1; i <= (MAX_POSITIONEN + id) % FUCKCHECKSTYLE + 1; i++) {
+			positionen.add(createPosition(findArtikelById(Long.valueOf(i)), Long.valueOf(i)));
+		}
+		
+		
+		//Liste der Positionen zur Bestellung zufügen
+		
+		bestellung.setPositionen(positionen);
+		//Preis berechnen
+		bestellung.setGesamtpreis(bestellung.calcPreis());
 			
 		return bestellung;
 	}
@@ -203,13 +201,14 @@ public final class Mock {
 			
 		// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
 		final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
-		final Warenkorb warenkorb = getWarenKorbById(kundeId);
+		
 		final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
+			//Bestellung suchen anhand KundenID
 			final Bestellung bestellung = findBestellungById(Long.valueOf(i));
 			bestellung.setKunde(kunde);
 			bestellungen.add(bestellung);
-			bestellung.setPositionen(warenkorb.getPositionen());
+			
 		}
 		kunde.setBestellungen(bestellungen);
 			
@@ -224,8 +223,8 @@ public final class Mock {
 			
 		final Kunde kunde = new Kunde();
 		kunde.setId(id);
-		kunde.setNachname("Nachname" + id);
-		kunde.setVorname("Vorname" + id);
+		kunde.setNachname("Nachname");
+		kunde.setVorname("Vorname");
 		kunde.setEmail("" + id + "@hska.de");
 			
 		final Adresse adresse = new Adresse();
@@ -234,7 +233,10 @@ public final class Mock {
 		adresse.setHausnummer(HAUSNUMMER);
 		adresse.setPlz(POSTLEITZAHL);
 		adresse.setBezeichnung("Testort");
+		adresse.setKunde(kunde);
+		
 		kunde.setAdresse(adresse);
+		
 			
 		return kunde;
 	}
@@ -246,8 +248,8 @@ public final class Mock {
 		final Long id = Long.valueOf(email.length());
 		final Kunde kunde = new Kunde();
 		kunde.setId(id);
-		kunde.setNachname("Nachname" + id);
-		kunde.setVorname("Vorname" + id);
+		kunde.setNachname("Nachname");
+		kunde.setVorname("Vorname");
 		kunde.setEmail(email);
 			
 		final Adresse adresse = new Adresse();
@@ -256,6 +258,7 @@ public final class Mock {
 		adresse.setHausnummer(HAUSNUMMER);
 		adresse.setPlz(POSTLEITZAHL);
 		adresse.setBezeichnung("Testort");
+				
 		kunde.setAdresse(adresse);
 		
 		return kunde;
@@ -323,16 +326,16 @@ public final class Mock {
 		final Position position = new Position();
 		position.setArtikel(artikel);
 		position.setId(id);
-		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE);
-		position.setGesamtpreis(position.calcPreis());
+		//Nur Modulo schlecht, da Menge = 0 unerwünscht..
+		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE + 1);
+		position.setPreis(position.calcPreis());
 		
-		LOGGER.infof("Neue Position: %s", position);
 		return position;
 	}
 	
 	
 	public static void updateWarenkorbPosition(Position position) {
-		System.out.println("Anzahl der Artikel in Position " + position.getId() 
+		LOGGER.infof("Anzahl der Artikel in Position " + position.getId() 
 							+ " geändert auf " + position.getMenge() + " Stück.");
 		
 	}
@@ -347,27 +350,26 @@ public final class Mock {
 	//Warenkorb des Kunden anhand KundenID leeren, entspricht später "Refresh",
 	//also alle Positionen entfernen und Warenkorb neu anlegen
 	public static void resetWarenkorb(Long kundeId) {
-		System.out.println("Warenkorb von Kunde " + kundeId + " erfolgreich geleert!");
+		LOGGER.infof("Warenkorb von Kunde " + kundeId + " erfolgreich geleert!");
 		
 	}
 	public static void deleteWarenkorbPosition(Kunde kunde, Position position) {
-		System.out.println("Position " + position.getId() + " aus Warenkorb von Kunde " 
+		LOGGER.infof("Position " + position.getId() + " aus Warenkorb von Kunde " 
 				+ kunde.getId() + " " + kunde.getVorname() + " " + kunde.getNachname() + " gelöscht!");
 		
 	}
 	//CreateBestellung
-	public static Bestellung createBestellung(Bestellung bestellung) {
-		bestellung.setId(Long.valueOf(FUCKCHECKSTYLE));
-		final Kunde kunde = findKundeById(bestellung.getId() + FUCKCHECKSTYLE);
-		bestellung.setKunde(kunde);
-		final Warenkorb warenkorb = getWarenKorbById(bestellung.getKunde().getId());
-		bestellung.setPositionen(warenkorb.getPositionen());
+	public static Bestellung createBestellung(Bestellung bestellung, Kunde kunde) {
 		
-		System.out.println("Neue Bestellung mit der Id: " + bestellung.getId() + " erstellt.");
+		LOGGER.infof("Neue Bestellung: %s fuer Kunde: %s", bestellung, kunde);
+		
 		return bestellung;
 	}
 	
+	
+	
 	private Mock() { /**/ }
+
 }
 	
 

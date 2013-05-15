@@ -4,6 +4,7 @@ import static de.shop.util.Constants.MIN_ID;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
 
@@ -43,14 +44,17 @@ public class Kunde  implements Serializable {
 	@Pattern(regexp = NACHNAME_PATTERN, message = "{kundenverwaltung.kunde.nachname.pattern}")
 	private String nachname;
 	
-	@Valid
-	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
-	private Adresse adresse;
-	
 	@Email(message = "{kundenverwaltung.kunde.email.pattern}")
 	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	@Size(max = EMAIL_LENGTH_MAX, message = "{kundenverwaltung.kunde.email.length}")
 	private String email;
+	
+	
+	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
+	@Valid
+	private Adresse adresse;
+	
+
 	
 //	//Aus seinem Beispiel
 //	@Past(message = "{kundenverwaltung.kunde.seit.past}")
@@ -104,6 +108,15 @@ public class Kunde  implements Serializable {
 	public void setBestellungenUri(URI bestellungenUri) {
 		this.bestellungenUri = bestellungenUri;
 	}
+	
+	public Kunde addBestellung(Bestellung bestellung) {
+		if (bestellungen == null) {
+			bestellungen = new ArrayList<>();
+		}
+		bestellungen.add(bestellung);
+		return this;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -133,6 +146,6 @@ public class Kunde  implements Serializable {
 	public String toString() {
 		return "Kunde [id=" + id + ", vorname=" + vorname
 				+ ", nachname=" + nachname + ", adresse=" + adresse
-				+ ", email=" + email + ", bestellungenUri=" + bestellungenUri + "]";
+				+ ", email=" + email + "]";
 	}
 }

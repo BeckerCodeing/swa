@@ -3,6 +3,7 @@ package de.shop.util;
 public final class Constants {
 	
 	public static final long MIN_ID = 1;
+	public static final Long KEINE_ID = null;
 	
 	//Artikel
 	public static final int MIN_KATEGORIE_ID = 0;

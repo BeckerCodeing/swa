@@ -14,7 +14,7 @@ import de.shop.util.Log;
 @Provider
 @ApplicationScoped
 @Log
-public class RechnungResourceExceptionMapper implements ExceptionMapper<AbstractRechnungServiceException>{
+public class RechnungResourceExceptionMapper implements ExceptionMapper<AbstractRechnungServiceException> {
 
 	@Override
 	public Response toResponse(AbstractRechnungServiceException e) {

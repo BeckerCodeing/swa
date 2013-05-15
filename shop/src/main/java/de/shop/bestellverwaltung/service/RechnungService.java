@@ -1,7 +1,6 @@
 package de.shop.bestellverwaltung.service;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
@@ -92,8 +91,5 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 		return rechnung;
 	}
 
-	public Collection<Rechnung> findRechnungByKundeId(Long kundeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
