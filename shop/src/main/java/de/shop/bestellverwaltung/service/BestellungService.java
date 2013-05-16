@@ -89,7 +89,7 @@ public class BestellungService implements Serializable {
 		bestellung.setKunde(kunde);
 		
 //		zum Testen
-		bestellung.setKunde(null);
+//		bestellung.setKunde(null);
 		
 		bestellung.setId(MIN_ID);
 //		for (Position pos : bestellung.getPositionen()) {
