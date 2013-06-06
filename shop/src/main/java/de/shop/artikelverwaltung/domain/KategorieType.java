@@ -9,11 +9,4 @@ public enum KategorieType {
 	WOHNZIMMER,
 	
 	
-	
-	
-
-	
-	
-	
-	
 }

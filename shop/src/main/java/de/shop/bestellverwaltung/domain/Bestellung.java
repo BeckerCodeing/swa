@@ -3,6 +3,7 @@ package de.shop.bestellverwaltung.domain;
 import static de.shop.util.Constants.MIN_ID;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class Bestellung implements Serializable {
 	private Long id;
 	private boolean ausgeliefert;
 	
-	//TODO BigDecimal..
-	private double gesamtpreis;
+	
+	private BigDecimal gesamtpreis;
 	
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}")
 	@Valid
@@ -39,7 +40,6 @@ public class Bestellung implements Serializable {
 	@Size(min = 1, message = "{bestellverwaltung.bestellung.positionen.Size}")
 	@Valid
 	private List<Position> positionen;
-	
 	
 	
 	public Long getId() {
@@ -75,40 +75,38 @@ public class Bestellung implements Serializable {
 		this.positionen = positionen;
 	}
 	
-	public double getGesamtpreis() {
+	public BigDecimal getGesamtpreis() {
 		return gesamtpreis;
 	}
 	
-	public void setGesamtpreis(double gesamtpreis) {
+	public void setGesamtpreis(BigDecimal gesamtpreis) {
 		this.gesamtpreis = gesamtpreis;
 	}
 	
 	//Preis berechnen
-	public double calcPreis() {
-		double ergebnis = 0;
+	public BigDecimal calcPreis() {
+		BigDecimal ergebnis = new BigDecimal(0.0);
 		for (Position position : positionen) {
-			ergebnis += position.calcPreis();
+			ergebnis.add(position.calcPreis());
 		}
 		return ergebnis;
 	}
+	
+	
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (ausgeliefert ? 1231 : 1237);
-		long temp;
-		temp = Double.doubleToLongBits(gesamtpreis);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((gesamtpreis == null) ? 0 : gesamtpreis.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((kunde == null) ? 0 : kunde.hashCode());
-		result = prime * result
-				+ ((kundeUri == null) ? 0 : kundeUri.hashCode());
 		result = prime * result
 				+ ((positionen == null) ? 0 : positionen.hashCode());
 		return result;
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -117,11 +115,14 @@ public class Bestellung implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Bestellung other = (Bestellung) obj;
+		Bestellung other = (Bestellung) obj;
 		if (ausgeliefert != other.ausgeliefert)
 			return false;
-		if (Double.doubleToLongBits(gesamtpreis) != Double
-				.doubleToLongBits(other.gesamtpreis))
+		if (gesamtpreis == null) {
+			if (other.gesamtpreis != null)
+				return false;
+		} 
+		else if (!gesamtpreis.equals(other.gesamtpreis))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -135,12 +136,6 @@ public class Bestellung implements Serializable {
 		} 
 		else if (!kunde.equals(other.kunde))
 			return false;
-		if (kundeUri == null) {
-			if (other.kundeUri != null)
-				return false;
-		} 
-		else if (!kundeUri.equals(other.kundeUri))
-			return false;
 		if (positionen == null) {
 			if (other.positionen != null)
 				return false;
@@ -149,7 +144,6 @@ public class Bestellung implements Serializable {
 			return false;
 		return true;
 	}
-	
 	@Override
 	public String toString() {
 		return "Bestellung [id=" + id + ", ausgeliefert=" + ausgeliefert

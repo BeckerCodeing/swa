@@ -1,6 +1,7 @@
 package de.shop.bestellverwaltung.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.net.URI;
 
 import javax.validation.Valid;
@@ -24,8 +25,8 @@ public class Position implements Serializable {
 	@Min(value = MIN_POSITION_MENGE, message = "{bestellverwaltung.position.menge.min}")
 	private Integer menge;
 	
-	//TODO BigDecimal, double/float Rundungsfehler
-	private Double preis;
+	
+	private BigDecimal preis;
 	
 	@NotNull(message = "{bestellverwaltung.position.artikel.notNull}")
 	@Valid
@@ -47,11 +48,11 @@ public class Position implements Serializable {
 		this.menge = menge;
 	}
 	
-	public Double getPreis() {
+	public BigDecimal getPreis() {
 		return preis;
 	}
 	
-	public void setPreis(Double preis) {
+	public void setPreis(BigDecimal preis) {
 		this.preis = preis;
 	}
 	public Artikel getArtikel() {
@@ -68,9 +69,9 @@ public class Position implements Serializable {
 	}
 	
 		
-	//TODO Preis für eine Position berechnen, zum Testen --> später anpassen
-	public double calcPreis() {
-		return artikel.getPreis() * this.getMenge();
+	//BigDecimal * int nicht möglich, daher in der Methode neuen BigDecimal(int Menge)
+	public BigDecimal calcPreis() {
+		return artikel.getPreis().multiply(new BigDecimal(this.getMenge()));
 	}
 	
 	@Override

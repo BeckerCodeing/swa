@@ -2,6 +2,7 @@
 
 
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.bestellverwaltung.domain.Position;
-import de.shop.bestellverwaltung.domain.Warenkorb;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 
@@ -27,15 +27,11 @@ public final class Mock {
 	
 	private static final int MAX_ARTIKEL = 100;
 
-	private static final int MAX_ZUFALL = 250;
-
 	private static final int MAX_BESTELLUNGEN = 20;
 	
 	private static final int MAX_POSITIONEN = 5;
 	
 	private static final int MAX_KUNDEN = 99;
-	
-	private static final double PREIS = 0.5;
 	
 	private static final long ADDRESSID = 5;
 	
@@ -45,15 +41,15 @@ public final class Mock {
 	
 	private static final int FUCKCHECKSTYLE = 6;
 	
-	private static final int KATEGORIE_ID = 1;
+	//private static final int KATEGORIE_ID = 1;
 	
 
 	
 //	kleiner Zufallsgenerator für den Preis
-	private static double getRandomPreis() {
+	private static BigDecimal getRandomPreis() {
 		final Random zufall = new Random();
-		
-		return zufall.nextInt(MAX_ZUFALL) + PREIS;
+		final BigDecimal ergebnis = new BigDecimal(zufall.nextInt());
+		return ergebnis;
 	
 	}
 	///Artikel nach ID suchen
@@ -68,10 +64,10 @@ public final class Mock {
 		
 		///Kategorie immer "BAD" und ID = 1
 		final Kategorie kategorie = new Kategorie();
-		kategorie.setId(KATEGORIE_ID);
+		//kategorie.setId(KATEGORIE_ID);
 		
 		///String ausgeben anhand Kategorie ID ==> ordinal von KategorieType
-		kategorie.setBezeichnung(kategorie.getId());
+		//kategorie.setBezeichnung(kategorie.getId());
 			
 		
 		artikel.setKategorie(kategorie);
@@ -106,9 +102,9 @@ public final class Mock {
 		artikel.setPreis(getRandomPreis());
 		
 		final Kategorie kategorie = artikel.getKategorie();
-		kategorie.setId(1);
+		//kategorie.setId(1);
 		
-		kategorie.setBezeichnung(kategorie.getId());
+		//kategorie.setBezeichnung(kategorie.getId());
 		
 		artikel.setKategorie(kategorie);
 				
@@ -157,7 +153,7 @@ public final class Mock {
 		
 		//Erstmal nur zum Testen ob anhand der Kategorie-ID auch der passende Enum in der Bezeichnung gespeichert wird
 		final Kategorie kategorie = artikel.getKategorie();
-		kategorie.setBezeichnung(kategorie.getId());
+		//kategorie.setBezeichnung(kategorie.getId());
 		artikel.setKategorie(kategorie);
 		LOGGER.infof("Aktualisierter Artikel: %s", artikel);
 	}
@@ -303,24 +299,7 @@ public final class Mock {
 	public static void updateKunde(Kunde kunde) {
 		LOGGER.infof("Aktualisierter Kunde: %s", kunde);
 	}
-	
-	//Warenkorb anhand KundenID ausgeben
-	public static Warenkorb getWarenKorbById(Long id) {
-		if (id > MAX_ID) {
-			return null;
-		}
-		final Kunde kunde = findKundeById(id + 1); // andere ID für den Kunden
-		final Warenkorb warenkorb = new Warenkorb();
-		warenkorb.setKunde(kunde);
-		final List<Position> positionen = new ArrayList<>(MAX_POSITIONEN);
-		for (int i = 1; i <= (MAX_POSITIONEN + id) % FUCKCHECKSTYLE; i++) {
-			positionen.add(createPosition(findArtikelById(Long.valueOf(i)), Long.valueOf(i)));
-		}
-		warenkorb.setPositionen(positionen);
-		warenkorb.setGesamtpreis(warenkorb.calcPreis());		
-		
-		return warenkorb;
-	}
+
 	//Position erstellen
 	public static Position createPosition(Artikel artikel, Long id) {
 		final Position position = new Position();
@@ -334,11 +313,6 @@ public final class Mock {
 	}
 	
 	
-	public static void updateWarenkorbPosition(Position position) {
-		LOGGER.infof("Anzahl der Artikel in Position " + position.getId() 
-							+ " geändert auf " + position.getMenge() + " Stück.");
-		
-	}
 	
 	//nur zum Vereinfachten Testen der REST-Methoden Warenkorb
 	public static Position findPositionById(Long id) {

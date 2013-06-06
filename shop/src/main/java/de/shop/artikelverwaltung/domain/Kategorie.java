@@ -7,8 +7,36 @@ import java.io.Serializable;
 
 
 
+
+
+
+
+
+import static de.shop.util.Constants.KEINE_ID;
+
+
+
+
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -21,33 +49,34 @@ import de.shop.util.IdGroup;
 import static de.shop.util.Constants.MAX_KATEGORIE_ID;
 import static de.shop.util.Constants.MIN_KATEGORIE_ID;
 
-
+@Entity
+@Table(name = "kategorie")
 public class Kategorie implements Serializable {
 
 	private static final long serialVersionUID = -1065751720590017636L;
 	
+	@Id
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
 	@Min(value = MIN_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.min}", groups = IdGroup.class)
 	@Max(value = MAX_KATEGORIE_ID, message = "{artikelverwaltung.artikel.kategorie.id.max}", groups = IdGroup.class)
-	private int id;
+	private Long id = KEINE_ID;
 
-	//Benötigt keine Validierung, da Bezeichnung durch ID vergeben wird
-	//Bezeichnung = enum.ordinal()
-	private String bezeichnung;
+	@Enumerated(EnumType.STRING)
+	private KategorieType bezeichnung;
 	
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	public String getBezeichnung() {
+	public KategorieType getBezeichnung() {
 		return bezeichnung;
 	}
-	
-	public void setBezeichnung(int id) {
-		this.bezeichnung = KategorieType.values()[id].toString();
+	public void setBezeichnung(KategorieType bezeichnung) {
+		this.bezeichnung = bezeichnung;
 	}
 	
 	@Override
@@ -56,9 +85,9 @@ public class Kategorie implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((bezeichnung == null) ? 0 : bezeichnung.hashCode());
-		result = prime * result + id;
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,18 +96,12 @@ public class Kategorie implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Kategorie other = (Kategorie) obj;
-		if (bezeichnung == null) {
-			if (other.bezeichnung != null)
-				return false;
-		} 
-		else if (!bezeichnung.equals(other.bezeichnung))
-			return false;
-		if (id != other.id)
+		Kategorie other = (Kategorie) obj;
+		if (bezeichnung != other.bezeichnung)
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Kategorie [id=" + id + ", bezeichnung=" + bezeichnung + "]";
