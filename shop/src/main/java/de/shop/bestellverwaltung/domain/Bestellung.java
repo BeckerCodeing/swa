@@ -24,7 +24,7 @@ public class Bestellung implements Serializable {
 	private Long id;
 	private boolean ausgeliefert;
 	
-	//TODO Überlegeung ob gesamtpreis mit JsonIgnore ausgeblendet werden soll, da eigentlich berechnetes Feld
+	//TODO BigDecimal..
 	private double gesamtpreis;
 	
 	@NotNull(message = "{bestellverwaltung.bestellung.kunde.notNull}")

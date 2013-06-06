@@ -25,6 +25,7 @@ import javax.ws.rs.core.UriInfo;
 
 
 
+
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.util.LocaleHelper;
@@ -97,6 +98,7 @@ public class ArtikelResource {
 	@Produces
 	public Response createArtikel(Artikel artikel) {
 		final Locale locale = localeHelper.getLocale(headers);
+		
 		artikel = as.createArtikel(artikel, locale);		
 		final URI artikelUri = uriHelperArtikel.getUriArtikel(artikel, uriInfo);
 		

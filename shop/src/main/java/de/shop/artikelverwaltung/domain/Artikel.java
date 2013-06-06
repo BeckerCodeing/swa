@@ -37,6 +37,7 @@ public class Artikel implements Serializable {
 		  message = "{artikelverwaltung.artikel.bezeichnung.length}")
 	private String bezeichnung;
 	
+	//TODO ändern in BigDecimal (double, float Rundungsfehler..)
 	@Min(value = MIN_PREIS, message = "{artikelverwaltung.artikel.preis.min}")
 	private Double preis;
 	

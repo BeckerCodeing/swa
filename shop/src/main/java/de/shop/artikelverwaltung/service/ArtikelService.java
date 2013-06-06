@@ -25,6 +25,7 @@ import javax.validation.groups.Default;
 
 
 
+
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;

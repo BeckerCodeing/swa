@@ -24,7 +24,7 @@ public class Position implements Serializable {
 	@Min(value = MIN_POSITION_MENGE, message = "{bestellverwaltung.position.menge.min}")
 	private Integer menge;
 	
-	//TODO Braucht normalerweise keine Prüfung, ist doch eh ein errechnetes Feld
+	//TODO BigDecimal, double/float Rundungsfehler
 	private Double preis;
 	
 	@NotNull(message = "{bestellverwaltung.position.artikel.notNull}")
