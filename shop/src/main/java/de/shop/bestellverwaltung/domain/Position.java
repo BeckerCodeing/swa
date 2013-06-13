@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URI;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,39 +20,66 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.util.IdGroup;
+import static de.shop.util.Constants.KEINE_ID;
 import static de.shop.util.Constants.MIN_ID;
-import static de.shop.util.Constants.MIN_POSITION_MENGE;
 
+@Entity
+@Table(name = "position")
 public class Position implements Serializable {
 
 	private static final long serialVersionUID = 2212950377169631920L;
 	
+	private static final int MENGE_MIN = 1;
+	
+	@Id
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
 	@Min(value = MIN_ID, message = "{bestellverwaltung.position.id.min}", groups = IdGroup.class)
-	private Long id;
+	private Long id = KEINE_ID;
 	
-	@Min(value = MIN_POSITION_MENGE, message = "{bestellverwaltung.position.menge.min}")
-	private Integer menge;
+	@Column(name = "menge", nullable = false)
+	@Min(value = MENGE_MIN, message = "{bestellverwaltung.position.menge.min}")
+	private short menge;
 	
-	
+	@Transient
 	private BigDecimal preis;
 	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "artikel_fk", nullable = false)
 	@NotNull(message = "{bestellverwaltung.position.artikel.notNull}")
 	@Valid
 	@JsonIgnore
 	private Artikel artikel;
 	
+	@Transient
 	private URI artikelUri;
-		
+	
+	public Position() {
+		super();
+	}
+	
+	public Position(Artikel artikel) {
+		super();
+		this.artikel = artikel;
+		this.menge = 1;
+	}
+	
+	public Position(Artikel artikel, short menge) {
+		super();
+		this.artikel = artikel;
+		this.menge = menge;
+	}
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getMenge() {
+	public short getMenge() {
 		return menge;
 	}
-	public void setMenge(Integer menge) {
+	public void setMenge(short menge) {
 		this.menge = menge;
 	}
 	
@@ -73,19 +108,23 @@ public class Position implements Serializable {
 	public BigDecimal calcPreis() {
 		return artikel.getPreis().multiply(new BigDecimal(this.getMenge()));
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Position [id=" + id + ", menge=" + menge + ", preis=" + preis
+				+ ", artikel=" + artikel + ", artikelUri=" + artikelUri + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((artikel == null) ? 0 : artikel.hashCode());
-		result = prime * result
-				+ ((artikelUri == null) ? 0 : artikelUri.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((menge == null) ? 0 : menge.hashCode());
-		result = prime * result + ((preis == null) ? 0 : preis.hashCode());
+		result = prime * result + menge;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -101,40 +140,15 @@ public class Position implements Serializable {
 		} 
 		else if (!artikel.equals(other.artikel))
 			return false;
-		if (artikelUri == null) {
-			if (other.artikelUri != null)
-				return false;
-		} 
-		else if (!artikelUri.equals(other.artikelUri))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} 
 		else if (!id.equals(other.id))
 			return false;
-		if (menge == null) {
-			if (other.menge != null)
-				return false;
-		} 
-		else if (!menge.equals(other.menge))
-			return false;
-		if (preis == null) {
-			if (other.preis != null)
-				return false;
-		} 
-		else if (!preis.equals(other.preis))
+		if (menge != other.menge)
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "Position [id=" + id + ", menge=" + menge + ", preis=" + preis
-				+ ", artikel=" + artikel + ", artikelUri=" + artikelUri + "]";
-	}
-	
-	
-	
-	
-	
+
 }

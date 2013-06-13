@@ -176,9 +176,9 @@ public final class Mock {
 		bestellung.setKunde(kunde);
 		
 		//+1 um zu vermeiden, dass 0 Positionen zugefügt werden.
-		for (int i = 1; i <= (MAX_POSITIONEN + id) % FUCKCHECKSTYLE + 1; i++) {
-			positionen.add(createPosition(findArtikelById(Long.valueOf(i)), Long.valueOf(i)));
-		}
+//		for (int i = 1; i <= (MAX_POSITIONEN + id) % FUCKCHECKSTYLE + 1; i++) {
+//			positionen.add(createPosition(findArtikelById(Long.valueOf(i)), Long.valueOf(i)));
+//		}
 		
 		
 		//Liste der Positionen zur Bestellung zufügen
@@ -299,27 +299,27 @@ public final class Mock {
 		LOGGER.infof("Aktualisierter Kunde: %s", kunde);
 	}
 
-	//Position erstellen
-	public static Position createPosition(Artikel artikel, Long id) {
-		final Position position = new Position();
-		position.setArtikel(artikel);
-		position.setId(id);
-		//Nur Modulo schlecht, da Menge = 0 unerwünscht..
-		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE + 1);
-		position.setPreis(position.calcPreis());
-		
-		return position;
-	}
+//	//Position erstellen
+//	public static Position createPosition(Artikel artikel, Long id) {
+//		final Position position = new Position();
+//		position.setArtikel(artikel);
+//		position.setId(id);
+//		//Nur Modulo schlecht, da Menge = 0 unerwünscht..
+//		//position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE + 1);
+//		position.setPreis(position.calcPreis());
+//		
+//		return position;
+//	}
 	
 	
 	
-	//nur zum Vereinfachten Testen der REST-Methoden Warenkorb
-	public static Position findPositionById(Long id) {
-		final Artikel artikel = findArtikelById(id);
-		final Position position = createPosition(artikel, id);
-			
-		return position;
-	}
+//	//nur zum Vereinfachten Testen der REST-Methoden Warenkorb
+//	public static Position findPositionById(Long id) {
+//		final Artikel artikel = findArtikelById(id);
+//		final Position position = createPosition(artikel, id);
+//			
+//		return position;
+//	}
 	//Warenkorb des Kunden anhand KundenID leeren, entspricht später "Refresh",
 	//also alle Positionen entfernen und Warenkorb neu anlegen
 	public static void resetWarenkorb(Long kundeId) {
