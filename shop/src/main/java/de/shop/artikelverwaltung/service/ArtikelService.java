@@ -67,7 +67,7 @@ public class ArtikelService implements Serializable {
 		
 		Artikel artikel = null;
 		
-		try{
+		try {
 			artikel = em.find(Artikel.class, id);
 		}
 		catch (NoResultException e) {
@@ -156,7 +156,7 @@ public class ArtikelService implements Serializable {
 		validateArtikel(artikel, locale, Default.class);
 		
 		//Prüfung ob Bezeichnung schon existiert
-		try{
+		try {
 			em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
 			  .setParameter(Artikel.PARAM_BEZEICHNUNG, artikel.getBezeichnung())
 			  .getSingleResult();

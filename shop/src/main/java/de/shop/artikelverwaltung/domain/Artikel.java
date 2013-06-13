@@ -54,7 +54,7 @@ import de.shop.util.IdGroup;
 						+ " FROM 		Artikel a"
 						+ " WHERE 		a.bezeichnung LIKE :" + Artikel.PARAM_BEZEICHNUNG
 						+ "				AND a.verfuegbar = TRUE"
-						+ " ORDER BY	a.id ASC"),
+						+ " ORDER BY	a.id ASC")
 
 })
 public class Artikel implements Serializable {
@@ -167,7 +167,7 @@ public class Artikel implements Serializable {
 		return erzeugt == null ? null : (Date) erzeugt.clone();
 	}
 	public void setErzeugt(Date erzeugt) {
-		this.erzeugt = erzeugt == null ? null : (Date)erzeugt.clone();
+		this.erzeugt = erzeugt == null ? null : (Date) erzeugt.clone();
 	}
 	public Date getAktualisiert() {
 		return aktualisiert == null ? null : (Date) aktualisiert.clone();
@@ -201,7 +201,7 @@ public class Artikel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artikel other = (Artikel) obj;
+		final Artikel other = (Artikel) obj;
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;
