@@ -11,7 +11,6 @@ import java.util.List;
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
-import de.shop.artikelverwaltung.domain.Kategorie;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.bestellverwaltung.domain.Position;
@@ -63,14 +62,14 @@ public final class Mock {
 		artikel.setPreis(Mock.getRandomPreis());
 		
 		///Kategorie immer "BAD" und ID = 1
-		final Kategorie kategorie = new Kategorie();
+		//final Kategorie kategorie = new Kategorie();
 		//kategorie.setId(KATEGORIE_ID);
 		
 		///String ausgeben anhand Kategorie ID ==> ordinal von KategorieType
 		//kategorie.setBezeichnung(kategorie.getId());
 			
 		
-		artikel.setKategorie(kategorie);
+		//artikel.setKategorie(kategorie);
 		
 		return artikel;
 	}
@@ -101,12 +100,12 @@ public final class Mock {
 		artikel.setId(Long.valueOf(bezeichnung.length()));
 		artikel.setPreis(getRandomPreis());
 		
-		final Kategorie kategorie = artikel.getKategorie();
+		//final KategorieType kategorie = artikel.getKategorie();
 		//kategorie.setId(1);
 		
 		//kategorie.setBezeichnung(kategorie.getId());
 		
-		artikel.setKategorie(kategorie);
+		//artikel.setKategorie(kategorie);
 				
 		LOGGER.infof("Neuer Artikel: %s", artikel);
 		return artikel;
@@ -152,9 +151,9 @@ public final class Mock {
 	public static void updateArtikel(Artikel artikel) {
 		
 		//Erstmal nur zum Testen ob anhand der Kategorie-ID auch der passende Enum in der Bezeichnung gespeichert wird
-		final Kategorie kategorie = artikel.getKategorie();
+		//final KategorieType kategorie = artikel.getKategorie();
 		//kategorie.setBezeichnung(kategorie.getId());
-		artikel.setKategorie(kategorie);
+		//artikel.setKategorie(kategorie);
 		LOGGER.infof("Aktualisierter Artikel: %s", artikel);
 	}
 

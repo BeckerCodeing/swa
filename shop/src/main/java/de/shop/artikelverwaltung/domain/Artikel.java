@@ -15,39 +15,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 
 import javax.validation.constraints.Size;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -56,14 +36,43 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jboss.logging.Logger;
 
 import de.shop.util.IdGroup;
+
+
 @Entity
 @Table(name = "artikel")
+@NamedQueries({
+	@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ID,
+				query = "SELECT 	a"
+						+ " FROM 	Artikel a"
+						+ " WHERE 	a.id = :id"),
+	@NamedQuery(name = Artikel.FIND_ARTIKEL_ORDER_BY_ID,
+				query = "SELECT		  a"
+						+ " FROM	  Artikel a"
+						+ " ORDER BY  a.id"),
+	@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZ,
+				query = "SELECT a"
+						+ " FROM 		Artikel a"
+						+ " WHERE 		a.bezeichnung LIKE :" + Artikel.PARAM_BEZEICHNUNG
+						+ "				AND a.verfuegbar = TRUE"
+						+ " ORDER BY	a.id ASC"),
+
+})
 public class Artikel implements Serializable {
 
 	private static final long serialVersionUID = 5787206691085007571L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
-	private static final int BEZEICHNUNG_LENGTH_MIN = 3;
 	private static final int BEZEICHNUNG_LENGTH_MAX = 32;
+	
+	private static final String PREFIX = "Artikel.";
+	
+	public static final String FIND_ARTIKEL_BY_ID = PREFIX + "findArtikelById";
+	public static final String FIND_ARTIKEL_ORDER_BY_ID = PREFIX + "findArtikelOrderById";
+	
+	public static final String FIND_ARTIKEL_BY_BEZ = PREFIX + "findArtikelByBezeichnung";
+
+	
+	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
+
 	
 	@Id
 	@GeneratedValue
@@ -73,21 +82,17 @@ public class Artikel implements Serializable {
 	
 	@Column(length = BEZEICHNUNG_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{artikelverwaltung.artikel.bezeichnung.notNull}")
-	@Pattern(regexp = "[A-ZÄÖÜ][a-zäöüß]+", message = "{artikelverwaltung.artikel.bezeichnung.pattern}")
-	@Size(min = BEZEICHNUNG_LENGTH_MIN, max = BEZEICHNUNG_LENGTH_MAX, 
-		  message = "{artikelverwaltung.artikel.bezeichnung.length}")
+	@Size(max = BEZEICHNUNG_LENGTH_MAX, message = "{artikelverwaltung.artikel.bezeichnung.length}")
 	private String bezeichnung;
 	
+	//TODO Hier muss evtl. noch eine Bean Validation für den Preis hin..., bzw. die Message
 	@Column(scale = 2, nullable = false)
 	@DecimalMin("5.0")
 	private BigDecimal preis;
 	
+	@Column(nullable = false)
+	private boolean verfuegbar;
 	
-	@OneToOne
-	@JoinColumn(name = "kategorie_fk", nullable = false)
-	@NotNull(message = "{artikelverwaltung.artikel.kategorie.notNull}")
-	@Valid
-	private Kategorie kategorie;
 	
 	@Column(nullable = false)
 	@Temporal(TIMESTAMP)
@@ -151,19 +156,18 @@ public class Artikel implements Serializable {
 		this.preis = preis;
 	}
 
-	public Kategorie getKategorie() {
-		return kategorie;
+	public boolean isVerfuegbar() {
+		return verfuegbar;
 	}
-
-	public void setKategorie(Kategorie kategorie) {
-		this.kategorie = kategorie;
+	public void setVerfuegbar(boolean verfuegbar) {
+		this.verfuegbar = verfuegbar;
 	}
 
 	public Date getErzeugt() {
 		return erzeugt == null ? null : (Date) erzeugt.clone();
 	}
 	public void setErzeugt(Date erzeugt) {
-		this.erzeugt = erzeugt == null ? null : (Date) erzeugt.clone();
+		this.erzeugt = erzeugt == null ? null : (Date)erzeugt.clone();
 	}
 	public Date getAktualisiert() {
 		return aktualisiert == null ? null : (Date) aktualisiert.clone();
@@ -171,6 +175,13 @@ public class Artikel implements Serializable {
 	public void setAktualisiert(Date aktualisiert) {
 		this.aktualisiert = aktualisiert == null ? null : (Date) aktualisiert.clone();
 	}
+	
+	public void setValues(Artikel a) {
+		bezeichnung = a.bezeichnung;
+		preis = a.preis;
+		verfuegbar = a.verfuegbar;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -178,9 +189,10 @@ public class Artikel implements Serializable {
 		result = prime * result
 				+ ((bezeichnung == null) ? 0 : bezeichnung.hashCode());
 		result = prime * result + ((preis == null) ? 0 : preis.hashCode());
+		result = prime * result + (verfuegbar ? 1231 : 1237);
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -202,16 +214,21 @@ public class Artikel implements Serializable {
 		} 
 		else if (!preis.equals(other.preis))
 			return false;
+		if (verfuegbar != other.verfuegbar)
+			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
 		return "Artikel [id=" + id + ", bezeichnung=" + bezeichnung
-				+ ", preis=" + preis + ", kategorie=" + kategorie
+				+ ", preis=" + preis + ", verfuegbar=" + verfuegbar
 				+ ", erzeugt=" + erzeugt
 				+ ", aktualisiert=" + aktualisiert + "]";
 	}
+	
+
+
+
 
 	
 }

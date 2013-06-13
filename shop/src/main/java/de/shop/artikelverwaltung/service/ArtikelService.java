@@ -5,7 +5,6 @@ import java.lang.invoke.MethodHandles;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -14,9 +13,16 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
+
+
+
+
 
 
 
@@ -31,7 +37,6 @@ import org.jboss.logging.Logger;
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.util.IdGroup;
 import de.shop.util.Log;
-import de.shop.util.Mock;
 import de.shop.util.ValidatorProvider;
 
 
@@ -39,6 +44,9 @@ import de.shop.util.ValidatorProvider;
 public class ArtikelService implements Serializable {
 	private static final long serialVersionUID = 2929027248430844352L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	
+	@PersistenceContext
+	private transient EntityManager em;
 	
 	@Inject
 	private ValidatorProvider validatorProvider;
@@ -53,10 +61,19 @@ public class ArtikelService implements Serializable {
 		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
 	
+	//Artikel anhand ID ausgeben, wenn Artikel nicht gefunden null zurück
 	public Artikel findArtikelById(Long id, Locale locale) {
 		validateArtikelId(id, locale);
-		//TODO Datenbankzugriffsschicht statt Mock
-		final Artikel artikel = Mock.findArtikelById(id);
+		
+		Artikel artikel = null;
+		
+		try{
+			artikel = em.find(Artikel.class, id);
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+		
 		return artikel;
 	}
 	
@@ -72,6 +89,7 @@ public class ArtikelService implements Serializable {
 			throw new InvalidArtikelIdException(artikelId, violations);
 																						
 	}
+	//TODO Hier muss man im Bezug auf Bestellung vermutlich noch was machen :)
 	public List<Artikel> findArtikelByIds(List<Long> ids, Locale locale) {
 			
 		if (ids == null || ids.isEmpty()) {
@@ -88,20 +106,37 @@ public class ArtikelService implements Serializable {
 		
 		
 	}
-	
+	// Alle Artikel ausgeben
 	public List<Artikel> findAllArtikel() {
-		//TODO Datenbankzugriffsschicht statt Mock
-		final List<Artikel> artikel = Mock.findAllArtikel();
+			List<Artikel> artikel;
+			artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_ORDER_BY_ID, Artikel.class)
+						.getResultList();
 		return artikel;
 	}
-	public Collection<Artikel> findArtikelByBezeichnung(String bezeichnung, Locale locale) {
-		validateBezeichnug(bezeichnung, locale);
-		//TODO Datenbankzugriffsschicht statt Mock
-		final Collection<Artikel> artikel = Mock.findArtikelByBezeichnung(bezeichnung);
+	// Artikel anhand Bezeichnung suchen, wobei Bezeichnung mit Wildcards
+	public List<Artikel> findArtikelByBezeichnungWildcard(String bezeichnung, Locale locale) {
+		validateBezeichnung(bezeichnung, locale);
+		
+		List<Artikel> artikel;
+		artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
+					.setParameter(Artikel.PARAM_BEZEICHNUNG, "%" + bezeichnung + "%")
+					.getResultList();
 		return artikel;
 	}
-
-	private void validateBezeichnug(String bezeichnung, Locale locale) {
+	// Artikel exakt nach einer Bezeichnung suchen, Ergebnis 1 oder 0 Artikel
+	public Artikel findArtikelByBezeichnung(String bezeichnung, Locale locale) {
+		validateBezeichnung(bezeichnung, locale);
+		try {
+			final Artikel artikel = em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
+									  .setParameter(Artikel.PARAM_BEZEICHNUNG, bezeichnung)
+									  .getSingleResult();
+			return artikel;
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+	}
+	private void validateBezeichnung(String bezeichnung, Locale locale) {
 		final Validator validator = validatorProvider.getValidator(locale);
 		final Set<ConstraintViolation<Artikel>> violations = validator.validateValue(Artikel.class,
 																					 "bezeichnung",
@@ -112,22 +147,26 @@ public class ArtikelService implements Serializable {
 		
 	}
 
+
 	public Artikel createArtikel(Artikel artikel, Locale locale) {
-		//TODO Datenbankzugriffsschicht statt Mock
 		if (artikel == null) {
 			return artikel;
 		}
-		
+		//Werden Constraints gewahrt?
 		validateArtikel(artikel, locale, Default.class);
 		
-		//Prüfung ob Bezeichnung schon existiert, aktuell Dummy-Methode, prüft nur ob String mit "B" beginnt
-		//TODO Datenbankzugriffsschicht statt Mock
-		if (artikel.getBezeichnung().startsWith("B")) {
+		//Prüfung ob Bezeichnung schon existiert
+		try{
+			em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
+			  .setParameter(Artikel.PARAM_BEZEICHNUNG, artikel.getBezeichnung())
+			  .getSingleResult();
 			throw new BezeichnungExistsException(artikel.getBezeichnung());
 		}
-		
-		artikel = Mock.createArtikel(artikel);
-		
+		catch (NoResultException e) {
+			//Noch kein Artikel mit dieser Bezeichnung
+			LOGGER.trace("Artikel existiert noch nicht");
+		}	
+		em.persist(artikel);
 		return artikel;
 	}
 
@@ -145,22 +184,27 @@ public class ArtikelService implements Serializable {
 	}
 
 	public Artikel updateArtikel(Artikel artikel, Locale locale) {
+		if (artikel == null) {
+			return null;
+		}
+		
+		//Werden Constraints gewahrt?
 		validateArtikel(artikel, locale, Default.class, IdGroup.class);
-		//Prüfen ob Bezeichnung schon bei einem anderen Artikel vorhanden ist
-		final Artikel vorhandenerArtikel = Mock.findArtikelByBez(artikel.getBezeichnung());
 		
-		if (vorhandenerArtikel.getBezeichnung().equals(artikel.getBezeichnung()))
-			throw new BezeichnungExistsException(artikel.getBezeichnung());
+		// Artikel von Entity Manager trennen, weil z.B. nach Bezeichnung gesucht wird
+		em.detach(artikel);
 		
-		//TODO Datenbankzugriffsschicht statt Mock
-		Mock.updateArtikel(artikel);
-		
+		// Gibt es anderes Objekt mit gleicher Bezeichnung?
+		final Artikel vorhandenerArtikel = findArtikelByBezeichnung(artikel.getBezeichnung(), locale);
+		if (vorhandenerArtikel != null) {
+			em.detach(vorhandenerArtikel);
+			if (vorhandenerArtikel.getId().longValue() != artikel.getId().longValue()) {
+				throw new BezeichnungExistsException(artikel.getBezeichnung());
+			}
+		}
+		em.merge(artikel);
 		return artikel;
-				
+			
 	}
-
-
-
-	
 
 }
