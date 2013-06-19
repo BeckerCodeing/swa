@@ -138,8 +138,8 @@ public class KundeResource {
 	@Produces
 	public Response updateKunde(Kunde kunde) {
 
-		//Rueckwaertsverweis von Adresse zu Kunde setzen
-		kunde.getAdresse().setKunde(kunde);
+//		//Rueckwaertsverweis von Adresse zu Kunde setzen
+//		kunde.getAdresse().setKunde(kunde);
 
 		
 		final Locale locale = localeHelper.getLocale(headers);
