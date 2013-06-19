@@ -2,6 +2,7 @@ package de.shop.bestellverwaltung.service;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
@@ -114,6 +115,12 @@ public class BestellungService implements Serializable {
 			LOGGER.debugf("createBestellung: violations=%s", violations);
 			throw new InvalidBestellungException(bestellung, violations);
 		}
+	}
+
+	//TODO Methode implementieren
+	public Collection<Bestellung> findBestellungenByKunde(Kunde kunde) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

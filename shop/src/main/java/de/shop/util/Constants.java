@@ -1,7 +1,7 @@
 package de.shop.util;
 
 public final class Constants {
-	
+	//JPA
 	public static final long MIN_ID = 1;
 	public static final Long KEINE_ID = null;
 	
