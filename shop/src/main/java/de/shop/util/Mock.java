@@ -185,30 +185,30 @@ public final class Mock {
 		
 		bestellung.setPositionen(positionen);
 		//Preis berechnen
-		bestellung.setGesamtpreis(bestellung.calcPreis());
+		//bestellung.setGesamtpreis(bestellung.calcPreis());
 			
 		return bestellung;
 	}
 	
 	//Bestellung nach KundenID suchen
-	public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
-		final Kunde kunde = findKundeById(kundeId);
+//	public static Collection<Bestellung> findBestellungenByKundeId(Long kundeId) {
+//		final Kunde kunde = findKundeById(kundeId);
+//			
+//		// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
+//		final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
+//		
+//		final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
+//		for (int i = 1; i <= anzahl; i++) {
+//			//Bestellung suchen anhand KundenID
+//			final Bestellung bestellung = findBestellungById(Long.valueOf(i));
+//			bestellung.setKunde(kunde);
+//			bestellungen.add(bestellung);
+//			
+//		}
+		//kunde.setBestellungen(bestellungen);
 			
-		// Beziehungsgeflecht zwischen Kunde und Bestellungen aufbauen
-		final int anzahl = kundeId.intValue() % MAX_BESTELLUNGEN + 1;  // 1, 2, 3 oder 4 Bestellungen
-		
-		final List<Bestellung> bestellungen = new ArrayList<>(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
-			//Bestellung suchen anhand KundenID
-			final Bestellung bestellung = findBestellungById(Long.valueOf(i));
-			bestellung.setKunde(kunde);
-			bestellungen.add(bestellung);
-			
-		}
-		kunde.setBestellungen(bestellungen);
-			
-		return bestellungen;
-	}
+		//return bestellungen;
+//	}
 	
 	//Kunden nach der ID Suchen
 	public static Kunde findKundeById(Long id) {
@@ -288,7 +288,7 @@ public final class Mock {
 		kunde.setId(Long.valueOf(nachname.length()));
 		final Adresse adresse = kunde.getAdresse();
 		adresse.setId((Long.valueOf(nachname.length())) + 1);
-		kunde.setBestellungen(null);
+		//kunde.setBestellungen(null);
 			
 		LOGGER.infof("Neuer Kunde: %s", kunde);
 		return kunde;
@@ -306,7 +306,7 @@ public final class Mock {
 		position.setId(id);
 		//Nur Modulo schlecht, da Menge = 0 unerwünscht..
 		position.setMenge(artikel.hashCode() % FUCKCHECKSTYLE + 1);
-		position.setPreis(position.calcPreis());
+		//position.setPreis(position.calcPreis());
 		
 		return position;
 	}

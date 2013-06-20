@@ -13,8 +13,10 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.rest.UriHelperKunde;
+import de.shop.util.Log;
 
 @ApplicationScoped
+@Log
 public class UriHelperBestellung {
 
 	@Inject

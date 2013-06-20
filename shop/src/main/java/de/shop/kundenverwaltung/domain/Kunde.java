@@ -147,11 +147,11 @@ public class Kunde  implements Serializable {
 	private Adresse adresse;
 	
 	//TODO Wenn Bestellunngsklasse da ist wieder Kommentare weg machen!
-//	@OneToMany
-//	@JoinColumn(name = "kunde_fk", nullable = false)
-//	@OrderColumn(name = "idx", nullable = false)
-//	@JsonIgnore
-//	private List<Bestellung> bestellungen;
+	@OneToMany
+	@JoinColumn(name = "kunde_fk", nullable = false)
+	@OrderColumn(name = "idx", nullable = false)
+	@JsonIgnore
+	private List<Bestellung> bestellungen;
 	
 	@Transient
 	private URI bestellungenUri;
@@ -221,24 +221,24 @@ public class Kunde  implements Serializable {
 	}
 	
 	//TODO Wenn Bestellunngsklasse da ist wieder Kommentare weg machen!
-//	public List<Bestellung> getBestellungen() {
-//		if (bestellungen == null) {
-//			return null;
-//		}		
-//		return Collections.unmodifiableList(bestellungen);
-//	}
-//	public void setBestellungen(List<Bestellung> bestellungen) {
-//		if (this.bestellungen == null) {
-//			this.bestellungen = bestellungen;
-//			return;
-//		}
-//		
-//		// Wiederverwendung der vorhandenen Collection
-//		this.bestellungen.clear();
-//		if (bestellungen != null) {
-//			this.bestellungen.addAll(bestellungen);
-//		}
-//	}
+	public List<Bestellung> getBestellungen() {
+		if (bestellungen == null) {
+			return null;
+		}		
+		return Collections.unmodifiableList(bestellungen);
+	}
+	public void setBestellungen(List<Bestellung> bestellungen) {
+		if (this.bestellungen == null) {
+			this.bestellungen = bestellungen;
+			return;
+		}
+		
+		// Wiederverwendung der vorhandenen Collection
+		this.bestellungen.clear();
+		if (bestellungen != null) {
+			this.bestellungen.addAll(bestellungen);
+		}
+	}
 	public URI getBestellungenUri() {
 		return bestellungenUri;
 	}
@@ -247,13 +247,13 @@ public class Kunde  implements Serializable {
 	}
 	
 	//TODO Wenn Bestellunngsklasse da ist wieder Kommentare weg machen!
-//	public Kunde addBestellung(Bestellung bestellung) {
-//		if (bestellungen == null) {
-//			bestellungen = new ArrayList<>();
-//		}
-//		bestellungen.add(bestellung);
-//		return this;
-//	}
+	public Kunde addBestellung(Bestellung bestellung) {
+		if (bestellungen == null) {
+			bestellungen = new ArrayList<>();
+		}
+		bestellungen.add(bestellung);
+		return this;
+	}
 	
 	public Date getAktualisiert() {
 		return aktualisiert == null ? null : (Date) aktualisiert.clone();

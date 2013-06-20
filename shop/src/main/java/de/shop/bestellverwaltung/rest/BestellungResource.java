@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -28,14 +30,17 @@ import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.domain.Position;
 import de.shop.bestellverwaltung.service.BestellungService;
+import de.shop.kundenverwaltung.rest.UriHelperKunde;
 import de.shop.util.LocaleHelper;
 import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 @Path("/bestellungen")
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
 @Log
 public class BestellungResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -50,6 +55,9 @@ public class BestellungResource {
 	private UriHelperBestellung uriHelperBestellung;
 	
 	@Inject
+	private UriHelperKunde uriHelperKunde;
+	
+	@Inject
 	private ArtikelService as;
 	
 	@Inject
@@ -57,6 +65,16 @@ public class BestellungResource {
 	
 	@Inject
 	private LocaleHelper localeHelper;
+	
+	@PostConstruct
+	private void postConstruct() {
+		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
+	}
+	
+	@PreDestroy
+	private void preDestroy() {
+		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
+	}
 	
 	@GET
 	@Path("{id:[1-9][0-9]*}")
@@ -142,7 +160,6 @@ public class BestellungResource {
 					//Artikel gefunden
 					pos.setId(positionId);
 					pos.setArtikel(artikel);
-					pos.setPreis(pos.calcPreis());
 					neuePositionen.add(pos);
 					positionId++;
 					break;
@@ -150,9 +167,6 @@ public class BestellungResource {
 			}
 		}
 		bestellung.setPositionen(neuePositionen);
-		bestellung.setGesamtpreis(bestellung.calcPreis());
-		
-		
 		
 		bestellung = bs.createBestellung(bestellung, kundeId, locale);
 		

@@ -12,6 +12,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -31,8 +34,11 @@ public class BestellungService implements Serializable {
 	private static final long serialVersionUID = 3188789767052580247L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
-	@Inject
-	private KundeService ks;
+	@PersistenceContext
+	private transient EntityManager em;
+	
+	//@Inject
+	//private KundeService ks;
 	
 	@Inject
 	@NeueBestellung
@@ -53,8 +59,13 @@ public class BestellungService implements Serializable {
 
 	public Bestellung findBestellungById(Long id, Locale locale) {
 		validateBestellungId(id, locale);
-		// TODO Datenbanzugriffsschicht statt Mock
-		final Bestellung bestellung = Mock.findBestellungById(id);
+		Bestellung bestellung = null;
+		try{
+			bestellung = em.find(Bestellung.class, id);
+		}
+		catch(NoResultException e){
+			return null;
+		}
 		return bestellung;
 	}
 	
@@ -73,38 +84,39 @@ public class BestellungService implements Serializable {
 			return bestellung;
 		}
 		
-		final Kunde kunde = ks.findKundeById(kundeId, locale);
-		
-		return createBestellung(bestellung, kunde, locale);
-		
+		// Werden alle Constraints beim Einfuegen gewahrt?
+				validateBestellung(bestellung, locale, Default.class);
+				
+				em.persist(bestellung);
+				return bestellung;
 	}
 
-	private Bestellung createBestellung(Bestellung bestellung, Kunde kunde,
-			Locale locale) {
-		if (bestellung == null) {
-			return null;
-		}
+//	private Bestellung createBestellung(Bestellung bestellung, Kunde kunde,
+//			Locale locale) {
+//		if (bestellung == null) {
+//			return null;
+//		}
 		
 				
-		kunde.addBestellung(bestellung);
-		bestellung.setKunde(kunde);
-		
+//		kunde.addBestellung(bestellung);
+//		bestellung.setKunde(kunde);
+//		
 //		zum Testen
 //		bestellung.setKunde(null);
-		
-		bestellung.setId(MIN_ID);
+//		
+//		bestellung.setId(MIN_ID);
 //		for (Position pos : bestellung.getPositionen()) {
 //			pos.setId(KEINE_ID);
 //			LOGGER.tracef("Bestellposition: %s", pos);				
 //		}
-		
-		validateBestellung(bestellung, locale, Default.class);
-		
-		bestellung = Mock.createBestellung(bestellung, kunde);
-		event.fire(bestellung);
-		
-		return bestellung;
-	}
+//		
+//		validateBestellung(bestellung, locale, Default.class);
+//		
+//		bestellung = Mock.createBestellung(bestellung, kunde);
+//		event.fire(bestellung);
+//		
+//		return bestellung;
+//	}
 
 	private void validateBestellung(Bestellung bestellung, Locale locale, Class<?>... groups) {
 		// Werden alle Constraints beim Einfuegen gewahrt?
@@ -112,7 +124,7 @@ public class BestellungService implements Serializable {
 		
 		final Set<ConstraintViolation<Bestellung>> violations = validator.validate(bestellung);
 		if (violations != null && !violations.isEmpty()) {
-			LOGGER.debugf("createBestellung: violations=%s", violations);
+			//LOGGER.debugf("createBestellung: violations=%s", violations);
 			throw new InvalidBestellungException(bestellung, violations);
 		}
 	}
