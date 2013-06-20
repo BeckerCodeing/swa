@@ -88,7 +88,7 @@ public class Artikel implements Serializable {
 	@Size(max = BEZEICHNUNG_LENGTH_MAX, message = "{artikelverwaltung.artikel.bezeichnung.length}")
 	private String bezeichnung;
 	
-	//TODO Hier muss evtl. noch eine Bean Validation für den Preis hin..., bzw. die Message
+	
 	@Column(scale = 2, nullable = false)
 	@DecimalMin("5.0")
 	private BigDecimal preis;

@@ -84,6 +84,7 @@ public class BestellungObserver implements Serializable {
 				sb.append(pos.getId() + "\t" + pos.getMenge() + "\t[Stk]\t" 
 						+ pos.getArtikel().getBezeichnung() + "\t" + pos.calcPreis() + "\t[EUR]" + NEWLINE);
 			}
+			
 			sb.append("Gesamtpreis: " + bestellung.calcPreis() + "\t[EUR]");
 			final String text = sb.toString();
 			LOGGER.trace(text);

@@ -89,7 +89,7 @@ public class ArtikelService implements Serializable {
 			throw new InvalidArtikelIdException(artikelId, violations);
 																						
 	}
-	//TODO Hier muss man im Bezug auf Bestellung vermutlich noch was machen :)
+	
 	public List<Artikel> findArtikelByIds(List<Long> ids, Locale locale) {
 			
 		if (ids == null || ids.isEmpty()) {

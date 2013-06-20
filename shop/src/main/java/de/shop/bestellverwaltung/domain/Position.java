@@ -1,6 +1,10 @@
 package de.shop.bestellverwaltung.domain;
 
+import static de.shop.util.Constants.KEINE_ID;
+import static de.shop.util.Constants.MIN_ID;
+
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -13,49 +17,55 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.Valid;
+
+import javax.persistence.PostPersist;
+
+
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.util.IdGroup;
-import static de.shop.util.Constants.KEINE_ID;
-import static de.shop.util.Constants.MIN_ID;
 
-@Entity
 @Cacheable
+@Entity
 @Table(name = "position")
 public class Position implements Serializable {
-
-	private static final long serialVersionUID = 2212950377169631920L;
+	
+	private static final long serialVersionUID = 2222771733641950913L;
+	
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
 	private static final int MENGE_MIN = 1;
+	
 	
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
 	@Min(value = MIN_ID, message = "{bestellverwaltung.position.id.min}", groups = IdGroup.class)
 	private Long id = KEINE_ID;
-	
+
 	@Column(name = "menge", nullable = false)
 	@Min(value = MENGE_MIN, message = "{bestellverwaltung.position.menge.min}")
 	private short menge;
-	
-	@Transient
-	private BigDecimal preis;
-	
+
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "artikel_fk", nullable = false)
+    @JoinColumn(name = "artikel_fk", nullable = false)
 	@NotNull(message = "{bestellverwaltung.position.artikel.notNull}")
-	@Valid
 	@JsonIgnore
 	private Artikel artikel;
 	
 	@Transient
 	private URI artikelUri;
 	
+	@Transient
+	@JsonIgnore
+	private BigDecimal preis;
+
 	public Position() {
 		super();
 	}
@@ -71,6 +81,12 @@ public class Position implements Serializable {
 		this.artikel = artikel;
 		this.menge = menge;
 	}
+
+	
+	@PostPersist
+	private void postPersist() {
+		LOGGER.debugf("Neue Bestellposition mit ID=%d", id);
+	}
 	
 	public Long getId() {
 		return id;
@@ -85,13 +101,6 @@ public class Position implements Serializable {
 		this.menge = menge;
 	}
 	
-	public BigDecimal getPreis() {
-		return preis;
-	}
-	
-	public void setPreis(BigDecimal preis) {
-		this.preis = preis;
-	}
 	public Artikel getArtikel() {
 		return artikel;
 	}
@@ -106,15 +115,17 @@ public class Position implements Serializable {
 	}
 	
 		
+	public BigDecimal getPreis() {
+		return preis;
+	}
+
+	public void setPreis(BigDecimal preis) {
+		this.preis = preis;
+	}
+
 	//BigDecimal * int nicht möglich, daher in der Methode neuen BigDecimal(int Menge)
 	public BigDecimal calcPreis() {
 		return artikel.getPreis().multiply(new BigDecimal(this.getMenge()));
-	}
-
-	@Override
-	public String toString() {
-		return "Position [id=" + id + ", menge=" + menge + ", preis=" + preis
-				+ ", artikel=" + artikel + ", artikelUri=" + artikelUri + "]";
 	}
 
 	@Override
@@ -122,7 +133,6 @@ public class Position implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((artikel == null) ? 0 : artikel.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + menge;
 		return result;
 	}
@@ -142,15 +152,16 @@ public class Position implements Serializable {
 		} 
 		else if (!artikel.equals(other.artikel))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} 
-		else if (!id.equals(other.id))
-			return false;
 		if (menge != other.menge)
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Position [id=" + id + ", menge=" + menge + ", artikel="
+				+ artikel + ", artikelUri=" + artikelUri + "]";
+	}
+	
 
 }

@@ -15,7 +15,6 @@ import org.jboss.logging.Logger;
 
 import de.shop.bestellverwaltung.domain.Rechnung;
 import de.shop.util.IdGroup;
-import de.shop.util.Mock;
 import de.shop.util.ValidatorProvider;
 
 public class RechnungService {
@@ -38,7 +37,7 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 	public Rechnung findRechnungById(Long id, Locale locale) {
 		validateRechnungId(id, locale);
 		// TODO Datenbanzugriffsschicht statt Mock
-		final Rechnung rechnung = Mock.findRechnungById(id);
+		final Rechnung rechnung = null;
 		return rechnung;
 	}
 	
@@ -62,7 +61,7 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 		// Werden alle Constraints beim Einfuegen gewahrt?
 		validateRechnung(rechnung, locale, Default.class);
 
-		rechnung = Mock.createRechnung(rechnung, null);
+		//rechnung = Mock.createRechnung(rechnung, null);
 
 		return rechnung;
 	}
@@ -86,7 +85,7 @@ private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().loo
 		validateRechnung(rechnung, locale, Default.class, IdGroup.class);
 		
 		// TODO Datenbanzugriffsschicht statt Mock
-		Mock.updateRechnung(rechnung);
+		//Mock.updateRechnung(rechnung);
 		
 		return rechnung;
 	}
