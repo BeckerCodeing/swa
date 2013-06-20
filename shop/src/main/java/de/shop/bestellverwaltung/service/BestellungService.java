@@ -86,7 +86,7 @@ public class BestellungService implements Serializable {
 		}
 		
 				
-		kunde.addBestellung(bestellung);
+		//kunde.addBestellung(bestellung);
 		bestellung.setKunde(kunde);
 		
 //		zum Testen

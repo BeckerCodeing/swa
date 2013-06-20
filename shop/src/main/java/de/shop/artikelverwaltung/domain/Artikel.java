@@ -11,6 +11,7 @@ import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ import javax.validation.constraints.Size;
 
 
 
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jboss.logging.Logger;
 
@@ -39,6 +41,7 @@ import de.shop.util.IdGroup;
 
 
 @Entity
+@Cacheable
 @Table(name = "artikel")
 @NamedQueries({
 	@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_ID,
@@ -103,6 +106,7 @@ public class Artikel implements Serializable {
 	@Temporal(TIMESTAMP)
 	@JsonIgnore
 	private Date aktualisiert;
+	
 	
 	public Artikel() {
 		super();
@@ -225,10 +229,5 @@ public class Artikel implements Serializable {
 				+ ", erzeugt=" + erzeugt
 				+ ", aktualisiert=" + aktualisiert + "]";
 	}
-	
-
-
-
-
 	
 }

@@ -8,14 +8,7 @@
 		<jta-data-source>java:jboss/datasources/ShopDS</jta-data-source>
 		
 		<!-- Caching von Objekten mit @Cacheable -->
-		<!--
 		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
-		-->
-
-		<!-- Umschalten fuer Hibernate Console -->
-		<shared-cache-mode>NONE</shared-cache-mode>
-		
-		
 		<properties>
 			<!-- http://docs.jboss.org/hibernate/orm/4.1/manual/en-US/html/ch03.html -->
 			<!-- javadoc fuer org.hibernate.cfg.AvailableSettings -->
@@ -44,7 +37,9 @@
 			
 			<!-- im Produktivbetrieb auskommentieren -->
 			<property name="hibernate.hbm2ddl.auto" value="create"/>
-			<property name="hibernate.hbm2ddl.import_files" value="sql/01_enum.sql,sql/02_index.sql,sql/10_hibernate_sequence.sql,sql/20_kunde.sql,sql/21_adresse.sql,sql/22_kunde_hobby.sql,sql/23_wartungsvertrag.sql,sql/30_artikel.sql,sql/31_kategorie.sql,sql/40_bestellung.sql,sql/41_bestellposition.sql,sql/50_lieferung.sql,sql/51_bestellung_lieferung.sql"/>
+			<!-- Hier die SQL Skripte eintragen, damit Skripte automatisch beim Starten des Servers schon geladen und ausgeführt werden 
+			[Schreibweise: sql/SKRIPTNAME.sql ... einzelne Skripte durch Komma getrennt-->
+			<property name="hibernate.hbm2ddl.import_files" value="sql/30_artikel.sql,sql/40_position.sql"/>
 		</properties>
 	</persistence-unit>
 </persistence>

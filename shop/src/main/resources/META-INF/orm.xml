@@ -3,7 +3,9 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
                  version="2.0">
-    <!--
+    <!-- Hier kann nachträglich Klassen Caching injiziert werden.
+    z.B. Hilfreich, falls Anwendung im Produktivbetrieb und Code nicht mehr 
+    geändert werden kann.
 	<entity class="de.shop.bestellverwaltung.domain.Bestellung" cacheable="true" metadata-complete="false"/>
 	-->
 </entity-mappings>

@@ -205,7 +205,7 @@ public final class Mock {
 			bestellungen.add(bestellung);
 			
 		}
-		kunde.setBestellungen(bestellungen);
+		//kunde.setBestellungen(bestellungen);
 			
 		return bestellungen;
 	}
@@ -288,7 +288,7 @@ public final class Mock {
 		kunde.setId(Long.valueOf(nachname.length()));
 		final Adresse adresse = kunde.getAdresse();
 		adresse.setId((Long.valueOf(nachname.length())) + 1);
-		kunde.setBestellungen(null);
+		//kunde.setBestellungen(null);
 			
 		LOGGER.infof("Neuer Kunde: %s", kunde);
 		return kunde;
