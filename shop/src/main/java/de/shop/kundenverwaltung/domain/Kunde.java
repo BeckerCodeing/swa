@@ -77,7 +77,7 @@ import de.shop.util.IdGroup;
 @NamedQuery(name  = Kunde.FIND_KUNDEN_BY_PLZ,
             query = "SELECT k"
 			        + " FROM  Kunde k"
-		            + " WHERE k.adresse.plz = :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ),
+		            + " WHERE k.adresse.plz = :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
 })
 
 public class Kunde  implements Serializable {
