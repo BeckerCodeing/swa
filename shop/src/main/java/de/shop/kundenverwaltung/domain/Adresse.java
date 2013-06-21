@@ -66,7 +66,7 @@ public class Adresse implements Serializable {
 	private String strasse;
 	
 	@Column(length = HAUSNUMMER_MAX, nullable = true)
-    //@NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
+    @NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
 	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min}")
 	private int hausnummer;
 	

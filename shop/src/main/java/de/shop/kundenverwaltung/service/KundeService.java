@@ -166,7 +166,7 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
-		validateKunde(kunde, locale, Default.class, IdGroup.class);
+		validateKunde(kunde, locale, IdGroup.class);
 		
 		// kunde vom EntityManager trennen, weil anschliessend z.B. nach Id und Email gesucht wird
 		em.detach(kunde);
