@@ -169,7 +169,7 @@ public class KundeResource {
 		}
 		kunde.setBestellungenUri(null);
 		
-		kunde = (Kunde) ks.createKunde(kunde, locale);
+		kunde = ks.createKunde(kunde, locale);
 		LOGGER.tracef("Kunde: %s", kunde);
 		
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
@@ -191,7 +191,7 @@ public class KundeResource {
 		LOGGER.tracef("Kunde nachher: %s", origKunde);
 		
 		// Update durchführen
-		kunde = (Kunde) ks.updateKunde(origKunde, locale);
+		kunde = ks.updateKunde(origKunde, locale);
 		if (kunde == null) {
 			throw new NotFoundException("Kein Kunde gefunden mit der ID " + origKunde.getId());
 		}
