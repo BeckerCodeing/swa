@@ -51,9 +51,6 @@ import de.shop.util.IdGroup;
 				+ " FROM   Bestellung b"
 				+ " WHERE  b.kunde = :"
 				+ Bestellung.PARAM_KUNDE),
-//		@NamedQuery(name = Bestellung.FIND_BESTELLUNG_BY_ID_FETCH_LIEFERUNGEN, query = "SELECT DISTINCT b"
-//				+ " FROM   Bestellung b LEFT JOIN FETCH b.lieferungen"
-//				+ " WHERE  b.id = :" + Bestellung.PARAM_ID),
 		@NamedQuery(name = Bestellung.FIND_KUNDE_BY_ID, query = "SELECT b.kunde"
 				+ " FROM   Bestellung b"
 				+ " WHERE  b.id = :"
@@ -67,8 +64,6 @@ public class Bestellung implements Serializable {
 	private static final String PREFIX = "Bestellung.";
 	public static final String FIND_BESTELLUNGEN_BY_KUNDE = PREFIX
 			+ "findBestellungenByKunde";
-	public static final String FIND_BESTELLUNG_BY_ID_FETCH_LIEFERUNGEN = PREFIX
-			+ "findBestellungenByIdFetchLieferungen";
 	public static final String FIND_KUNDE_BY_ID = PREFIX
 			+ "findBestellungKundeById";
 
@@ -210,7 +205,7 @@ public class Bestellung implements Serializable {
 
 	// Preis berechnen
 	public BigDecimal calcPreis() {
-		BigDecimal ergebnis = new BigDecimal(0.0);
+		BigDecimal ergebnis = new BigDecimal("0.0");
 		for (Position position : positionen) {
 			ergebnis = ergebnis.add(position.calcPreis());
 			

@@ -18,7 +18,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,37 +46,36 @@ import de.shop.util.IdGroup;
 
 @Entity
 @Table(name = "kunde")
-@Inheritance
 @NamedQueries({
 	@NamedQuery(name  = Kunde.FIND_KUNDEN,
             query = "SELECT k"
 			        + " FROM   Kunde k"),
-@NamedQuery(name  = Kunde.FIND_KUNDEN_ORDER_BY_ID,
+	@NamedQuery(name  = Kunde.FIND_KUNDEN_ORDER_BY_ID,
 	        query = "SELECT   k"
 			        + " FROM  Kunde k"
 	                + " ORDER BY k.id"),
-@NamedQuery(name  = Kunde.FIND_IDS_BY_PREFIX,
+	@NamedQuery(name  = Kunde.FIND_IDS_BY_PREFIX,
 	        query = "SELECT   k.id"
 	                + " FROM  Kunde k"
 	                + " WHERE CONCAT('', k.id) LIKE :" + Kunde.PARAM_KUNDE_ID_PREFIX
 	                + " ORDER BY k.id"),
-@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_NACHNAME,
+	@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_NACHNAME,
             query = "SELECT k"
 			        + " FROM   Kunde k"
-            		+ " WHERE  UPPER(k.nachname) = UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
-@NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
+            		+ " WHERE  UPPER(k.nachname) LIKE UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
+    @NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
 	            query = "SELECT   DISTINCT k.nachname"
 			        + " FROM  Kunde k "
             		+ " WHERE UPPER(k.nachname) LIKE UPPER(:"
             		+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
-@NamedQuery(name  = Kunde.FIND_KUNDE_BY_EMAIL,
+    @NamedQuery(name  = Kunde.FIND_KUNDE_BY_EMAIL,
 	            query = "SELECT DISTINCT k"
 			            + " FROM   Kunde k"
 			            + " WHERE  k.email = :" + Kunde.PARAM_KUNDE_EMAIL),
-@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_PLZ,
+    @NamedQuery(name  = Kunde.FIND_KUNDEN_BY_PLZ,
             query = "SELECT k"
 			        + " FROM  Kunde k"
-		            + " WHERE k.adresse.plz = :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ),
+		            + " WHERE k.adresse.plz = :" + Kunde.PARAM_KUNDE_ADRESSE_PLZ)
 })
 
 public class Kunde  implements Serializable {
