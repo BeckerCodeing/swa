@@ -160,7 +160,7 @@ public class KundeResource {
 	@Produces
 	public Response createkunde(Kunde kunde) {
 		final Locale locale = localeHelper.getLocale(headers);
-
+		LOGGER.debugf("VORHER: %s", kunde);
 		kunde.setId(KEINE_ID);
 		
 		final Adresse adresse = kunde.getAdresse();
@@ -168,7 +168,7 @@ public class KundeResource {
 			adresse.setKunde(kunde);
 		}
 		kunde.setBestellungenUri(null);
-		
+		LOGGER.debugf("NACHHER: %s", kunde);
 		kunde = (Kunde) ks.createKunde(kunde, locale);
 		LOGGER.tracef("Kunde: %s", kunde);
 		
