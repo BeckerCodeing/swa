@@ -62,7 +62,7 @@ import de.shop.util.IdGroup;
 	@NamedQuery(name  = Kunde.FIND_KUNDEN_BY_NACHNAME,
             query = "SELECT k"
 			        + " FROM   Kunde k"
-            		+ " WHERE  UPPER(k.nachname) = UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
+            		+ " WHERE  UPPER(k.nachname) LIKE UPPER(:" + Kunde.PARAM_KUNDE_NACHNAME + ")"),
     @NamedQuery(name  = Kunde.FIND_NACHNAMEN_BY_PREFIX,
 	            query = "SELECT   DISTINCT k.nachname"
 			        + " FROM  Kunde k "

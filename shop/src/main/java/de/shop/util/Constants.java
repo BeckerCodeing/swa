@@ -13,6 +13,7 @@ public final class Constants {
 	//Position
 	public static final int MIN_POSITION_MENGE = 1;
 	
+	
 	private Constants() {
 	}
 }

@@ -141,6 +141,19 @@ public class Adresse implements Serializable {
 		this.kunde = kunde;
 	}
 	
+	public Date getErzeugt() {
+		return erzeugt == null ? null : (Date) erzeugt.clone();
+	}
+	public void setErzeugt(Date erzeugt) {
+		this.erzeugt = erzeugt == null ? null : (Date) erzeugt.clone();
+	}
+	public Date getAktualisiert() {
+		return aktualisiert == null ? null : (Date) aktualisiert.clone();
+	}
+	public void setAktualisiert(Date aktualisiert) {
+		this.aktualisiert = aktualisiert == null ? null : (Date) aktualisiert.clone();
+	}
+
 	@Override
 	public String toString() {
 		return "Adresse [id=" + id + ", plz=" + plz + ", bezeichnung="
