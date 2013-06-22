@@ -49,10 +49,10 @@ public class KundeService implements Serializable {
 		validateKundeId(id, locale);
 		
 		Kunde kunde = null;
-		try{
+		try {
 			kunde = em.find(Kunde.class, id);
 		}
-		catch(NoResultException e){
+		catch (NoResultException e) {
 			return null;
 		}
 		return kunde;
@@ -71,7 +71,7 @@ public class KundeService implements Serializable {
 	
 	//findet alle Kunden aus der Datenbank
 	public List<Kunde> findAllKunden() {
-		List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_ORDER_BY_ID, Kunde.class).getResultList();
+		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_ORDER_BY_ID, Kunde.class).getResultList();
 		
 		return kunden;
 	}
@@ -80,7 +80,7 @@ public class KundeService implements Serializable {
 	public List<Kunde> findKundenByNachname(String nachname, Locale locale) {
 		validateNachname(nachname, locale);
 		
-		List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_NACHNAME, Kunde.class)
+		final List<Kunde> kunden = em.createNamedQuery(Kunde.FIND_KUNDEN_BY_NACHNAME, Kunde.class)
 				.setParameter(Kunde.PARAM_KUNDE_NACHNAME, nachname)
 				.getResultList();
 
@@ -166,7 +166,7 @@ public class KundeService implements Serializable {
 		}
 
 		// Werden alle Constraints beim Modifizieren gewahrt?
-		validateKunde(kunde, locale, Default.class, IdGroup.class);
+		validateKunde(kunde, locale, IdGroup.class);
 		
 		// kunde vom EntityManager trennen, weil anschliessend z.B. nach Id und Email gesucht wird
 		em.detach(kunde);

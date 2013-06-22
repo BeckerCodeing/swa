@@ -30,7 +30,7 @@ import org.jboss.logging.Logger;
 import de.shop.util.IdGroup;
 
 @Entity
-@Table(name="adresse")
+@Table(name = "adresse")
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = -4812303860223131704L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
@@ -66,7 +66,7 @@ public class Adresse implements Serializable {
 	private String strasse;
 	
 	@Column(length = HAUSNUMMER_MAX, nullable = true)
-    //@NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
+    @NotNull(message = "{kundenverwaltung.adresse.hausnummer.notNull}")
 	@Min(value = HAUSNUMMER_MIN, message = "{kundenverwaltung.adresse.hausnummer.min}")
 	private int hausnummer;
 	
@@ -168,23 +168,26 @@ public class Adresse implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adresse other = (Adresse) obj;
+		final Adresse other = (Adresse) obj;
 		if (bezeichnung == null) {
 			if (other.bezeichnung != null)
 				return false;
-		} else if (!bezeichnung.equals(other.bezeichnung))
+		} 
+		else if (!bezeichnung.equals(other.bezeichnung))
 			return false;
 		if (hausnummer != other.hausnummer)
 			return false;
 		if (plz == null) {
 			if (other.plz != null)
 				return false;
-		} else if (!plz.equals(other.plz))
+		} 
+		else if (!plz.equals(other.plz))
 			return false;
 		if (strasse == null) {
 			if (other.strasse != null)
 				return false;
-		} else if (!strasse.equals(other.strasse))
+		} 
+		else if (!strasse.equals(other.strasse))
 			return false;
 		return true;
 	}

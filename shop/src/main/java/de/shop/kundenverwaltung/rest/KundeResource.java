@@ -36,12 +36,16 @@ import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.service.KundeService;
 import de.shop.util.LocaleHelper;
+import de.shop.util.Log;
 import de.shop.util.NotFoundException;
+import de.shop.util.Transactional;
 
 @Path("/kunden")
 @Produces(APPLICATION_JSON)
 @Consumes
 @RequestScoped
+@Transactional
+@Log
 public class KundeResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -168,8 +172,8 @@ public class KundeResource {
 			adresse.setKunde(kunde);
 		}
 		kunde.setBestellungenUri(null);
-		LOGGER.debugf("NACHHER: %s", kunde);
-		kunde = (Kunde) ks.createKunde(kunde, locale);
+		
+		kunde = ks.createKunde(kunde, locale);
 		LOGGER.tracef("Kunde: %s", kunde);
 		
 		final URI kundeUri = uriHelperKunde.getUriKunde(kunde, uriInfo);
@@ -191,7 +195,7 @@ public class KundeResource {
 		LOGGER.tracef("Kunde nachher: %s", origKunde);
 		
 		// Update durchführen
-		kunde = (Kunde) ks.updateKunde(origKunde, locale);
+		kunde = ks.updateKunde(origKunde, locale);
 		if (kunde == null) {
 			throw new NotFoundException("Kein Kunde gefunden mit der ID " + origKunde.getId());
 		}
