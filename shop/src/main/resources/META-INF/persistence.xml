@@ -51,7 +51,7 @@
 			<property name="hibernate.hbm2ddl.auto" value="create"/>
 			<!-- Hier die SQL Skripte eintragen, damit Skripte automatisch beim Starten des Servers schon geladen und ausgeführt werden 
 			[Schreibweise: sql/SKRIPTNAME.sql ... einzelne Skripte durch Komma getrennt-->
-			<property name="hibernate.hbm2ddl.import_files" value="sql/20_kunde.sql,sql/21_adresse.sql,sql/30_artikel.sql,sql/40_bestellung.sql,sql/41_position.sql"/>
+			<property name="hibernate.hbm2ddl.import_files" value="sql/10_hibernate_sequence.sql,sql/20_kunde.sql,sql/21_adresse.sql,sql/30_artikel.sql,sql/40_bestellung.sql,sql/41_position.sql"/>
 		</properties>
 	</persistence-unit>
 </persistence>
