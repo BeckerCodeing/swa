@@ -55,7 +55,7 @@ import de.shop.util.IdGroup;
 	@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZ,
 				query = "SELECT a"
 						+ " FROM 		Artikel a"
-						+ " WHERE 		UPPER(a.bezeichnung) LIKE UPPER(:" + Artikel.PARAM_BEZEICHNUNG +")"
+						+ " WHERE 		UPPER(a.bezeichnung) LIKE UPPER(:" + Artikel.PARAM_BEZEICHNUNG + ")"
 						+ "				AND a.verfuegbar = TRUE"
 						+ " ORDER BY	a.id ASC")
 
